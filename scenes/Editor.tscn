@@ -1,0 +1,132 @@
+[gd_scene load_steps=2 format=3 uid="uid://bvgorsw0k7n0h"]
+
+[ext_resource type="Script" path="res://scripts/editor/ResizeController.cs" id="1_no242"]
+
+[node name="Editor" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ResizeController" type="Node" parent="." node_paths=PackedStringArray("BottomContainer", "TopContainer", "LeftContainer", "MidContainer", "RightContainer", "BottomContainerResizeBar")]
+script = ExtResource("1_no242")
+BottomContainer = NodePath("../BotContainer")
+TopContainer = NodePath("../TopContainer")
+LeftContainer = NodePath("../TopContainer/LeftContainer")
+MidContainer = NodePath("../TopContainer/MidContainer")
+RightContainer = NodePath("../TopContainer/RightContainer")
+BottomContainerResizeBar = NodePath("../BotContainer/ResizeBar")
+LimitBottomMax = 0.9
+
+[node name="BotContainer" type="Control" parent="."]
+layout_mode = 1
+anchor_top = 0.722222
+anchor_right = 1.0
+anchor_bottom = 1.0
+metadata/_edit_use_anchors_ = true
+
+[node name="BG" type="ColorRect" parent="BotContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="ResizeBar" type="ColorRect" parent="BotContainer"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 8.0
+grow_horizontal = 2
+mouse_default_cursor_shape = 9
+color = Color(0.219608, 0.741176, 1, 1)
+metadata/_edit_lock_ = true
+
+[node name="TopContainer" type="Control" parent="."]
+layout_mode = 1
+anchor_right = 1.0
+anchor_bottom = 0.722
+offset_bottom = 0.143951
+
+[node name="ColorRect" type="ColorRect" parent="TopContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.25098, 0.25098, 0.25098, 1)
+metadata/_edit_lock_ = true
+
+[node name="LeftContainer" type="Control" parent="TopContainer"]
+layout_mode = 1
+anchor_right = 0.298611
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="TopContainer/LeftContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0823529, 0.0745098, 0.0784314, 1)
+metadata/_edit_lock_ = true
+
+[node name="Tree" type="Tree" parent="TopContainer/LeftContainer"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_lock_ = true
+
+[node name="MidContainer" type="Control" parent="TopContainer"]
+layout_mode = 1
+anchor_left = 0.298611
+anchor_right = 0.666667
+anchor_bottom = 1.0
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="TopContainer/MidContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.341176, 0.0588235, 0.176471, 1)
+metadata/_edit_lock_ = true
+
+[node name="RightContainer" type="Control" parent="TopContainer"]
+layout_mode = 1
+anchor_left = 0.666667
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="ColorRect" type="ColorRect" parent="TopContainer/RightContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = -0.000366211
+offset_bottom = 6.10352e-05
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0823529, 0.0745098, 0.0784314, 1)
+metadata/_edit_lock_ = true
+
+[connection signal="mouse_entered" from="BotContainer/ResizeBar" to="ResizeController" method="OnBottomContainerMouseEntered"]
+[connection signal="mouse_exited" from="BotContainer/ResizeBar" to="ResizeController" method="OnBottomContainerMouseExited"]
