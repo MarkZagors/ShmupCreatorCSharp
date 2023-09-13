@@ -10,7 +10,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ResizeController" type="Node" parent="." node_paths=PackedStringArray("BottomContainer", "TopContainer", "LeftContainer", "MidContainer", "RightContainer", "BottomContainerResizeBar")]
+[node name="ResizeController" type="Node" parent="." node_paths=PackedStringArray("BottomContainer", "TopContainer", "LeftContainer", "MidContainer", "RightContainer", "BottomContainerResizeBar", "LeftContainerResizeBar", "RightContainerResizeBar")]
 script = ExtResource("1_no242")
 BottomContainer = NodePath("../BotContainer")
 TopContainer = NodePath("../TopContainer")
@@ -18,7 +18,8 @@ LeftContainer = NodePath("../TopContainer/LeftContainer")
 MidContainer = NodePath("../TopContainer/MidContainer")
 RightContainer = NodePath("../TopContainer/RightContainer")
 BottomContainerResizeBar = NodePath("../BotContainer/ResizeBar")
-LimitBottomMax = 0.9
+LeftContainerResizeBar = NodePath("../TopContainer/LeftContainer/ResizeBar")
+RightContainerResizeBar = NodePath("../TopContainer/RightContainer/ResizeBar")
 
 [node name="BotContainer" type="Control" parent="."]
 layout_mode = 1
@@ -90,6 +91,20 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_lock_ = true
 
+[node name="ResizeBar" type="ColorRect" parent="TopContainer/LeftContainer"]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -7.99985
+offset_right = 0.000152588
+offset_bottom = 6.10352e-05
+grow_horizontal = 0
+grow_vertical = 2
+mouse_default_cursor_shape = 10
+color = Color(0.21875, 0.738281, 0.996094, 1)
+
 [node name="MidContainer" type="Control" parent="TopContainer"]
 layout_mode = 1
 anchor_left = 0.298611
@@ -128,5 +143,20 @@ grow_vertical = 2
 color = Color(0.0823529, 0.0745098, 0.0784314, 1)
 metadata/_edit_lock_ = true
 
+[node name="ResizeBar" type="ColorRect" parent="TopContainer/RightContainer"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = -0.000335693
+offset_right = 7.99966
+offset_bottom = 6.10352e-05
+grow_vertical = 2
+mouse_default_cursor_shape = 10
+color = Color(0.21875, 0.738281, 0.996094, 1)
+
 [connection signal="mouse_entered" from="BotContainer/ResizeBar" to="ResizeController" method="OnBottomContainerMouseEntered"]
 [connection signal="mouse_exited" from="BotContainer/ResizeBar" to="ResizeController" method="OnBottomContainerMouseExited"]
+[connection signal="mouse_entered" from="TopContainer/LeftContainer/ResizeBar" to="ResizeController" method="OnLeftContainerMouseEntered"]
+[connection signal="mouse_exited" from="TopContainer/LeftContainer/ResizeBar" to="ResizeController" method="OnLeftContainerMouseExited"]
+[connection signal="mouse_entered" from="TopContainer/RightContainer/ResizeBar" to="ResizeController" method="OnRightContainerMouseEntered"]
+[connection signal="mouse_exited" from="TopContainer/RightContainer/ResizeBar" to="ResizeController" method="OnRightContainerMouseExited"]

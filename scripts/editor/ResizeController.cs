@@ -12,10 +12,15 @@ namespace Editor
         [Export] public Control MidContainer;
         [Export] public Control RightContainer;
         [Export] public ColorRect BottomContainerResizeBar;
+        [Export] public ColorRect LeftContainerResizeBar;
+        [Export] public ColorRect RightContainerResizeBar;
 
-        [ExportCategory("Limits")]
-        [Export(PropertyHint.Range, "0,1,")] public float LimitBottomMax = 0.5f;
-        [Export(PropertyHint.Range, "0,1,")] public float LimitBottomMin = 0.2f;
+        private const float LIMIT_BOTTOM_MAX = 0.95f;
+        private const float LIMIT_BOTTOM_MIN = 0.2f;
+        private const float LIMIT_LEFT_MAX = 0.45f;
+        private const float LIMIT_LEFT_MIN = 0.1f;
+        private const float LIMIT_RIGHT_MAX = 0.9f;
+        private const float LIMIT_RIGHT_MIN = 0.55f;
 
         private bool _isBottomContainerMouseEntered = false;
         private bool _isRightContainerMouseEntered = false;
@@ -27,6 +32,8 @@ namespace Editor
         public override void _Ready()
         {
             BottomContainerResizeBar.SelfModulate = Color.Color8(0, 0, 0, 0);
+            LeftContainerResizeBar.SelfModulate = Color.Color8(0, 0, 0, 0);
+            RightContainerResizeBar.SelfModulate = Color.Color8(0, 0, 0, 0);
         }
 
         public override void _Process(double delta)
@@ -51,12 +58,28 @@ namespace Editor
             if (_isBottomContainerDragging)
             {
                 float YPoint = PosMouse.Y / ViewportSize.Y;
-
-                YPoint = Math.Clamp(YPoint, LimitBottomMin, LimitBottomMax);
-                GD.Print(YPoint);
+                YPoint = Math.Clamp(YPoint, LIMIT_BOTTOM_MIN, LIMIT_BOTTOM_MAX);
 
                 BottomContainer.AnchorTop = YPoint;
                 TopContainer.AnchorBottom = YPoint;
+            }
+
+            if (_isLeftContainerDragging)
+            {
+                float XPoint = PosMouse.X / ViewportSize.X;
+                XPoint = Math.Clamp(XPoint, LIMIT_LEFT_MIN, LIMIT_LEFT_MAX);
+
+                LeftContainer.AnchorRight = XPoint;
+                MidContainer.AnchorLeft = XPoint;
+            }
+
+            if (_isRightContainerDragging)
+            {
+                float XPoint = PosMouse.X / ViewportSize.X;
+                XPoint = Math.Clamp(XPoint, LIMIT_RIGHT_MIN, LIMIT_RIGHT_MAX);
+
+                RightContainer.AnchorLeft = XPoint;
+                MidContainer.AnchorRight = XPoint;
             }
         }
 
@@ -84,6 +107,30 @@ namespace Editor
         {
             _isBottomContainerMouseEntered = false;
             BottomContainerResizeBar.SelfModulate = Color.Color8(0, 0, 0, 0);
+        }
+
+        public void OnLeftContainerMouseEntered() //connection
+        {
+            _isLeftContainerMouseEntered = true;
+            LeftContainerResizeBar.SelfModulate = Colors.White;
+        }
+
+        public void OnLeftContainerMouseExited() //connection
+        {
+            _isLeftContainerMouseEntered = false;
+            LeftContainerResizeBar.SelfModulate = Color.Color8(0, 0, 0, 0);
+        }
+
+        public void OnRightContainerMouseEntered() //connection
+        {
+            _isRightContainerMouseEntered = true;
+            RightContainerResizeBar.SelfModulate = Colors.White;
+        }
+
+        public void OnRightContainerMouseExited() //connection
+        {
+            _isRightContainerMouseEntered = false;
+            RightContainerResizeBar.SelfModulate = Color.Color8(0, 0, 0, 0);
         }
     }
 }
