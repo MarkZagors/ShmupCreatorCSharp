@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=3 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/ResizeController.cs" id="1_no242"]
+[ext_resource type="Script" path="res://scripts/editor/PlayController.cs" id="2_54r43"]
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -10,16 +11,22 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ResizeController" type="Node" parent="." node_paths=PackedStringArray("BottomContainer", "TopContainer", "LeftContainer", "MidContainer", "RightContainer", "BottomContainerResizeBar", "LeftContainerResizeBar", "RightContainerResizeBar")]
+[node name="Controllers" type="Node" parent="."]
+
+[node name="ResizeController" type="Node" parent="Controllers" node_paths=PackedStringArray("BottomContainer", "TopContainer", "LeftContainer", "MidContainer", "RightContainer", "BottomContainerResizeBar", "LeftContainerResizeBar", "RightContainerResizeBar")]
 script = ExtResource("1_no242")
-BottomContainer = NodePath("../BotContainer")
-TopContainer = NodePath("../TopContainer")
-LeftContainer = NodePath("../TopContainer/LeftContainer")
-MidContainer = NodePath("../TopContainer/MidContainer")
-RightContainer = NodePath("../TopContainer/RightContainer")
-BottomContainerResizeBar = NodePath("../BotContainer/ResizeBar")
-LeftContainerResizeBar = NodePath("../TopContainer/LeftContainer/ResizeBar")
-RightContainerResizeBar = NodePath("../TopContainer/RightContainer/ResizeBar")
+BottomContainer = NodePath("../../BotContainer")
+TopContainer = NodePath("../../TopContainer")
+LeftContainer = NodePath("../../TopContainer/LeftContainer")
+MidContainer = NodePath("../../TopContainer/MidContainer")
+RightContainer = NodePath("../../TopContainer/RightContainer")
+BottomContainerResizeBar = NodePath("../../BotContainer/ResizeBar")
+LeftContainerResizeBar = NodePath("../../TopContainer/LeftContainer/ResizeBar")
+RightContainerResizeBar = NodePath("../../TopContainer/RightContainer/ResizeBar")
+
+[node name="PlayController" type="Node" parent="Controllers" node_paths=PackedStringArray("TimelineTimeLabel")]
+script = ExtResource("2_54r43")
+TimelineTimeLabel = NodePath("../../BotContainer/TimelineTab/TimelineDetails/TimeLabel")
 
 [node name="BotContainer" type="Control" parent="."]
 layout_mode = 1
@@ -35,7 +42,78 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+color = Color(0.0980392, 0.0980392, 0.117647, 1)
 metadata/_edit_lock_ = true
+
+[node name="TimelineTab" type="Control" parent="BotContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainContainer" type="Control" parent="BotContainer/TimelineTab"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 34.0
+offset_bottom = -0.000152588
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LanesVBox" type="VBoxContainer" parent="BotContainer/TimelineTab/MainContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Lane1" type="ColorRect" parent="BotContainer/TimelineTab/MainContainer/LanesVBox"]
+custom_minimum_size = Vector2(0, 30)
+layout_mode = 2
+color = Color(0.152941, 0.152941, 0.184314, 1)
+
+[node name="MiddleSeperator" type="ColorRect" parent="BotContainer/TimelineTab/MainContainer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_bottom = -0.000152588
+
+[node name="TimelineDetails" type="Control" parent="BotContainer/TimelineTab"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 34.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="BG" type="ColorRect" parent="BotContainer/TimelineTab/TimelineDetails"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0823529, 0.0784314, 0.101961, 1)
+
+[node name="TimeLabel" type="Label" parent="BotContainer/TimelineTab/TimelineDetails"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_left = 15.0
+offset_top = 0.000152588
+offset_right = 325.0
+offset_bottom = 0.000152588
+grow_vertical = 2
+text = "Time: 50.25"
+vertical_alignment = 1
 
 [node name="ResizeBar" type="ColorRect" parent="BotContainer"]
 layout_mode = 1
@@ -53,16 +131,6 @@ anchor_right = 1.0
 anchor_bottom = 0.722
 offset_bottom = 0.143951
 
-[node name="ColorRect" type="ColorRect" parent="TopContainer"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.25098, 0.25098, 0.25098, 1)
-metadata/_edit_lock_ = true
-
 [node name="LeftContainer" type="Control" parent="TopContainer"]
 layout_mode = 1
 anchor_right = 0.298611
@@ -71,17 +139,83 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="ColorRect" type="ColorRect" parent="TopContainer/LeftContainer"]
+[node name="SequenceTopContainer" type="Control" parent="TopContainer/LeftContainer"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_right = 0.000152588
+offset_bottom = 31.0
+grow_horizontal = 2
+mouse_filter = 2
+
+[node name="BG" type="ColorRect" parent="TopContainer/LeftContainer/SequenceTopContainer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0823529, 0.0745098, 0.0784314, 1)
-metadata/_edit_lock_ = true
+mouse_filter = 2
+color = Color(0.172549, 0.168627, 0.203922, 1)
 
-[node name="Tree" type="Tree" parent="TopContainer/LeftContainer"]
+[node name="HBox" type="HBoxContainer" parent="TopContainer/LeftContainer/SequenceTopContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TemplatesButton" type="Button" parent="TopContainer/LeftContainer/SequenceTopContainer/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Templates"
+
+[node name="SequenceButton" type="Button" parent="TopContainer/LeftContainer/SequenceTopContainer/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Sequence"
+
+[node name="SequenceMainContainer" type="Control" parent="TopContainer/LeftContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 31.0
+offset_right = 0.000152588
+offset_bottom = 6.10352e-05
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="BG" type="ColorRect" parent="TopContainer/LeftContainer/SequenceMainContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.113725, 0.109804, 0.133333, 1)
+
+[node name="TemplatesTab" type="Control" parent="TopContainer/LeftContainer/SequenceMainContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Templates"
+
+[node name="SequenceTab" type="Control" parent="TopContainer/LeftContainer/SequenceMainContainer"]
 visible = false
 layout_mode = 1
 anchors_preset = 15
@@ -89,7 +223,16 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-metadata/_edit_lock_ = true
+
+[node name="Label" type="Label" parent="TopContainer/LeftContainer/SequenceMainContainer/SequenceTab"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Sequence
+"
 
 [node name="ResizeBar" type="ColorRect" parent="TopContainer/LeftContainer"]
 layout_mode = 1
@@ -103,7 +246,8 @@ offset_bottom = 6.10352e-05
 grow_horizontal = 0
 grow_vertical = 2
 mouse_default_cursor_shape = 10
-color = Color(0.21875, 0.738281, 0.996094, 1)
+color = Color(0.219608, 0.737255, 0.996078, 1)
+metadata/_edit_lock_ = true
 
 [node name="MidContainer" type="Control" parent="TopContainer"]
 layout_mode = 1
@@ -112,14 +256,14 @@ anchor_right = 0.666667
 anchor_bottom = 1.0
 metadata/_edit_use_anchors_ = true
 
-[node name="ColorRect" type="ColorRect" parent="TopContainer/MidContainer"]
+[node name="BG" type="ColorRect" parent="TopContainer/MidContainer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.341176, 0.0588235, 0.176471, 1)
+color = Color(0.278431, 0.25098, 0.301961, 1)
 metadata/_edit_lock_ = true
 
 [node name="RightContainer" type="Control" parent="TopContainer"]
@@ -131,7 +275,7 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_use_anchors_ = true
 
-[node name="ColorRect" type="ColorRect" parent="TopContainer/RightContainer"]
+[node name="BG" type="ColorRect" parent="TopContainer/RightContainer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -140,7 +284,7 @@ offset_right = -0.000366211
 offset_bottom = 6.10352e-05
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0823529, 0.0745098, 0.0784314, 1)
+color = Color(0.113281, 0.109375, 0.132813, 1)
 metadata/_edit_lock_ = true
 
 [node name="ResizeBar" type="ColorRect" parent="TopContainer/RightContainer"]
@@ -153,10 +297,11 @@ offset_bottom = 6.10352e-05
 grow_vertical = 2
 mouse_default_cursor_shape = 10
 color = Color(0.21875, 0.738281, 0.996094, 1)
+metadata/_edit_lock_ = true
 
-[connection signal="mouse_entered" from="BotContainer/ResizeBar" to="ResizeController" method="OnBottomContainerMouseEntered"]
-[connection signal="mouse_exited" from="BotContainer/ResizeBar" to="ResizeController" method="OnBottomContainerMouseExited"]
-[connection signal="mouse_entered" from="TopContainer/LeftContainer/ResizeBar" to="ResizeController" method="OnLeftContainerMouseEntered"]
-[connection signal="mouse_exited" from="TopContainer/LeftContainer/ResizeBar" to="ResizeController" method="OnLeftContainerMouseExited"]
-[connection signal="mouse_entered" from="TopContainer/RightContainer/ResizeBar" to="ResizeController" method="OnRightContainerMouseEntered"]
-[connection signal="mouse_exited" from="TopContainer/RightContainer/ResizeBar" to="ResizeController" method="OnRightContainerMouseExited"]
+[connection signal="mouse_entered" from="BotContainer/ResizeBar" to="Controllers/ResizeController" method="OnBottomContainerMouseEntered"]
+[connection signal="mouse_exited" from="BotContainer/ResizeBar" to="Controllers/ResizeController" method="OnBottomContainerMouseExited"]
+[connection signal="mouse_entered" from="TopContainer/LeftContainer/ResizeBar" to="Controllers/ResizeController" method="OnLeftContainerMouseEntered"]
+[connection signal="mouse_exited" from="TopContainer/LeftContainer/ResizeBar" to="Controllers/ResizeController" method="OnLeftContainerMouseExited"]
+[connection signal="mouse_entered" from="TopContainer/RightContainer/ResizeBar" to="Controllers/ResizeController" method="OnRightContainerMouseEntered"]
+[connection signal="mouse_exited" from="TopContainer/RightContainer/ResizeBar" to="Controllers/ResizeController" method="OnRightContainerMouseExited"]
