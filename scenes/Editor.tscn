@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=4 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/ResizeController.cs" id="1_no242"]
 [ext_resource type="Script" path="res://scripts/editor/PlayController.cs" id="2_54r43"]
+[ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://icon.svg" id="3_0311r"]
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -263,8 +264,33 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.278431, 0.25098, 0.301961, 1)
+color = Color(0.0509804, 0.0470588, 0.054902, 1)
 metadata/_edit_lock_ = true
+
+[node name="PlayAspectController" type="AspectRatioContainer" parent="TopContainer/MidContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+ratio = 0.75
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="TopContainer/MidContainer/PlayAspectController"]
+layout_mode = 2
+stretch = true
+
+[node name="PlayViewport" type="SubViewport" parent="TopContainer/MidContainer/PlayAspectController/SubViewportContainer"]
+disable_3d = true
+handle_input_locally = false
+size = Vector2i(350, 467)
+size_2d_override = Vector2i(768, 1024)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="BossSprite" type="Sprite2D" parent="TopContainer/MidContainer/PlayAspectController/SubViewportContainer/PlayViewport"]
+position = Vector2(493.846, 177)
+texture = ExtResource("3_0311r")
 
 [node name="RightContainer" type="Control" parent="TopContainer"]
 layout_mode = 1
