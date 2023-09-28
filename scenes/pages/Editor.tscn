@@ -1,8 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=6 format=3 uid="uid://bvgorsw0k7n0h"]
 
-[ext_resource type="Script" path="res://scripts/editor/ResizeController.cs" id="1_no242"]
-[ext_resource type="Script" path="res://scripts/editor/PlayController.cs" id="2_54r43"]
-[ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://icon.svg" id="3_0311r"]
+[ext_resource type="Script" path="res://scripts/editor/ResizeController.cs" id="1_gla0s"]
+[ext_resource type="Script" path="res://scripts/editor/PlayController.cs" id="2_gvdgv"]
+[ext_resource type="Script" path="res://scripts/editor/TemplatesController.cs" id="3_xsj8l"]
+[ext_resource type="PackedScene" uid="uid://f1o6rqauvyg1" path="res://scenes/editor/SequenceIcon.tscn" id="4_t8vuy"]
+[ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://icon.svg" id="5_ott5k"]
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -15,7 +17,7 @@ grow_vertical = 2
 [node name="Controllers" type="Node" parent="."]
 
 [node name="ResizeController" type="Node" parent="Controllers" node_paths=PackedStringArray("BottomContainer", "TopContainer", "LeftContainer", "MidContainer", "RightContainer", "BottomContainerResizeBar", "LeftContainerResizeBar", "RightContainerResizeBar")]
-script = ExtResource("1_no242")
+script = ExtResource("1_gla0s")
 BottomContainer = NodePath("../../BotContainer")
 TopContainer = NodePath("../../TopContainer")
 LeftContainer = NodePath("../../TopContainer/LeftContainer")
@@ -25,9 +27,16 @@ BottomContainerResizeBar = NodePath("../../BotContainer/ResizeBar")
 LeftContainerResizeBar = NodePath("../../TopContainer/LeftContainer/ResizeBar")
 RightContainerResizeBar = NodePath("../../TopContainer/RightContainer/ResizeBar")
 
-[node name="PlayController" type="Node" parent="Controllers" node_paths=PackedStringArray("TimelineTimeLabel")]
-script = ExtResource("2_54r43")
+[node name="PlayController" type="Node" parent="Controllers" node_paths=PackedStringArray("TimelineTimeLabel", "LanesNode")]
+script = ExtResource("2_gvdgv")
 TimelineTimeLabel = NodePath("../../BotContainer/TimelineTab/TimelineDetails/TimeLabel")
+LanesNode = NodePath("../../BotContainer/TimelineTab/MainContainer/LanesVBox")
+SequenceIconObj = ExtResource("4_t8vuy")
+
+[node name="TemplatesController" type="Node" parent="Controllers" node_paths=PackedStringArray("TemplatesTree", "PlayController")]
+script = ExtResource("3_xsj8l")
+TemplatesTree = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab/TemplatesTree")
+PlayController = NodePath("../PlayController")
 
 [node name="BotContainer" type="Control" parent="."]
 layout_mode = 1
@@ -207,14 +216,14 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab"]
+[node name="TemplatesTree" type="Tree" parent="TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Templates"
+allow_rmb_select = true
 
 [node name="SequenceTab" type="Control" parent="TopContainer/LeftContainer/SequenceMainContainer"]
 visible = false
@@ -264,6 +273,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 color = Color(0.0509804, 0.0470588, 0.054902, 1)
 metadata/_edit_lock_ = true
 
@@ -274,10 +284,12 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 ratio = 0.75
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="TopContainer/MidContainer/PlayAspectController"]
 layout_mode = 2
+mouse_filter = 2
 stretch = true
 
 [node name="PlayViewport" type="SubViewport" parent="TopContainer/MidContainer/PlayAspectController/SubViewportContainer"]
@@ -288,9 +300,15 @@ size_2d_override = Vector2i(768, 1024)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 
+[node name="BulletPool" type="Node2D" parent="TopContainer/MidContainer/PlayAspectController/SubViewportContainer/PlayViewport"]
+
 [node name="BossSprite" type="Sprite2D" parent="TopContainer/MidContainer/PlayAspectController/SubViewportContainer/PlayViewport"]
-position = Vector2(493.846, 177)
-texture = ExtResource("3_0311r")
+position = Vector2(400, 200)
+texture = ExtResource("5_ott5k")
+
+[node name="PlayerSprite" type="Sprite2D" parent="TopContainer/MidContainer/PlayAspectController/SubViewportContainer/PlayViewport"]
+position = Vector2(400, 700)
+texture = ExtResource("5_ott5k")
 
 [node name="RightContainer" type="Control" parent="TopContainer"]
 layout_mode = 1
@@ -327,7 +345,10 @@ metadata/_edit_lock_ = true
 
 [connection signal="mouse_entered" from="BotContainer/ResizeBar" to="Controllers/ResizeController" method="OnBottomContainerMouseEntered"]
 [connection signal="mouse_exited" from="BotContainer/ResizeBar" to="Controllers/ResizeController" method="OnBottomContainerMouseExited"]
+[connection signal="item_mouse_selected" from="TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab/TemplatesTree" to="Controllers/TemplatesController" method="OnItemMouseSelected"]
 [connection signal="mouse_entered" from="TopContainer/LeftContainer/ResizeBar" to="Controllers/ResizeController" method="OnLeftContainerMouseEntered"]
 [connection signal="mouse_exited" from="TopContainer/LeftContainer/ResizeBar" to="Controllers/ResizeController" method="OnLeftContainerMouseExited"]
+[connection signal="mouse_entered" from="TopContainer/MidContainer" to="Controllers/TemplatesController" method="OnMidContainerMouseEntered"]
+[connection signal="mouse_exited" from="TopContainer/MidContainer" to="Controllers/TemplatesController" method="OnMidContainerMouseExited"]
 [connection signal="mouse_entered" from="TopContainer/RightContainer/ResizeBar" to="Controllers/ResizeController" method="OnRightContainerMouseEntered"]
 [connection signal="mouse_exited" from="TopContainer/RightContainer/ResizeBar" to="Controllers/ResizeController" method="OnRightContainerMouseExited"]

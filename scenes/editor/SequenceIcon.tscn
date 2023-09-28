@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://f1o6rqauvyg1"]
+
+[node name="SequenceIcon" type="ColorRect"]
+anchors_preset = -1
+anchor_left = 0.01
+anchor_right = 0.01
+offset_left = -11.472
+offset_top = 3.0
+offset_right = 12.528
+offset_bottom = 27.0
