@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=9 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/ResizeController.cs" id="1_gla0s"]
 [ext_resource type="Script" path="res://scripts/editor/PlayController.cs" id="2_gvdgv"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://icon.svg" id="5_ott5k"]
 [ext_resource type="Script" path="res://scripts/play/BulletController.cs" id="5_rteyp"]
 [ext_resource type="PackedScene" uid="uid://07bui71vctke" path="res://scenes/play/Bullet.tscn" id="6_wfl5l"]
+[ext_resource type="Script" path="res://scripts/editor/SequenceController.cs" id="7_ukm7u"]
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -29,8 +30,9 @@ BottomContainerResizeBar = NodePath("../../BotContainer/ResizeBar")
 LeftContainerResizeBar = NodePath("../../TopContainer/LeftContainer/ResizeBar")
 RightContainerResizeBar = NodePath("../../TopContainer/RightContainer/ResizeBar")
 
-[node name="PlayController" type="Node" parent="Controllers" node_paths=PackedStringArray("TimelineTimeLabel", "LanesNode")]
+[node name="PlayController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "TimelineTimeLabel", "LanesNode")]
 script = ExtResource("2_gvdgv")
+SequenceController = NodePath("../SequenceController")
 TimelineTimeLabel = NodePath("../../BotContainer/TimelineTab/TimelineDetails/TimeLabel")
 LanesNode = NodePath("../../BotContainer/TimelineTab/MainContainer/LanesVBox")
 SequenceIconObj = ExtResource("4_t8vuy")
@@ -44,6 +46,11 @@ PlayController = NodePath("../PlayController")
 script = ExtResource("5_rteyp")
 BulletPoolNode = NodePath("../../TopContainer/MidContainer/PlayAspectController/SubViewportContainer/PlayViewport/BulletPool")
 BulletNodeObj = ExtResource("6_wfl5l")
+
+[node name="SequenceController" type="Node" parent="Controllers" node_paths=PackedStringArray("TemplatesTab", "SequenceTab")]
+script = ExtResource("7_ukm7u")
+TemplatesTab = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab")
+SequenceTab = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/SequenceTab")
 
 [node name="BotContainer" type="Control" parent="."]
 layout_mode = 1
@@ -352,6 +359,8 @@ metadata/_edit_lock_ = true
 
 [connection signal="mouse_entered" from="BotContainer/ResizeBar" to="Controllers/ResizeController" method="OnBottomContainerMouseEntered"]
 [connection signal="mouse_exited" from="BotContainer/ResizeBar" to="Controllers/ResizeController" method="OnBottomContainerMouseExited"]
+[connection signal="pressed" from="TopContainer/LeftContainer/SequenceTopContainer/HBox/TemplatesButton" to="Controllers/SequenceController" method="OpenTemplatesTab"]
+[connection signal="pressed" from="TopContainer/LeftContainer/SequenceTopContainer/HBox/SequenceButton" to="Controllers/SequenceController" method="OpenSequenceTab"]
 [connection signal="item_mouse_selected" from="TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab/TemplatesTree" to="Controllers/TemplatesController" method="OnItemMouseSelected"]
 [connection signal="mouse_entered" from="TopContainer/LeftContainer/ResizeBar" to="Controllers/ResizeController" method="OnLeftContainerMouseEntered"]
 [connection signal="mouse_exited" from="TopContainer/LeftContainer/ResizeBar" to="Controllers/ResizeController" method="OnLeftContainerMouseExited"]

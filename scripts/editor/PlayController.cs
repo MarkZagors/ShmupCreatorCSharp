@@ -8,6 +8,7 @@ namespace Editor
     public partial class PlayController : Node
     {
         [Export] public double ScrollTick { get; private set; } = 0.25;
+        [Export] public SequenceController SequenceController { get; private set; }
         [Export] public Label TimelineTimeLabel { get; private set; }
         [Export] public VBoxContainer LanesNode { get; private set; }
         [Export] public PackedScene SequenceIconObj { get; private set; }
@@ -54,14 +55,15 @@ namespace Editor
 
             var sequenceNode = SequenceIconObj.Instantiate<Control>();
             var laneOne = LanesNode.GetChild<Control>(0);
+            var newSequence = new Sequence
+            {
+                Time = this.Time,
+                Node = sequenceNode,
+            };
 
-            SequenceList.Add(
-                new Sequence
-                {
-                    Time = this.Time,
-                    Node = sequenceNode,
-                }
-            );
+            SequenceList.Add(newSequence);
+
+            sequenceNode.GetNode<Button>("Button").Pressed += () => ClickSequence(newSequence);
 
             laneOne.AddChild(sequenceNode);
             GD.Print($"Sequence added at time {Time:0.0}");
@@ -80,6 +82,11 @@ namespace Editor
                 }
             }
             return false;
+        }
+
+        private void ClickSequence(Sequence sequence)
+        {
+            SequenceController.OpenSequence(sequence);
         }
 
         //=================
