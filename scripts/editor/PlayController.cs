@@ -7,15 +7,15 @@ namespace Editor
 {
     public partial class PlayController : Node
     {
-        [Export] public Label TimelineTimeLabel;
-        [Export] public VBoxContainer LanesNode;
-        [Export] public PackedScene SequenceIconObj;
+        [Export] public double ScrollTick { get; private set; } = 0.25;
+        [Export] public Label TimelineTimeLabel { get; private set; }
+        [Export] public VBoxContainer LanesNode { get; private set; }
+        [Export] public PackedScene SequenceIconObj { get; private set; }
 
         public bool Playing { get; private set; } = false;
         public double Time { get; private set; } = 0.0;
         public List<Sequence> SequenceList { get; private set; } = new();
-
-        private const double SCROLL_TICK = 0.25;
+        public double LanesWidth { get; private set; } = 5.0;
 
         public override void _Ready()
         {
@@ -50,6 +50,8 @@ namespace Editor
 
         public void AddSequence()
         {
+            if (CheckIfSequenceOverlap()) return;
+
             var sequenceNode = SequenceIconObj.Instantiate<Control>();
             var laneOne = LanesNode.GetChild<Control>(0);
 
@@ -62,8 +64,22 @@ namespace Editor
             );
 
             laneOne.AddChild(sequenceNode);
+            GD.Print($"Sequence added at time {Time:0.0}");
 
             UpdateUI();
+        }
+
+        private bool CheckIfSequenceOverlap()
+        {
+            foreach (Sequence sequence in SequenceList)
+            {
+                if (Math.Abs(sequence.Time - Time) < 0.1)
+                {
+                    GD.Print($"Sequence overlaps at time {Time:0.0}! Not adding");
+                    return true;
+                }
+            }
+            return false;
         }
 
         //=================
@@ -90,12 +106,12 @@ namespace Editor
         {
             if (scrollDirection == ScrollDirection.FORWARD)
             {
-                Time += SCROLL_TICK;
+                Time += ScrollTick;
             }
 
             else if (scrollDirection == ScrollDirection.BACKWARD)
             {
-                Time -= SCROLL_TICK;
+                Time -= ScrollTick;
                 Time = Math.Max(Time, 0.0);
             }
         }
@@ -116,7 +132,13 @@ namespace Editor
 
         private void UpdateSequenceUI()
         {
+            foreach (Sequence sequence in SequenceList)
+            {
+                double anchor = 0.5 + (sequence.Time - Time) * 0.5 / LanesWidth;
 
+                sequence.Node.AnchorLeft = (float)anchor;
+                sequence.Node.AnchorRight = (float)anchor;
+            }
         }
     }
 }
