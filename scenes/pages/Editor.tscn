@@ -1,10 +1,12 @@
-[gd_scene load_steps=6 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=8 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/ResizeController.cs" id="1_gla0s"]
 [ext_resource type="Script" path="res://scripts/editor/PlayController.cs" id="2_gvdgv"]
 [ext_resource type="Script" path="res://scripts/editor/TemplatesController.cs" id="3_xsj8l"]
 [ext_resource type="PackedScene" uid="uid://f1o6rqauvyg1" path="res://scenes/editor/SequenceIcon.tscn" id="4_t8vuy"]
 [ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://icon.svg" id="5_ott5k"]
+[ext_resource type="Script" path="res://scripts/play/BulletController.cs" id="5_rteyp"]
+[ext_resource type="PackedScene" uid="uid://07bui71vctke" path="res://scenes/play/Bullet.tscn" id="6_wfl5l"]
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -37,6 +39,11 @@ SequenceIconObj = ExtResource("4_t8vuy")
 script = ExtResource("3_xsj8l")
 TemplatesTree = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab/TemplatesTree")
 PlayController = NodePath("../PlayController")
+
+[node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("BulletPoolNode")]
+script = ExtResource("5_rteyp")
+BulletPoolNode = NodePath("../../TopContainer/MidContainer/PlayAspectController/SubViewportContainer/PlayViewport/BulletPool")
+BulletNodeObj = ExtResource("6_wfl5l")
 
 [node name="BotContainer" type="Control" parent="."]
 layout_mode = 1
