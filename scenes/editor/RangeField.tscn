@@ -2,14 +2,15 @@
 
 [ext_resource type="PackedScene" uid="uid://6aax5g0j0hlo" path="res://scenes/editor/ComponentField.tscn" id="1_helpg"]
 [ext_resource type="Script" path="res://scripts/editor/components/ComponentRange.cs" id="2_ymixh"]
-[ext_resource type="Texture2D" uid="uid://duw278jw5m066" path="res://sprites/editor/circle-line-icon.svg" id="3_s058m"]
+[ext_resource type="PackedScene" uid="uid://2xl1l0fgw33n" path="res://scenes/editor/RangePoint.tscn" id="3_vjsa0"]
 
-[node name="RangeField" instance=ExtResource("1_helpg")]
+[node name="RangeField" node_paths=PackedStringArray("RangeControllerNode") instance=ExtResource("1_helpg")]
 custom_minimum_size = Vector2(0, 200)
 anchors_preset = 0
 anchor_right = 0.0
 offset_right = 350.0
 script = ExtResource("2_ymixh")
+RangeControllerNode = NodePath("RangeContainer/RangeController")
 
 [node name="ExpandButton" type="Button" parent="." index="2"]
 layout_mode = 1
@@ -25,11 +26,13 @@ text = "[Range]"
 
 [node name="RangeContainer" type="Control" parent="." index="3"]
 layout_mode = 1
+anchors_preset = 10
 anchor_right = 1.0
 offset_left = 8.0
 offset_top = 50.0
 offset_right = -7.0
 offset_bottom = 195.0
+grow_horizontal = 2
 
 [node name="BG" type="ColorRect" parent="RangeContainer" index="0"]
 layout_mode = 1
@@ -45,9 +48,9 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 69.0
+offset_left = 70.0
 offset_top = 7.0
-offset_right = -6.0
+offset_right = -5.0
 offset_bottom = -5.0
 grow_horizontal = 2
 grow_vertical = 2
@@ -100,28 +103,26 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Point1" type="TextureRect" parent="RangeContainer/RangeController/Points" index="0"]
-texture_filter = 2
+[node name="Point1" parent="RangeContainer/RangeController/Points" index="0" instance=ExtResource("3_vjsa0")]
 layout_mode = 1
-anchors_preset = -1
-anchor_left = 0.66
-anchor_top = 0.741
-anchor_right = 0.66
-anchor_bottom = 0.741
-offset_left = -7.60001
-offset_top = -7.55301
-offset_right = 7.39999
-offset_bottom = 7.44699
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -7.5
+offset_top = -7.5
+offset_right = 7.5
+offset_bottom = 7.5
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("3_s058m")
-expand_mode = 1
 
 [node name="RangeFields" type="Control" parent="RangeContainer" index="2"]
 layout_mode = 1
 anchor_right = 0.206
 anchor_bottom = 1.0
 offset_right = -0.0100021
+mouse_filter = 2
 
 [node name="MaxField" type="LineEdit" parent="RangeContainer/RangeFields" index="0"]
 layout_mode = 0

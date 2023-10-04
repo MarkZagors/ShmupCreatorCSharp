@@ -1,0 +1,14 @@
+[gd_scene load_steps=3 format=3 uid="uid://2xl1l0fgw33n"]
+
+[ext_resource type="Texture2D" uid="uid://duw278jw5m066" path="res://sprites/editor/circle-line-icon.svg" id="1_4mqjy"]
+[ext_resource type="Script" path="res://scripts/editor/components/RangePoint.cs" id="2_74eeg"]
+
+[node name="Point1" type="TextureRect"]
+texture_filter = 2
+offset_left = -7.0
+offset_top = -7.0
+offset_right = 8.0
+offset_bottom = 8.0
+texture = ExtResource("1_4mqjy")
+expand_mode = 1
+script = ExtResource("2_74eeg")
