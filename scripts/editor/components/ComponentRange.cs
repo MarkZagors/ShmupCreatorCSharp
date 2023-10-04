@@ -17,6 +17,9 @@ namespace Editor
 
         public override void _Ready()
         {
+            ResizeController resizeController = GetNode<ResizeController>("/root/Editor/Controllers/ResizeController");
+            resizeController.WindowResized += OnWindowResize;
+
             var point1 = GetNode<Control>("RangeContainer/RangeController/Points/Point1");
             point1.MouseEntered += () => RangePointMouseEntered(point1);
             point1.MouseExited += () => RangePointMouseExited(point1);
@@ -139,6 +142,11 @@ namespace Editor
             });
 
             return pointList;
+        }
+
+        private void OnWindowResize()
+        {
+            UpdateLines();
         }
 
         public void RangePointMouseEntered(Control node)

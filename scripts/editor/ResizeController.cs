@@ -5,6 +5,8 @@ namespace Editor
 {
     public partial class ResizeController : Node
     {
+        [Signal] public delegate void WindowResizedEventHandler();
+
         [ExportCategory("Containers")]
         [Export] public Control BottomContainer;
         [Export] public Control TopContainer;
@@ -34,6 +36,8 @@ namespace Editor
             BottomContainerResizeBar.SelfModulate = Color.Color8(0, 0, 0, 0);
             LeftContainerResizeBar.SelfModulate = Color.Color8(0, 0, 0, 0);
             RightContainerResizeBar.SelfModulate = Color.Color8(0, 0, 0, 0);
+
+            GetViewport().SizeChanged += OnWindowChangedExternally;
         }
 
         public override void _Process(double delta)
@@ -62,6 +66,8 @@ namespace Editor
 
                 BottomContainer.AnchorTop = YPoint;
                 TopContainer.AnchorBottom = YPoint;
+
+                EmitSignal(SignalName.WindowResized);
             }
 
             if (_isLeftContainerDragging)
@@ -71,6 +77,8 @@ namespace Editor
 
                 LeftContainer.AnchorRight = XPoint;
                 MidContainer.AnchorLeft = XPoint;
+
+                EmitSignal(SignalName.WindowResized);
             }
 
             if (_isRightContainerDragging)
@@ -80,6 +88,8 @@ namespace Editor
 
                 RightContainer.AnchorLeft = XPoint;
                 MidContainer.AnchorRight = XPoint;
+
+                EmitSignal(SignalName.WindowResized);
             }
         }
 
@@ -131,6 +141,12 @@ namespace Editor
         {
             _isRightContainerMouseEntered = false;
             RightContainerResizeBar.SelfModulate = Color.Color8(0, 0, 0, 0);
+        }
+
+        private async void OnWindowChangedExternally()
+        {
+            await ToSignal(GetTree(), "process_frame");
+            EmitSignal(SignalName.WindowResized);
         }
     }
 }
