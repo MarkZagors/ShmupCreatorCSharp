@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="122.88px" height="122.88px" viewBox="0 0 122.88 122.88" xml:space="preserve">
+    <defs>
+        <!-- Define a mask -->
+        <mask id="circle-mask">
+            <!-- Everything in white will be visible, black will be hidden -->
+            <circle cx="61.44" cy="61.44" r="61.44" fill="white"/>
+            <circle cx="61.44" cy="61.44" r="51.44" fill="black"/>
+        </mask>
+    </defs>
+    
+    <g>
+        <!-- Use the mask on this circle -->
+        <circle cx="61.44" cy="61.44" r="61.44" fill="#FFFFFF" mask="url(#circle-mask)"/>
+        <circle cx="61.44" cy="61.44" r="35.44" fill="white"/>
+    </g>
+</svg>
+

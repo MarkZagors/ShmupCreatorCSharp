@@ -2,7 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-namespace Logic
+namespace Editor
 {
     public partial class BulletController : Node
     {

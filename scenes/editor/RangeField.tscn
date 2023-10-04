@@ -1,0 +1,147 @@
+[gd_scene load_steps=4 format=3 uid="uid://chvjbvhm3exrb"]
+
+[ext_resource type="PackedScene" uid="uid://6aax5g0j0hlo" path="res://scenes/editor/ComponentField.tscn" id="1_helpg"]
+[ext_resource type="Script" path="res://scripts/editor/components/ComponentRange.cs" id="2_ymixh"]
+[ext_resource type="Texture2D" uid="uid://duw278jw5m066" path="res://sprites/editor/circle-line-icon.svg" id="3_s058m"]
+
+[node name="RangeField" instance=ExtResource("1_helpg")]
+custom_minimum_size = Vector2(0, 200)
+anchors_preset = 0
+anchor_right = 0.0
+offset_right = 350.0
+script = ExtResource("2_ymixh")
+
+[node name="ExpandButton" type="Button" parent="." index="2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.537
+anchor_right = 1.0
+offset_left = 0.0500031
+offset_top = 6.0
+offset_right = -7.0
+offset_bottom = 42.0
+grow_horizontal = 2
+text = "[Range]"
+
+[node name="RangeContainer" type="Control" parent="." index="3"]
+layout_mode = 1
+anchor_right = 1.0
+offset_left = 8.0
+offset_top = 50.0
+offset_right = -7.0
+offset_bottom = 195.0
+
+[node name="BG" type="ColorRect" parent="RangeContainer" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.145098, 0.145098, 0.176471, 1)
+
+[node name="RangeController" type="Control" parent="RangeContainer" index="1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 69.0
+offset_top = 7.0
+offset_right = -6.0
+offset_bottom = -5.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="RangeContainer/RangeController" index="0"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.121094, 0.121094, 0.132813, 1)
+
+[node name="Separators" type="Control" parent="RangeContainer/RangeController" index="1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MiddleHSeperator" type="ColorRect" parent="RangeContainer/RangeController/Separators" index="0"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -0.5
+offset_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.144531, 0.144531, 0.175781, 1)
+
+[node name="MiddleVSeperator" type="ColorRect" parent="RangeContainer/RangeController/Separators" index="1"]
+layout_mode = 1
+anchors_preset = 13
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_right = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.144531, 0.144531, 0.175781, 1)
+
+[node name="Points" type="Control" parent="RangeContainer/RangeController" index="2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Point1" type="TextureRect" parent="RangeContainer/RangeController/Points" index="0"]
+texture_filter = 2
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.66
+anchor_top = 0.741
+anchor_right = 0.66
+anchor_bottom = 0.741
+offset_left = -7.60001
+offset_top = -7.55301
+offset_right = 7.39999
+offset_bottom = 7.44699
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("3_s058m")
+expand_mode = 1
+
+[node name="RangeFields" type="Control" parent="RangeContainer" index="2"]
+layout_mode = 1
+anchor_right = 0.206
+anchor_bottom = 1.0
+offset_right = -0.0100021
+
+[node name="MaxField" type="LineEdit" parent="RangeContainer/RangeFields" index="0"]
+layout_mode = 0
+offset_top = 7.0
+offset_right = 67.0625
+offset_bottom = 38.0
+virtual_keyboard_type = 2
+
+[node name="MidField" type="LineEdit" parent="RangeContainer/RangeFields" index="1"]
+layout_mode = 0
+offset_top = 56.0
+offset_right = 67.0625
+offset_bottom = 87.0
+virtual_keyboard_type = 2
+
+[node name="MinField" type="LineEdit" parent="RangeContainer/RangeFields" index="2"]
+layout_mode = 0
+offset_top = 108.0
+offset_right = 67.0625
+offset_bottom = 139.0
+virtual_keyboard_type = 2
+
+[connection signal="pressed" from="ExpandButton" to="." method="ToggleRange"]

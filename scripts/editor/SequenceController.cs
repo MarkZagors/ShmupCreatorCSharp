@@ -11,12 +11,22 @@ namespace Editor
         [Export] public Control CreationContainer { get; private set; }
 
         private Sequence _openedSequence;
+        private TreeItem _selectedTreeItem;
+        private Vector2 _treeItemSelectionMousePos;
 
         public override void _Ready()
         {
             SequenceTab.GetNode<Label>("NoSelectionLabel").Visible = true;
             SequenceTab.GetNode<Control>("TopSequenceBar").Visible = false;
             SequenceTree.Visible = false;
+        }
+
+        public override void _Process(double delta)
+        {
+            if (Input.IsActionJustReleased("mouse_click"))
+            {
+                MouseRelease();
+            }
         }
 
         public void OpenSequence(Sequence sequence)
@@ -50,6 +60,29 @@ namespace Editor
             bulletComponentTreeItem.SetText(0, "Bullet");
 
             CloseNewComponent();
+        }
+
+        public void OnItemMouseSelected(Vector2 mousePos, int mouseIndex)
+        {
+            if (mouseIndex == 1)
+            {
+                _selectedTreeItem = SequenceTree.GetSelected();
+                _treeItemSelectionMousePos = mousePos;
+            }
+        }
+
+        private void MouseRelease()
+        {
+            if (_selectedTreeItem == null) return;
+
+            var mousePosDiff = _treeItemSelectionMousePos - GetViewport().GetMousePosition();
+            if (Math.Abs(mousePosDiff.X) < 10
+                && mousePosDiff.Y < -40
+                && mousePosDiff.Y > -90)
+            {
+                GD.Print(mousePosDiff);
+                GD.Print("Click!");
+            }
         }
 
         private void CloseNewComponent()

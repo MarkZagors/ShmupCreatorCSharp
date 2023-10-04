@@ -18,10 +18,10 @@ namespace Editor
 
             TreeItem newSequenceItem = root.CreateChild();
             newSequenceItem.SetText(0, "New Sequence");
-            TreeItem testGroup = root.CreateChild();
-            testGroup.SetText(0, "Test Group");
-            TreeItem testChild = testGroup.CreateChild();
-            testChild.SetText(0, "Test Child");
+            // TreeItem testGroup = root.CreateChild();
+            // testGroup.SetText(0, "Test Group");
+            // TreeItem testChild = testGroup.CreateChild();
+            // testChild.SetText(0, "Test Child");
         }
 
         public override void _Process(double delta)

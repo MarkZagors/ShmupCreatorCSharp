@@ -1,13 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=11 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/ResizeController.cs" id="1_gla0s"]
 [ext_resource type="Script" path="res://scripts/editor/PlayController.cs" id="2_gvdgv"]
 [ext_resource type="Script" path="res://scripts/editor/TemplatesController.cs" id="3_xsj8l"]
 [ext_resource type="PackedScene" uid="uid://f1o6rqauvyg1" path="res://scenes/editor/SequenceIcon.tscn" id="4_t8vuy"]
-[ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://icon.svg" id="5_ott5k"]
 [ext_resource type="Script" path="res://scripts/play/BulletController.cs" id="5_rteyp"]
 [ext_resource type="PackedScene" uid="uid://07bui71vctke" path="res://scenes/play/Bullet.tscn" id="6_wfl5l"]
 [ext_resource type="Script" path="res://scripts/editor/SequenceController.cs" id="7_ukm7u"]
+[ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://sprites/icon.svg" id="8_hqx5x"]
+[ext_resource type="PackedScene" uid="uid://vjqmawifbe18" path="res://scenes/editor/OptionsField.tscn" id="9_rajyc"]
+[ext_resource type="PackedScene" uid="uid://chvjbvhm3exrb" path="res://scenes/editor/RangeField.tscn" id="10_fvlyj"]
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -349,11 +351,11 @@ render_target_update_mode = 4
 
 [node name="BossSprite" type="Sprite2D" parent="TopContainer/MidContainer/PlayAspectContainer/SubViewportContainer/PlayViewport"]
 position = Vector2(400, 200)
-texture = ExtResource("5_ott5k")
+texture = ExtResource("8_hqx5x")
 
 [node name="PlayerSprite" type="Sprite2D" parent="TopContainer/MidContainer/PlayAspectContainer/SubViewportContainer/PlayViewport"]
 position = Vector2(400, 700)
-texture = ExtResource("5_ott5k")
+texture = ExtResource("8_hqx5x")
 
 [node name="CreationContainer" type="Control" parent="TopContainer/MidContainer"]
 visible = false
@@ -469,6 +471,7 @@ anchors_preset = 10
 anchor_right = 1.0
 offset_right = 0.000366211
 offset_bottom = 35.0
+grow_horizontal = 2
 color = Color(0.0742188, 0.0703125, 0.078125, 1)
 
 [node name="NameLabel" type="Label" parent="TopContainer/RightContainer/ComponentContainer/ComponentTopBar"]
@@ -482,13 +485,34 @@ text = "NameLabel"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Control" type="Control" parent="TopContainer/RightContainer/ComponentContainer"]
+[node name="ComponentBodyContainer" type="Control" parent="TopContainer/RightContainer/ComponentContainer"]
 layout_mode = 1
-anchors_preset = 10
+anchors_preset = 15
 anchor_right = 1.0
-offset_top = 35.0
+anchor_bottom = 1.0
+offset_top = 40.0
 offset_right = 0.000366211
-offset_bottom = 476.0
+offset_bottom = 6.10352e-05
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ComponentScrollContainer" type="ScrollContainer" parent="TopContainer/RightContainer/ComponentContainer/ComponentBodyContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ComponentVBoxContainer" type="VBoxContainer" parent="TopContainer/RightContainer/ComponentContainer/ComponentBodyContainer/ComponentScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RangeField" parent="TopContainer/RightContainer/ComponentContainer/ComponentBodyContainer/ComponentScrollContainer/ComponentVBoxContainer" instance=ExtResource("10_fvlyj")]
+layout_mode = 2
+
+[node name="OptionsField" parent="TopContainer/RightContainer/ComponentContainer/ComponentBodyContainer/ComponentScrollContainer/ComponentVBoxContainer" instance=ExtResource("9_rajyc")]
+layout_mode = 2
 
 [node name="ResizeBar" type="ColorRect" parent="TopContainer/RightContainer"]
 layout_mode = 1
@@ -508,6 +532,7 @@ metadata/_edit_lock_ = true
 [connection signal="pressed" from="TopContainer/LeftContainer/SequenceTopContainer/HBox/SequenceButton" to="Controllers/SequenceController" method="OpenSequenceTab"]
 [connection signal="item_mouse_selected" from="TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab/TemplatesTree" to="Controllers/TemplatesController" method="OnItemMouseSelected"]
 [connection signal="pressed" from="TopContainer/LeftContainer/SequenceMainContainer/SequenceTab/TopSequenceBar/NewComponentButton" to="Controllers/SequenceController" method="OnClickNewComponent"]
+[connection signal="item_mouse_selected" from="TopContainer/LeftContainer/SequenceMainContainer/SequenceTab/SequenceTree" to="Controllers/SequenceController" method="OnItemMouseSelected"]
 [connection signal="mouse_entered" from="TopContainer/LeftContainer/ResizeBar" to="Controllers/ResizeController" method="OnLeftContainerMouseEntered"]
 [connection signal="mouse_exited" from="TopContainer/LeftContainer/ResizeBar" to="Controllers/ResizeController" method="OnLeftContainerMouseExited"]
 [connection signal="mouse_entered" from="TopContainer/MidContainer" to="Controllers/TemplatesController" method="OnMidContainerMouseEntered"]

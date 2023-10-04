@@ -1,8 +1,11 @@
-public static class Enums
+namespace Editor
 {
-    public enum ScrollDirection
+    public static class Enums
     {
-        FORWARD,
-        BACKWARD
+        public enum ScrollDirection
+        {
+            FORWARD,
+            BACKWARD
+        }
     }
 }

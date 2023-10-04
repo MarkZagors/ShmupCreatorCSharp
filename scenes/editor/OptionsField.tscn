@@ -1,0 +1,23 @@
+[gd_scene load_steps=2 format=3 uid="uid://vjqmawifbe18"]
+
+[ext_resource type="PackedScene" uid="uid://6aax5g0j0hlo" path="res://scenes/editor/ComponentField.tscn" id="1_ni88l"]
+
+[node name="OptionsField" instance=ExtResource("1_ni88l")]
+anchors_preset = 0
+anchor_right = 0.0
+offset_right = 350.0
+
+[node name="FieldName" parent="." index="1"]
+text = "Option
+"
+
+[node name="OptionButton" type="OptionButton" parent="." index="2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.531
+anchor_right = 1.0
+offset_left = -0.160004
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = 41.0
+grow_horizontal = 2
