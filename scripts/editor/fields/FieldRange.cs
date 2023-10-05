@@ -11,14 +11,22 @@ namespace Editor
         [Export] double DoubleClickThreshold = 0.35;
         [Export] public Control RangeControllerNode;
         [Export] public Control RangePointsGroupNode;
+        [Export] public LineEdit MaxLineEditNode;
+        [Export] public LineEdit MidLineEditNode;
+        [Export] public LineEdit MinLineEditNode;
         [Export] public Line2D RangeLineNode;
         [Export] public PackedScene RangePointObj;
         private bool _rangeExpanded = true;
-        private Control _currentHoldingPoint;
         private bool _rangeMouseDragging = false;
         private double _doubleClickCurrentTick = 999.0;
+        private double _previousMaxLineEditValue = 0.0;
+        private double _previousMinLineEditValue = 0.0;
+        private Control _currentHoldingPoint;
+        private Control _selectedLineEdit = null;
+        private double _selectedLineEditTick = 500.0;
         private List<Control> _hoveringRangePoints = new();
         private List<Control> _rangePointNodes = new();
+        private readonly char[] _lineEditAllowedCharacters = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '-' };
 
         public override void _Ready()
         {
@@ -27,6 +35,18 @@ namespace Editor
 
             CreatePoint(new Vector2(0.0f, 0.5f));
             CreatePoint(new Vector2(1.0f, 0.5f));
+
+            MaxLineEditNode.Text = "100";
+            MidLineEditNode.Text = "0";
+            MinLineEditNode.Text = "-100";
+            _previousMaxLineEditValue = 100.0;
+            _previousMinLineEditValue = -100.0;
+
+            MaxLineEditNode.TextChanged += (newText) => OnLineEditTextChangeMax(newText);
+            MidLineEditNode.TextChanged += (newText) => OnLineEditTextChangeMid(newText);
+            MinLineEditNode.TextChanged += (newText) => OnLineEditTextChangeMin(newText);
+
+            GetViewport().GuiFocusChanged += OnFocusChanged;
 
             UpdateLines();
         }
@@ -38,9 +58,13 @@ namespace Editor
                 ProcessDoubleClick(delta);
                 ProcessPointDragging();
                 ProcessPointRemoving();
+                ProcessUnselectLineEdit(delta);
             }
         }
 
+        //=================
+        //RangeController
+        //=================
         private void ProcessPointDragging()
         {
             if (_hoveringRangePoints.Count > 0)
@@ -254,6 +278,132 @@ namespace Editor
         {
             _hoveringRangePoints.Remove(node);
             _hoveringRangePoints.Remove(node); //Remove again when adding points
+        }
+
+
+        //=================
+        //LineEdit Controllers
+        //=================
+        private void OnLineEditTextChange(string newText, LineEdit lineEdit)
+        {
+            if (newText.Length == 0) return;
+
+            char lastCharacter = newText[^1];
+            string modified = new(newText.Where(c => _lineEditAllowedCharacters.Contains(c)).ToArray());
+
+            // Remove - except the first one
+            if (modified.StartsWith('-'))
+                modified = "-" + modified[1..].Replace("-", "");
+            else
+                modified = modified.Replace("-", "");
+
+            // Remove . except the first one
+            int index = modified.IndexOf('.');
+            if (index >= 0)
+            {
+                for (int i = index + 1; i < modified.Length; i++)
+                {
+                    if (modified[i] == '.')
+                    {
+                        modified = modified.Remove(i, 1);
+                        i--;
+                    }
+                }
+            }
+
+            lineEdit.Text = modified;
+            lineEdit.CaretColumn = 999;
+        }
+
+        private double ParseLineEditValue(LineEdit lineEdit)
+        {
+            double value = 0.0;
+            if (lineEdit.Text.Length != 0)
+            {
+                if (!Double.TryParse(lineEdit.Text, out value))
+                {
+                    // - in the first place
+                    value = 0.0;
+                }
+            }
+            return value;
+        }
+
+        private void UpdateMidLine(double maxValue, double minValue)
+        {
+            MidLineEditNode.Text = (minValue + ((maxValue - minValue) / 2)).ToString();
+        }
+
+        private void OnLineEditTextChangeMid(string newText)
+        {
+            OnLineEditTextChange(newText, MidLineEditNode);
+            double value = ParseLineEditValue(MidLineEditNode);
+            double valuesDiff = (_previousMaxLineEditValue - _previousMinLineEditValue) / 2;
+
+            MaxLineEditNode.Text = (value + valuesDiff).ToString();
+            MinLineEditNode.Text = (value - valuesDiff).ToString();
+        }
+
+        private void OnLineEditTextChangeMax(string newText)
+        {
+            OnLineEditTextChange(newText, MaxLineEditNode);
+            double value = ParseLineEditValue(MaxLineEditNode);
+
+            _previousMaxLineEditValue = value;
+
+            if (value < _previousMinLineEditValue)
+            {
+                MinLineEditNode.Text = value.ToString();
+                UpdateMidLine(value, value);
+            }
+            else
+            {
+                MinLineEditNode.Text = _previousMinLineEditValue.ToString();
+                UpdateMidLine(value, _previousMinLineEditValue);
+            }
+        }
+
+        private void OnLineEditTextChangeMin(string newText)
+        {
+            OnLineEditTextChange(newText, MinLineEditNode);
+            double value = ParseLineEditValue(MinLineEditNode);
+
+            _previousMinLineEditValue = value;
+
+            if (value > _previousMaxLineEditValue)
+            {
+                MaxLineEditNode.Text = value.ToString();
+                UpdateMidLine(value, value);
+            }
+            else
+            {
+                MaxLineEditNode.Text = _previousMaxLineEditValue.ToString();
+                UpdateMidLine(_previousMaxLineEditValue, value);
+            }
+        }
+
+        private void OnFocusChanged(Control control)
+        {
+            if (
+                control.GetInstanceId() == MaxLineEditNode.GetInstanceId() ||
+                control.GetInstanceId() == MidLineEditNode.GetInstanceId() ||
+                control.GetInstanceId() == MinLineEditNode.GetInstanceId()
+            )
+            {
+                _selectedLineEdit = (LineEdit)control;
+                _selectedLineEditTick = 0.0;
+            }
+        }
+
+        private void ProcessUnselectLineEdit(double delta)
+        {
+            _selectedLineEditTick += delta;
+
+            if (Input.IsActionJustPressed("mouse_click"))
+            {
+                if (_selectedLineEdit != null && _selectedLineEditTick > 0.5)
+                    _selectedLineEdit.ReleaseFocus();
+            }
         }
     }
 }

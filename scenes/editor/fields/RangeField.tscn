@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://scripts/editor/fields/FieldRange.cs" id="2_ymixh"]
 [ext_resource type="PackedScene" uid="uid://2xl1l0fgw33n" path="res://scenes/editor/fields/RangePoint.tscn" id="3_3s7vc"]
 
-[node name="RangeField" node_paths=PackedStringArray("RangeControllerNode", "RangePointsGroupNode", "RangeLineNode") instance=ExtResource("1_a4x3c")]
+[node name="RangeField" node_paths=PackedStringArray("RangeControllerNode", "RangePointsGroupNode", "MaxLineEditNode", "MidLineEditNode", "MinLineEditNode", "RangeLineNode") instance=ExtResource("1_a4x3c")]
 custom_minimum_size = Vector2(0, 200)
 anchors_preset = 0
 anchor_right = 0.0
@@ -12,6 +12,9 @@ offset_right = 350.0
 script = ExtResource("2_ymixh")
 RangeControllerNode = NodePath("RangeContainer/RangeController")
 RangePointsGroupNode = NodePath("RangeContainer/RangeController/Points")
+MaxLineEditNode = NodePath("RangeContainer/RangeFields/MaxField")
+MidLineEditNode = NodePath("RangeContainer/RangeFields/MidField")
+MinLineEditNode = NodePath("RangeContainer/RangeFields/MinField")
 RangeLineNode = NodePath("RangeContainer/RangeController/Lines/RangeLine")
 RangePointObj = ExtResource("3_3s7vc")
 
@@ -130,20 +133,26 @@ layout_mode = 0
 offset_top = 7.0
 offset_right = 67.0625
 offset_bottom = 38.0
+alignment = 1
 virtual_keyboard_type = 2
+select_all_on_focus = true
 
 [node name="MidField" type="LineEdit" parent="RangeContainer/RangeFields" index="1"]
 layout_mode = 0
 offset_top = 56.0
 offset_right = 67.0625
 offset_bottom = 87.0
+alignment = 1
 virtual_keyboard_type = 2
+select_all_on_focus = true
 
 [node name="MinField" type="LineEdit" parent="RangeContainer/RangeFields" index="2"]
 layout_mode = 0
 offset_top = 108.0
 offset_right = 67.0625
 offset_bottom = 139.0
+alignment = 1
 virtual_keyboard_type = 2
+select_all_on_focus = true
 
 [connection signal="pressed" from="ExpandButton" to="." method="ToggleRange"]
