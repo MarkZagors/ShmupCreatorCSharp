@@ -1,12 +1,12 @@
 [gd_scene load_steps=11 format=3 uid="uid://bvgorsw0k7n0h"]
 
-[ext_resource type="Script" path="res://scripts/editor/ResizeController.cs" id="1_gla0s"]
-[ext_resource type="Script" path="res://scripts/editor/PlayController.cs" id="2_gvdgv"]
-[ext_resource type="Script" path="res://scripts/editor/TemplatesController.cs" id="3_xsj8l"]
+[ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
+[ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
+[ext_resource type="Script" path="res://scripts/play/controllers/BulletController.cs" id="4_cwq5m"]
+[ext_resource type="Script" path="res://scripts/editor/controllers/TemplatesController.cs" id="4_kkpwu"]
 [ext_resource type="PackedScene" uid="uid://f1o6rqauvyg1" path="res://scenes/editor/SequenceIcon.tscn" id="4_t8vuy"]
-[ext_resource type="Script" path="res://scripts/play/BulletController.cs" id="5_rteyp"]
 [ext_resource type="PackedScene" uid="uid://07bui71vctke" path="res://scenes/play/Bullet.tscn" id="6_wfl5l"]
-[ext_resource type="Script" path="res://scripts/editor/SequenceController.cs" id="7_ukm7u"]
+[ext_resource type="Script" path="res://scripts/editor/controllers/SequenceController.cs" id="7_ofb54"]
 [ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://sprites/icon.svg" id="8_hqx5x"]
 [ext_resource type="PackedScene" uid="uid://vjqmawifbe18" path="res://scenes/editor/OptionsField.tscn" id="9_rajyc"]
 [ext_resource type="PackedScene" uid="uid://chvjbvhm3exrb" path="res://scenes/editor/RangeField.tscn" id="10_fvlyj"]
@@ -22,7 +22,7 @@ grow_vertical = 2
 [node name="Controllers" type="Node" parent="."]
 
 [node name="ResizeController" type="Node" parent="Controllers" node_paths=PackedStringArray("BottomContainer", "TopContainer", "LeftContainer", "MidContainer", "RightContainer", "BottomContainerResizeBar", "LeftContainerResizeBar", "RightContainerResizeBar")]
-script = ExtResource("1_gla0s")
+script = ExtResource("1_d3aoy")
 BottomContainer = NodePath("../../BotContainer")
 TopContainer = NodePath("../../TopContainer")
 LeftContainer = NodePath("../../TopContainer/LeftContainer")
@@ -33,24 +33,24 @@ LeftContainerResizeBar = NodePath("../../TopContainer/LeftContainer/ResizeBar")
 RightContainerResizeBar = NodePath("../../TopContainer/RightContainer/ResizeBar")
 
 [node name="PlayController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "TimelineTimeLabel", "LanesNode")]
-script = ExtResource("2_gvdgv")
+script = ExtResource("2_hudip")
 SequenceController = NodePath("../SequenceController")
 TimelineTimeLabel = NodePath("../../BotContainer/TimelineTab/TimelineDetails/TimeLabel")
 LanesNode = NodePath("../../BotContainer/TimelineTab/MainContainer/LanesVBox")
 SequenceIconObj = ExtResource("4_t8vuy")
 
 [node name="TemplatesController" type="Node" parent="Controllers" node_paths=PackedStringArray("TemplatesTree", "PlayController")]
-script = ExtResource("3_xsj8l")
+script = ExtResource("4_kkpwu")
 TemplatesTree = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab/TemplatesTree")
 PlayController = NodePath("../PlayController")
 
 [node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("BulletPoolNode")]
-script = ExtResource("5_rteyp")
+script = ExtResource("4_cwq5m")
 BulletPoolNode = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/SubViewportContainer/PlayViewport/BulletPool")
 BulletNodeObj = ExtResource("6_wfl5l")
 
 [node name="SequenceController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceTree", "TemplatesTab", "SequenceTab", "CreationContainer")]
-script = ExtResource("7_ukm7u")
+script = ExtResource("7_ofb54")
 SequenceTree = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/SequenceTab/SequenceTree")
 TemplatesTab = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab")
 SequenceTab = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/SequenceTab")

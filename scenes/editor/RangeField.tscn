@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://chvjbvhm3exrb"]
 
 [ext_resource type="PackedScene" uid="uid://6aax5g0j0hlo" path="res://scenes/editor/ComponentField.tscn" id="1_helpg"]
-[ext_resource type="Script" path="res://scripts/editor/components/ComponentRange.cs" id="2_ymixh"]
+[ext_resource type="Script" path="res://scripts/editor/fields/FieldRange.cs" id="2_ymixh"]
 [ext_resource type="PackedScene" uid="uid://2xl1l0fgw33n" path="res://scenes/editor/RangePoint.tscn" id="3_vjsa0"]
 
 [node name="RangeField" node_paths=PackedStringArray("RangeControllerNode", "RangePointsGroupNode", "RangeLineNode") instance=ExtResource("1_helpg")]

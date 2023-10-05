@@ -6,7 +6,7 @@ using Godot;
 
 namespace Editor
 {
-    public partial class ComponentRange : Control, IComponent
+    public partial class FieldRange : Control, IField
     {
         [Export] double DoubleClickThreshold = 0.35;
         [Export] public Control RangeControllerNode;

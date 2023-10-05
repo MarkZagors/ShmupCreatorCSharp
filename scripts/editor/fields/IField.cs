@@ -1,6 +1,7 @@
 namespace Editor
 {
-    public interface IComponent
+    public interface IField
     {
+
     }
 }
