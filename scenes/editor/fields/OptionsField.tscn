@@ -1,8 +1,8 @@
 [gd_scene load_steps=2 format=3 uid="uid://vjqmawifbe18"]
 
-[ext_resource type="PackedScene" uid="uid://6aax5g0j0hlo" path="res://scenes/editor/ComponentField.tscn" id="1_ni88l"]
+[ext_resource type="PackedScene" uid="uid://6aax5g0j0hlo" path="res://scenes/editor/fields/BaseField.tscn" id="1_a4x3c"]
 
-[node name="OptionsField" instance=ExtResource("1_ni88l")]
+[node name="OptionsField" instance=ExtResource("1_a4x3c")]
 anchors_preset = 0
 anchor_right = 0.0
 offset_right = 350.0

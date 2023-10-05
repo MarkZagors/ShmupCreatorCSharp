@@ -8,8 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://07bui71vctke" path="res://scenes/play/Bullet.tscn" id="6_wfl5l"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/SequenceController.cs" id="7_ofb54"]
 [ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://sprites/icon.svg" id="8_hqx5x"]
-[ext_resource type="PackedScene" uid="uid://vjqmawifbe18" path="res://scenes/editor/OptionsField.tscn" id="9_rajyc"]
-[ext_resource type="PackedScene" uid="uid://chvjbvhm3exrb" path="res://scenes/editor/RangeField.tscn" id="10_fvlyj"]
+[ext_resource type="PackedScene" uid="uid://vjqmawifbe18" path="res://scenes/editor/fields/OptionsField.tscn" id="9_rajyc"]
+[ext_resource type="PackedScene" uid="uid://chvjbvhm3exrb" path="res://scenes/editor/fields/RangeField.tscn" id="10_fvlyj"]
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -342,7 +342,7 @@ stretch = true
 [node name="PlayViewport" type="SubViewport" parent="TopContainer/MidContainer/PlayAspectContainer/SubViewportContainer"]
 disable_3d = true
 handle_input_locally = false
-size = Vector2i(350, 467)
+size = Vector2i(2, 2)
 size_2d_override = Vector2i(768, 1024)
 size_2d_override_stretch = true
 render_target_update_mode = 4

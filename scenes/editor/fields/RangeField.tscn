@@ -1,10 +1,10 @@
 [gd_scene load_steps=4 format=3 uid="uid://chvjbvhm3exrb"]
 
-[ext_resource type="PackedScene" uid="uid://6aax5g0j0hlo" path="res://scenes/editor/ComponentField.tscn" id="1_helpg"]
+[ext_resource type="PackedScene" uid="uid://6aax5g0j0hlo" path="res://scenes/editor/fields/BaseField.tscn" id="1_a4x3c"]
 [ext_resource type="Script" path="res://scripts/editor/fields/FieldRange.cs" id="2_ymixh"]
-[ext_resource type="PackedScene" uid="uid://2xl1l0fgw33n" path="res://scenes/editor/RangePoint.tscn" id="3_vjsa0"]
+[ext_resource type="PackedScene" uid="uid://2xl1l0fgw33n" path="res://scenes/editor/fields/RangePoint.tscn" id="3_3s7vc"]
 
-[node name="RangeField" node_paths=PackedStringArray("RangeControllerNode", "RangePointsGroupNode", "RangeLineNode") instance=ExtResource("1_helpg")]
+[node name="RangeField" node_paths=PackedStringArray("RangeControllerNode", "RangePointsGroupNode", "RangeLineNode") instance=ExtResource("1_a4x3c")]
 custom_minimum_size = Vector2(0, 200)
 anchors_preset = 0
 anchor_right = 0.0
@@ -13,7 +13,7 @@ script = ExtResource("2_ymixh")
 RangeControllerNode = NodePath("RangeContainer/RangeController")
 RangePointsGroupNode = NodePath("RangeContainer/RangeController/Points")
 RangeLineNode = NodePath("RangeContainer/RangeController/Lines/RangeLine")
-RangePointObj = ExtResource("3_vjsa0")
+RangePointObj = ExtResource("3_3s7vc")
 
 [node name="ExpandButton" type="Button" parent="." index="2"]
 layout_mode = 1
