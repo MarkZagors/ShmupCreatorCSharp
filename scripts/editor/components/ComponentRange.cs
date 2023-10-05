@@ -1,17 +1,22 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ExtensionMethods;
 using Godot;
 
 namespace Editor
 {
     public partial class ComponentRange : Control, IComponent
     {
+        [Export] double DoubleClickThreshold = 0.35;
         [Export] public Control RangeControllerNode;
+        [Export] public Control RangePointsGroupNode;
         [Export] public Line2D RangeLineNode;
+        [Export] public PackedScene RangePointObj;
         private bool _rangeExpanded = true;
         private Control _currentHoldingPoint;
         private bool _rangeMouseDragging = false;
+        private double _doubleClickCurrentTick = 999.0;
         private List<Control> _hoveringRangePoints = new();
         private List<Control> _rangePointNodes = new();
 
@@ -20,16 +25,8 @@ namespace Editor
             ResizeController resizeController = GetNode<ResizeController>("/root/Editor/Controllers/ResizeController");
             resizeController.WindowResized += OnWindowResize;
 
-            var point1 = GetNode<Control>("RangeContainer/RangeController/Points/Point1");
-            point1.MouseEntered += () => RangePointMouseEntered(point1);
-            point1.MouseExited += () => RangePointMouseExited(point1);
-
-            var point2 = GetNode<Control>("RangeContainer/RangeController/Points/Point2");
-            point2.MouseEntered += () => RangePointMouseEntered(point2);
-            point2.MouseExited += () => RangePointMouseExited(point2);
-
-            _rangePointNodes.Add(point1);
-            _rangePointNodes.Add(point2);
+            CreatePoint(new Vector2(0.0f, 0.5f));
+            CreatePoint(new Vector2(1.0f, 0.5f));
 
             UpdateLines();
         }
@@ -37,7 +34,11 @@ namespace Editor
         public override void _Process(double delta)
         {
             if (_rangeExpanded)
+            {
+                ProcessDoubleClick(delta);
                 ProcessPointDragging();
+                ProcessPointRemoving();
+            }
         }
 
         private void ProcessPointDragging()
@@ -60,13 +61,72 @@ namespace Editor
             if (_rangeMouseDragging)
             {
                 Vector2 mousePos = GetMousePositionInRangeContext();
-                _currentHoldingPoint.AnchorRight = mousePos.X;
-                _currentHoldingPoint.AnchorLeft = mousePos.X;
-                _currentHoldingPoint.AnchorBottom = mousePos.Y;
-                _currentHoldingPoint.AnchorTop = mousePos.Y;
+                SetRangeContextPosition(_currentHoldingPoint, mousePos);
 
                 UpdateLines();
             }
+        }
+
+        private void ProcessDoubleClick(double delta)
+        {
+            _doubleClickCurrentTick += delta;
+
+            if (Input.IsActionJustPressed("mouse_click"))
+            {
+                Vector2 mousePos = GetMousePositionInRangeContext();
+                if (IsInsideRangeContext(mousePos))
+                {
+                    if (_doubleClickCurrentTick < DoubleClickThreshold)
+                    {
+                        CreatePoint(mousePos, isSelected: true);
+                        _doubleClickCurrentTick = 9999.0;
+                    }
+                    else
+                    {
+                        _doubleClickCurrentTick = 0.0;
+                    }
+                }
+            }
+        }
+
+        private void ProcessPointRemoving()
+        {
+            if (_hoveringRangePoints.Count > 0)
+            {
+                if (Input.IsActionJustPressed("mouse_right_click"))
+                {
+                    var removingNode = _hoveringRangePoints.Last();
+
+                    _hoveringRangePoints.Remove(removingNode);
+                    _hoveringRangePoints.Remove(removingNode); //Just in case when adding with CreatePoint() it has 2 copies
+                    _rangePointNodes.Remove(removingNode);
+
+                    removingNode.QueueFree();
+
+                    _rangeMouseDragging = false;
+
+                    UpdateLines();
+                }
+            }
+        }
+
+        private void CreatePoint(Vector2 pointPos, bool isSelected = false)
+        {
+            RangePoint pointNode = RangePointObj.Instantiate<RangePoint>();
+            pointNode.MouseEntered += () => RangePointMouseEntered(pointNode);
+            pointNode.MouseExited += () => RangePointMouseExited(pointNode);
+
+            SetRangeContextPosition(pointNode, pointPos);
+
+            RangePointsGroupNode.AddChild(pointNode);
+            _rangePointNodes.Add(pointNode);
+
+            if (isSelected)
+            {
+                _hoveringRangePoints.Add(pointNode);
+            }
+
+            UpdateLines();
         }
 
         private void UpdateLines()
@@ -127,21 +187,57 @@ namespace Editor
             }
             pointList.Sort((vecA, vecB) => vecA.X.CompareTo(vecB.X));
 
-            Vector2 firstPointNonExpanded = pointList[0];
-            pointList.Insert(0, new Vector2
+            if (pointList.Count > 0)
             {
-                X = 0.0f,
-                Y = firstPointNonExpanded.Y,
-            });
+                Vector2 firstPointNonExpanded = pointList[0];
+                pointList.Insert(0, new Vector2
+                {
+                    X = 0.0f,
+                    Y = firstPointNonExpanded.Y,
+                });
 
-            Vector2 lastPointNonExpanded = pointList[pointList.Count - 1];
-            pointList.Add(new Vector2
+                Vector2 lastPointNonExpanded = pointList[pointList.Count - 1];
+                pointList.Add(new Vector2
+                {
+                    X = 1.0f,
+                    Y = lastPointNonExpanded.Y,
+                });
+            }
+            else
             {
-                X = 1.0f,
-                Y = lastPointNonExpanded.Y,
-            });
+                pointList.Insert(0, new Vector2
+                {
+                    X = 0.0f,
+                    Y = 0.5f,
+                });
+
+                pointList.Add(new Vector2
+                {
+                    X = 1.0f,
+                    Y = 0.5f,
+                });
+            }
 
             return pointList;
+        }
+
+        private void SetRangeContextPosition(Control controlNode, Vector2 pointPos)
+        {
+            controlNode.AnchorRight = pointPos.X;
+            controlNode.AnchorLeft = pointPos.X;
+            controlNode.AnchorBottom = pointPos.Y;
+            controlNode.AnchorTop = pointPos.Y;
+        }
+
+        private bool IsInsideRangeContext(Vector2 pointPos)
+        {
+            if (
+                pointPos.X > 0.0 && pointPos.X < 1.0 &&
+                pointPos.Y > 0.0 && pointPos.Y < 1.0
+                )
+                return true;
+            else
+                return false;
         }
 
         private void OnWindowResize()
@@ -157,6 +253,7 @@ namespace Editor
         public void RangePointMouseExited(Control node)
         {
             _hoveringRangePoints.Remove(node);
+            _hoveringRangePoints.Remove(node); //Remove again when adding points
         }
     }
 }
