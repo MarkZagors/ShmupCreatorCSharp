@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 namespace Editor
 {
@@ -59,9 +60,19 @@ namespace Editor
         {
             TreeItem root = SequenceTree.GetRoot();
             TreeItem bulletComponentTreeItem = root.CreateChild();
-            bulletComponentTreeItem.SetText(0, "Bullet");
+            var name = WrapComponentName("Bullet", _openedSequence.Components);
 
-            CloseNewComponent();
+            bulletComponentTreeItem.SetText(0, name);
+
+            _openedSequence.Components.Add(
+                new ComponentBullet
+                {
+                    Name = name,
+                    TreeItem = bulletComponentTreeItem
+                }
+            );
+
+            CloseNewComponentBox();
         }
 
         public void OnItemMouseSelected(Vector2 mousePos, int mouseIndex)
@@ -87,9 +98,39 @@ namespace Editor
             }
         }
 
-        private void CloseNewComponent()
+        private string WrapComponentName(string originalName, List<IComponent> components)
+        {
+            bool isValidName = false;
+            int iterationCount = 1; //First duplicate will be 2
+            string modifiedName = (string)originalName.Clone();
+
+            while (!isValidName)
+            {
+                bool foundDuplicate = false;
+                foreach (IComponent component in components)
+                {
+                    if (component.Name == modifiedName)
+                    {
+                        iterationCount += 1;
+                        modifiedName = $"{originalName} {iterationCount}";
+                        foundDuplicate = true;
+                        break;
+                    }
+                }
+
+                if (!foundDuplicate) isValidName = true;
+            }
+
+            return modifiedName;
+        }
+
+        private void CloseNewComponentBox()
         {
             CreationContainer.Visible = false;
+            foreach (Button childButton in CreationContainerVBox.GetChildren())
+            {
+                childButton.QueueFree();
+            }
         }
 
         public void OpenSequenceTab()
@@ -116,7 +157,7 @@ namespace Editor
 
         public void OnClickCloseNewComponent()
         {
-            CloseNewComponent();
+            CloseNewComponentBox();
         }
     }
 }

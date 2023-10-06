@@ -59,6 +59,7 @@ namespace Editor
             {
                 Time = this.Time,
                 Node = sequenceNode,
+                Components = new(),
             };
 
             SequenceList.Add(newSequence);
