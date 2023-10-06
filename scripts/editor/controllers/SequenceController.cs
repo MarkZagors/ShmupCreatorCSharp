@@ -9,6 +9,8 @@ namespace Editor
         [Export] public Control TemplatesTab { get; private set; }
         [Export] public Control SequenceTab { get; private set; }
         [Export] public Control CreationContainer { get; private set; }
+        [Export] public VBoxContainer CreationContainerVBox { get; private set; }
+        [Export] public PackedScene CreationButtonObj { get; private set; }
 
         private Sequence _openedSequence;
         private TreeItem _selectedTreeItem;
@@ -105,26 +107,16 @@ namespace Editor
         public void OnClickNewComponent()
         {
             CreationContainer.Visible = true;
+
+            Button bulletButton = CreationButtonObj.Instantiate<Button>();
+            bulletButton.Text = "Button";
+            bulletButton.Pressed += CreateBullet;
+            CreationContainerVBox.AddChild(bulletButton);
         }
 
         public void OnClickCloseNewComponent()
         {
             CloseNewComponent();
-        }
-
-        public void OnClickCreateBullet()
-        {
-            CreateBullet();
-        }
-
-        public void OnClickCreateBundle()
-        {
-
-        }
-
-        public void OnClickCreateSpawner()
-        {
-
         }
     }
 }
