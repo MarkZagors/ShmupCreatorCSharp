@@ -10,13 +10,19 @@ namespace Editor
         [Export] public VBoxContainer ComponentsVBox { get; private set; }
         private IComponent _openedComponent;
 
+        public void CreateComponent(IComponent component)
+        {
+            
+        }
+
         public void OpenComponent(IComponent component)
         {
             _openedComponent = component;
             ComponentNameLabel.Text = component.Name;
         }
 
-        public void ClearComponent() {
+        public void ClearComponent()
+        {
             _openedComponent = null;
             ComponentNameLabel.Text = "[No Component Selected]";
         }

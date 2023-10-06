@@ -76,14 +76,15 @@ namespace Editor
             TreeItem bulletComponentTreeItem = root.CreateChild();
             var name = WrapComponentName("Bullet", _openedSequence.Components);
             IComponent bulletComponent = new ComponentBullet
-            {
-                Name = name,
-                TreeItem = bulletComponentTreeItem
-            };
+            (
+                name: name,
+                treeItem: bulletComponentTreeItem
+            );
 
             bulletComponentTreeItem.SetText(0, name);
             _openedSequence.Components.Add(bulletComponent);
             _sequenceTreeLookup.Add(bulletComponentTreeItem, bulletComponent);
+            ComponentsController.CreateComponent(bulletComponent);
             CloseNewComponentBox();
         }
 
@@ -119,7 +120,7 @@ namespace Editor
             );
         }
 
-        private string WrapComponentName(string originalName, List<IComponent> components)
+        private static string WrapComponentName(string originalName, List<IComponent> components)
         {
             bool isValidName = false;
             int iterationCount = 1; //First duplicate will be 2
