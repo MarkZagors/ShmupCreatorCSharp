@@ -9,6 +9,7 @@ namespace Editor
     public partial class FieldRange : Control, IField
     {
         [Export] double DoubleClickThreshold = 0.35;
+        [Export] public Control RangeContainerNode;
         [Export] public Control RangeControllerNode;
         [Export] public Control RangePointsGroupNode;
         [Export] public LineEdit MaxLineEditNode;
@@ -16,7 +17,7 @@ namespace Editor
         [Export] public LineEdit MinLineEditNode;
         [Export] public Line2D RangeLineNode;
         [Export] public PackedScene RangePointObj;
-        private bool _rangeExpanded = true;
+        private bool _rangeExpanded = false;
         private bool _rangeMouseDragging = false;
         private double _doubleClickCurrentTick = 999.0;
         private double _previousMaxLineEditValue = 0.0;
@@ -170,12 +171,15 @@ namespace Editor
             if (_rangeExpanded)
             {
                 CustomMinimumSize = new Vector2(0, 50);
+                RangeContainerNode.Visible = false;
                 _rangeExpanded = false;
             }
             else
             {
                 CustomMinimumSize = new Vector2(0, 200);
+                RangeContainerNode.Visible = true;
                 _rangeExpanded = true;
+                UpdateLines();
             }
         }
 

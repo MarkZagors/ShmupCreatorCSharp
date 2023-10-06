@@ -4,12 +4,12 @@
 [ext_resource type="Script" path="res://scripts/editor/fields/FieldRange.cs" id="2_ymixh"]
 [ext_resource type="PackedScene" uid="uid://2xl1l0fgw33n" path="res://scenes/editor/fields/RangePoint.tscn" id="3_3s7vc"]
 
-[node name="RangeField" node_paths=PackedStringArray("RangeControllerNode", "RangePointsGroupNode", "MaxLineEditNode", "MidLineEditNode", "MinLineEditNode", "RangeLineNode") instance=ExtResource("1_a4x3c")]
-custom_minimum_size = Vector2(0, 200)
+[node name="RangeField" node_paths=PackedStringArray("RangeContainerNode", "RangeControllerNode", "RangePointsGroupNode", "MaxLineEditNode", "MidLineEditNode", "MinLineEditNode", "RangeLineNode") instance=ExtResource("1_a4x3c")]
 anchors_preset = 0
 anchor_right = 0.0
 offset_right = 350.0
 script = ExtResource("2_ymixh")
+RangeContainerNode = NodePath("RangeContainer")
 RangeControllerNode = NodePath("RangeContainer/RangeController")
 RangePointsGroupNode = NodePath("RangeContainer/RangeController/Points")
 MaxLineEditNode = NodePath("RangeContainer/RangeFields/MaxField")
@@ -31,6 +31,7 @@ grow_horizontal = 2
 text = "[Range]"
 
 [node name="RangeContainer" type="Control" parent="." index="3"]
+visible = false
 layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
