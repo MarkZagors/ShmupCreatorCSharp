@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=11 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/editor/controllers/TemplatesController.cs" id="4_kkpwu"]
 [ext_resource type="PackedScene" uid="uid://f1o6rqauvyg1" path="res://scenes/editor/SequenceIcon.tscn" id="4_t8vuy"]
 [ext_resource type="PackedScene" uid="uid://07bui71vctke" path="res://scenes/play/Bullet.tscn" id="6_wfl5l"]
+[ext_resource type="Script" path="res://scripts/editor/controllers/ComponentsController.cs" id="7_78ycr"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/SequenceController.cs" id="7_ofb54"]
 [ext_resource type="PackedScene" uid="uid://cajgj2ywqkpxx" path="res://scenes/editor/CreationBoxButton.tscn" id="8_ekt68"]
 [ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://sprites/icon.svg" id="8_hqx5x"]
@@ -38,24 +39,31 @@ TimelineTimeLabel = NodePath("../../BotContainer/TimelineTab/TimelineDetails/Tim
 LanesNode = NodePath("../../BotContainer/TimelineTab/MainContainer/LanesVBox")
 SequenceIconObj = ExtResource("4_t8vuy")
 
-[node name="TemplatesController" type="Node" parent="Controllers" node_paths=PackedStringArray("TemplatesTree", "PlayController")]
-script = ExtResource("4_kkpwu")
-TemplatesTree = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab/TemplatesTree")
-PlayController = NodePath("../PlayController")
-
-[node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("BulletPoolNode")]
-script = ExtResource("4_cwq5m")
-BulletPoolNode = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/SubViewportContainer/PlayViewport/BulletPool")
-BulletNodeObj = ExtResource("6_wfl5l")
-
-[node name="SequenceController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceTree", "TemplatesTab", "SequenceTab", "CreationContainer", "CreationContainerVBox")]
+[node name="SequenceController" type="Node" parent="Controllers" node_paths=PackedStringArray("ComponentsController", "SequenceTree", "TemplatesTab", "SequenceTab", "CreationContainer", "CreationContainerVBox")]
 script = ExtResource("7_ofb54")
+ComponentsController = NodePath("../ComponentsController")
 SequenceTree = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/SequenceTab/SequenceTree")
 TemplatesTab = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab")
 SequenceTab = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/SequenceTab")
 CreationContainer = NodePath("../../TopContainer/MidContainer/CreationContainer")
 CreationContainerVBox = NodePath("../../TopContainer/MidContainer/CreationContainer/CreateComponentTab/ScrollContainer/CreationVBox")
 CreationButtonObj = ExtResource("8_ekt68")
+
+[node name="TemplatesController" type="Node" parent="Controllers" node_paths=PackedStringArray("TemplatesTree", "PlayController")]
+script = ExtResource("4_kkpwu")
+TemplatesTree = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab/TemplatesTree")
+PlayController = NodePath("../PlayController")
+
+[node name="ComponentsController" type="Node" parent="Controllers" node_paths=PackedStringArray("ComponentContainer", "ComponentNameLabel", "ComponentsVBox")]
+script = ExtResource("7_78ycr")
+ComponentContainer = NodePath("../../TopContainer/RightContainer/ComponentContainer")
+ComponentNameLabel = NodePath("../../TopContainer/RightContainer/ComponentContainer/ComponentTopBar/NameLabel")
+ComponentsVBox = NodePath("../../TopContainer/RightContainer/ComponentContainer/ComponentBodyContainer/ComponentScrollContainer/ComponentVBoxContainer")
+
+[node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("BulletPoolNode")]
+script = ExtResource("4_cwq5m")
+BulletPoolNode = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/SubViewportContainer/PlayViewport/BulletPool")
+BulletNodeObj = ExtResource("6_wfl5l")
 
 [node name="BotContainer" type="Control" parent="."]
 layout_mode = 1

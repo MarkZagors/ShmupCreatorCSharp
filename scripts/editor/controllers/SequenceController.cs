@@ -6,6 +6,7 @@ namespace Editor
 {
     public partial class SequenceController : Node
     {
+        [Export] public ComponentsController ComponentsController { get; private set; }
         [Export] public Tree SequenceTree { get; private set; }
         [Export] public Control TemplatesTab { get; private set; }
         [Export] public Control SequenceTab { get; private set; }
@@ -14,6 +15,7 @@ namespace Editor
         [Export] public PackedScene CreationButtonObj { get; private set; }
 
         private Sequence _openedSequence;
+        private Dictionary<TreeItem, IComponent> _sequenceTreeLookup = new();
         private TreeItem _selectedTreeItem;
         private Vector2 _treeItemSelectionMousePos;
 
@@ -39,7 +41,11 @@ namespace Editor
 
             _openedSequence = sequence;
 
-            if (newOpening) PopulateSequenceTree();
+            if (newOpening)
+            {
+                PopulateSequenceTree();
+                ComponentsController.ClearComponent();
+            }
 
             OpenSequenceTab();
         }
@@ -51,9 +57,17 @@ namespace Editor
             SequenceTree.Visible = true;
 
             SequenceTree.Clear();
+            _sequenceTreeLookup.Clear();
 
             TreeItem root = SequenceTree.CreateItem();
             root.SetText(0, "Sequence");
+
+            foreach (IComponent component in _openedSequence.Components)
+            {
+                TreeItem treeItem = root.CreateChild();
+                treeItem.SetText(0, component.Name);
+                _sequenceTreeLookup.Add(treeItem, component);
+            }
         }
 
         private void CreateBullet()
@@ -61,17 +75,15 @@ namespace Editor
             TreeItem root = SequenceTree.GetRoot();
             TreeItem bulletComponentTreeItem = root.CreateChild();
             var name = WrapComponentName("Bullet", _openedSequence.Components);
+            IComponent bulletComponent = new ComponentBullet
+            {
+                Name = name,
+                TreeItem = bulletComponentTreeItem
+            };
 
             bulletComponentTreeItem.SetText(0, name);
-
-            _openedSequence.Components.Add(
-                new ComponentBullet
-                {
-                    Name = name,
-                    TreeItem = bulletComponentTreeItem
-                }
-            );
-
+            _openedSequence.Components.Add(bulletComponent);
+            _sequenceTreeLookup.Add(bulletComponentTreeItem, bulletComponent);
             CloseNewComponentBox();
         }
 
@@ -93,9 +105,18 @@ namespace Editor
                 && mousePosDiff.Y < -40
                 && mousePosDiff.Y > -90)
             {
-                GD.Print(mousePosDiff);
-                GD.Print("Click!");
+                if (_selectedTreeItem != SequenceTree.GetRoot())
+                {
+                    ClickOnComponent(_selectedTreeItem);
+                }
             }
+        }
+
+        private void ClickOnComponent(TreeItem selectedTreeItem)
+        {
+            ComponentsController.OpenComponent(
+                _sequenceTreeLookup[selectedTreeItem]
+            );
         }
 
         private string WrapComponentName(string originalName, List<IComponent> components)
