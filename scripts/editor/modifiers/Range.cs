@@ -17,6 +17,8 @@ namespace Editor
                 Min = min,
                 Points = new List<Vector2> {
                     new Vector2(0.0f, 0.5f),
+                    new Vector2(0.0f, 0.5f),
+                    new Vector2(1.0f, 0.5f),
                     new Vector2(1.0f, 0.5f),
                 }
             };

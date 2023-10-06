@@ -12,13 +12,15 @@ namespace Editor
 
         public void CreateComponent(IComponent component)
         {
-            
+
         }
 
         public void OpenComponent(IComponent component)
         {
             _openedComponent = component;
             ComponentNameLabel.Text = component.Name;
+
+            GD.Print(ModifierNamer.Get(_openedComponent.Modifiers[0].ID));
         }
 
         public void ClearComponent()

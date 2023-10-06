@@ -15,7 +15,7 @@ namespace Editor
             TreeItem = treeItem;
             Modifiers = new List<IModifier> {
                 new ModifierRange {
-                    ID = ModifierID.BUNDLE_RANGE,
+                    ID = ModifierID.BUNDLE_ANGLE,
                     Range = Range.From(180,-180)
                 },
             };
