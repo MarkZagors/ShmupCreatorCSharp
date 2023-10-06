@@ -13,7 +13,12 @@ namespace Editor
         {
             Name = name;
             TreeItem = treeItem;
-            Modifiers = new();
+            Modifiers = new List<IModifier> {
+                new ModifierRange {
+                    ID = ModifierID.BUNDLE_RANGE,
+                    Range = Range.From(180,-180)
+                },
+            };
         }
     }
 }

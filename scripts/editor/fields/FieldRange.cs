@@ -224,7 +224,7 @@ namespace Editor
                     Y = firstPointNonExpanded.Y,
                 });
 
-                Vector2 lastPointNonExpanded = pointList[pointList.Count - 1];
+                Vector2 lastPointNonExpanded = pointList[^1];
                 pointList.Add(new Vector2
                 {
                     X = 1.0f,
