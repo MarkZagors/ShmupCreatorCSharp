@@ -7,13 +7,11 @@ namespace Editor
 {
     public partial class ComponentsController : Node
     {
+        [Export] public CreateBoxController CreateBoxController { get; private set; }
         [Export] public Control ComponentContainer { get; private set; }
         [Export] public Label ComponentNameLabel { get; private set; }
         [Export] public VBoxContainer ComponentsVBox { get; private set; }
         [Export] public PackedScene NewModifierButtonObj { get; private set; }
-        [Export] public Control CreationContainer { get; private set; }
-        [Export] public VBoxContainer CreationContainerVBox { get; private set; }
-        [Export] public PackedScene CreationButtonObj { get; private set; }
         [Export] public PackedScene FieldRangeObj { get; private set; }
         private IComponent _openedComponent;
         private Button _newModifierPlusButton;
@@ -26,7 +24,7 @@ namespace Editor
             ComponentNameLabel.Text = component.Name;
 
             _newModifierPlusButton = NewModifierButtonObj.Instantiate<Button>();
-            _newModifierPlusButton.Pressed += OnClickNewModifierBox;
+            _newModifierPlusButton.Pressed += () => CreateBoxController.OnClickNewModifier(_openedComponent, this);
             ComponentsVBox.AddChild(_newModifierPlusButton);
         }
 
@@ -37,32 +35,15 @@ namespace Editor
             ClearComponentsVBox();
         }
 
-        private void OnClickNewModifierBox()
-        {
-            CreationContainer.Visible = true;
-
-            foreach (IModifier modifier in _openedComponent.Modifiers)
-            {
-                if (!modifier.Active)
-                {
-                    Button modifierButton = CreationButtonObj.Instantiate<Button>();
-                    modifierButton.Text = ModifierNamer.Get(modifier.ID);
-                    modifierButton.Pressed += () => CreateModifierField(modifier);
-                    CreationContainerVBox.AddChild(modifierButton);
-                    GD.Print(_openedComponent.Modifiers.ToStringMembers<IModifier>());
-                }
-            }
-        }
-
-        private void CreateModifierField(IModifier modifier)
+        public void CreateModifierField(IModifier modifier)
         {
             modifier.Active = true;
             Control fieldRange = FieldRangeObj.Instantiate<Control>();
             ComponentsVBox.AddChild(fieldRange);
 
-            // ComponentsVBox.MoveChild(_newModifierPlusButton, ComponentsVBox.GetChildCount() - 1);
+            ComponentsVBox.MoveChild(_newModifierPlusButton, ComponentsVBox.GetChildCount() - 1);
 
-            CreationContainer.Visible = false;
+            CreateBoxController.CloseCreationBox();
         }
 
         private void ClearComponentsVBox()

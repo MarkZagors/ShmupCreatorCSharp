@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=14 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://cajgj2ywqkpxx" path="res://scenes/editor/CreationBoxButton.tscn" id="8_ekt68"]
 [ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://sprites/icon.svg" id="8_hqx5x"]
 [ext_resource type="PackedScene" uid="uid://chvjbvhm3exrb" path="res://scenes/editor/fields/RangeField.tscn" id="9_bmuti"]
+[ext_resource type="Script" path="res://scripts/editor/controllers/CreateBoxController.cs" id="12_kakms"]
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -41,23 +42,22 @@ TimelineTimeLabel = NodePath("../../BotContainer/TimelineTab/TimelineDetails/Tim
 LanesNode = NodePath("../../BotContainer/TimelineTab/MainContainer/LanesVBox")
 SequenceIconObj = ExtResource("4_t8vuy")
 
-[node name="SequenceController" type="Node" parent="Controllers" node_paths=PackedStringArray("ComponentsController", "SequenceTree", "TemplatesTab", "SequenceTab", "CreationContainer", "CreationContainerVBox")]
+[node name="SequenceController" type="Node" parent="Controllers" node_paths=PackedStringArray("ComponentsController", "CreateBoxController", "SequenceTree", "TemplatesTab", "SequenceTab")]
 script = ExtResource("7_ofb54")
 ComponentsController = NodePath("../ComponentsController")
+CreateBoxController = NodePath("../CreateBoxController")
 SequenceTree = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/SequenceTab/SequenceTree")
 TemplatesTab = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab")
 SequenceTab = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/SequenceTab")
-CreationContainer = NodePath("../../TopContainer/MidContainer/CreationContainer")
-CreationContainerVBox = NodePath("../../TopContainer/MidContainer/CreationContainer/CreateComponentTab/ScrollContainer/CreationVBox")
-CreationButtonObj = ExtResource("8_ekt68")
 
 [node name="TemplatesController" type="Node" parent="Controllers" node_paths=PackedStringArray("TemplatesTree", "PlayController")]
 script = ExtResource("4_kkpwu")
 TemplatesTree = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab/TemplatesTree")
 PlayController = NodePath("../PlayController")
 
-[node name="ComponentsController" type="Node" parent="Controllers" node_paths=PackedStringArray("ComponentContainer", "ComponentNameLabel", "ComponentsVBox", "CreationContainer", "CreationContainerVBox")]
+[node name="ComponentsController" type="Node" parent="Controllers" node_paths=PackedStringArray("CreateBoxController", "ComponentContainer", "ComponentNameLabel", "ComponentsVBox", "CreationContainer", "CreationContainerVBox")]
 script = ExtResource("7_78ycr")
+CreateBoxController = NodePath("../CreateBoxController")
 ComponentContainer = NodePath("../../TopContainer/RightContainer/ComponentContainer")
 ComponentNameLabel = NodePath("../../TopContainer/RightContainer/ComponentContainer/ComponentTopBar/NameLabel")
 ComponentsVBox = NodePath("../../TopContainer/RightContainer/ComponentContainer/ComponentBodyContainer/ComponentScrollContainer/ComponentVBoxContainer")
@@ -71,6 +71,13 @@ FieldRangeObj = ExtResource("9_bmuti")
 script = ExtResource("4_cwq5m")
 BulletPoolNode = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/SubViewportContainer/PlayViewport/BulletPool")
 BulletNodeObj = ExtResource("6_wfl5l")
+
+[node name="CreateBoxController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "CreationContainer", "CreationContainerVBox")]
+script = ExtResource("12_kakms")
+SequenceController = NodePath("../SequenceController")
+CreationContainer = NodePath("../../TopContainer/MidContainer/CreationContainer")
+CreationContainerVBox = NodePath("../../TopContainer/MidContainer/CreationContainer/CreateComponentTab/ScrollContainer/CreationVBox")
+CreationButtonObj = ExtResource("8_ekt68")
 
 [node name="BotContainer" type="Control" parent="."]
 layout_mode = 1
@@ -530,12 +537,12 @@ metadata/_edit_lock_ = true
 [connection signal="pressed" from="TopContainer/LeftContainer/SequenceTopContainer/HBox/TemplatesButton" to="Controllers/SequenceController" method="OpenTemplatesTab"]
 [connection signal="pressed" from="TopContainer/LeftContainer/SequenceTopContainer/HBox/SequenceButton" to="Controllers/SequenceController" method="OpenSequenceTab"]
 [connection signal="item_mouse_selected" from="TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab/TemplatesTree" to="Controllers/TemplatesController" method="OnItemMouseSelected"]
-[connection signal="pressed" from="TopContainer/LeftContainer/SequenceMainContainer/SequenceTab/TopSequenceBar/NewComponentButton" to="Controllers/SequenceController" method="OnClickNewComponent"]
+[connection signal="pressed" from="TopContainer/LeftContainer/SequenceMainContainer/SequenceTab/TopSequenceBar/NewComponentButton" to="Controllers/CreateBoxController" method="OnClickNewComponent"]
 [connection signal="item_mouse_selected" from="TopContainer/LeftContainer/SequenceMainContainer/SequenceTab/SequenceTree" to="Controllers/SequenceController" method="OnItemMouseSelected"]
 [connection signal="mouse_entered" from="TopContainer/LeftContainer/ResizeBar" to="Controllers/ResizeController" method="OnLeftContainerMouseEntered"]
 [connection signal="mouse_exited" from="TopContainer/LeftContainer/ResizeBar" to="Controllers/ResizeController" method="OnLeftContainerMouseExited"]
 [connection signal="mouse_entered" from="TopContainer/MidContainer" to="Controllers/TemplatesController" method="OnMidContainerMouseEntered"]
 [connection signal="mouse_exited" from="TopContainer/MidContainer" to="Controllers/TemplatesController" method="OnMidContainerMouseExited"]
-[connection signal="pressed" from="TopContainer/MidContainer/CreationContainer/CreateComponentTab/CloseButton" to="Controllers/SequenceController" method="OnClickCloseNewComponent"]
+[connection signal="pressed" from="TopContainer/MidContainer/CreationContainer/CreateComponentTab/CloseButton" to="Controllers/CreateBoxController" method="OnClickCloseNewComponent"]
 [connection signal="mouse_entered" from="TopContainer/RightContainer/ResizeBar" to="Controllers/ResizeController" method="OnRightContainerMouseEntered"]
 [connection signal="mouse_exited" from="TopContainer/RightContainer/ResizeBar" to="Controllers/ResizeController" method="OnRightContainerMouseExited"]

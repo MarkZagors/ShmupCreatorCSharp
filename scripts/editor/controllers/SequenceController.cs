@@ -7,12 +7,10 @@ namespace Editor
     public partial class SequenceController : Node
     {
         [Export] public ComponentsController ComponentsController { get; private set; }
+        [Export] public CreateBoxController CreateBoxController { get; private set; }
         [Export] public Tree SequenceTree { get; private set; }
         [Export] public Control TemplatesTab { get; private set; }
         [Export] public Control SequenceTab { get; private set; }
-        [Export] public Control CreationContainer { get; private set; }
-        [Export] public VBoxContainer CreationContainerVBox { get; private set; }
-        [Export] public PackedScene CreationButtonObj { get; private set; }
 
         private Sequence _openedSequence;
         private Dictionary<TreeItem, IComponent> _sequenceTreeLookup = new();
@@ -70,7 +68,7 @@ namespace Editor
             }
         }
 
-        private void CreateBullet()
+        public void CreateBullet()
         {
             TreeItem root = SequenceTree.GetRoot();
             TreeItem bulletComponentTreeItem = root.CreateChild();
@@ -84,7 +82,7 @@ namespace Editor
             bulletComponentTreeItem.SetText(0, name);
             _openedSequence.Components.Add(bulletComponent);
             _sequenceTreeLookup.Add(bulletComponentTreeItem, bulletComponent);
-            CloseNewComponentBox();
+            CreateBoxController.CloseCreationBox();
         }
 
         public void OnItemMouseSelected(Vector2 mousePos, int mouseIndex)
@@ -145,15 +143,6 @@ namespace Editor
             return modifiedName;
         }
 
-        private void CloseNewComponentBox()
-        {
-            CreationContainer.Visible = false;
-            foreach (Button childButton in CreationContainerVBox.GetChildren())
-            {
-                childButton.QueueFree();
-            }
-        }
-
         public void OpenSequenceTab()
         {
             TemplatesTab.Visible = false;
@@ -164,21 +153,6 @@ namespace Editor
         {
             TemplatesTab.Visible = true;
             SequenceTab.Visible = false;
-        }
-
-        public void OnClickNewComponent()
-        {
-            CreationContainer.Visible = true;
-
-            Button bulletButton = CreationButtonObj.Instantiate<Button>();
-            bulletButton.Text = "Bullet";
-            bulletButton.Pressed += CreateBullet;
-            CreationContainerVBox.AddChild(bulletButton);
-        }
-
-        public void OnClickCloseNewComponent()
-        {
-            CloseNewComponentBox();
         }
     }
 }
