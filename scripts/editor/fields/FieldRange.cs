@@ -180,9 +180,12 @@ namespace Editor
                 RangeLineNode.AddPoint(worldSpacePosition);
             }
 
+            bool listsEqual = _expandedPointListCache.SequenceEqual(expandedPointList);
+
             _expandedPointListCache = expandedPointList;
 
-            UpdateRange(_currentMaxLineEditValue, _currentMinLineEditValue, expandedPointList);
+            if (!listsEqual)
+                UpdateRange(_currentMaxLineEditValue, _currentMinLineEditValue, expandedPointList);
         }
 
         public void ToggleRange()
