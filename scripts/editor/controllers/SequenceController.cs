@@ -84,7 +84,6 @@ namespace Editor
             bulletComponentTreeItem.SetText(0, name);
             _openedSequence.Components.Add(bulletComponent);
             _sequenceTreeLookup.Add(bulletComponentTreeItem, bulletComponent);
-            ComponentsController.CreateComponent(bulletComponent);
             CloseNewComponentBox();
         }
 
@@ -172,7 +171,7 @@ namespace Editor
             CreationContainer.Visible = true;
 
             Button bulletButton = CreationButtonObj.Instantiate<Button>();
-            bulletButton.Text = "Button";
+            bulletButton.Text = "Bullet";
             bulletButton.Pressed += CreateBullet;
             CreationContainerVBox.AddChild(bulletButton);
         }

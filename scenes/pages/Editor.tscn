@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=13 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
@@ -8,8 +8,10 @@
 [ext_resource type="PackedScene" uid="uid://07bui71vctke" path="res://scenes/play/Bullet.tscn" id="6_wfl5l"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/ComponentsController.cs" id="7_78ycr"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/SequenceController.cs" id="7_ofb54"]
+[ext_resource type="PackedScene" uid="uid://dp8iasxokwhsu" path="res://scenes/editor/CreateModifierButton.tscn" id="8_colxt"]
 [ext_resource type="PackedScene" uid="uid://cajgj2ywqkpxx" path="res://scenes/editor/CreationBoxButton.tscn" id="8_ekt68"]
 [ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://sprites/icon.svg" id="8_hqx5x"]
+[ext_resource type="PackedScene" uid="uid://chvjbvhm3exrb" path="res://scenes/editor/fields/RangeField.tscn" id="9_bmuti"]
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -54,11 +56,16 @@ script = ExtResource("4_kkpwu")
 TemplatesTree = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab/TemplatesTree")
 PlayController = NodePath("../PlayController")
 
-[node name="ComponentsController" type="Node" parent="Controllers" node_paths=PackedStringArray("ComponentContainer", "ComponentNameLabel", "ComponentsVBox")]
+[node name="ComponentsController" type="Node" parent="Controllers" node_paths=PackedStringArray("ComponentContainer", "ComponentNameLabel", "ComponentsVBox", "CreationContainer", "CreationContainerVBox")]
 script = ExtResource("7_78ycr")
 ComponentContainer = NodePath("../../TopContainer/RightContainer/ComponentContainer")
 ComponentNameLabel = NodePath("../../TopContainer/RightContainer/ComponentContainer/ComponentTopBar/NameLabel")
 ComponentsVBox = NodePath("../../TopContainer/RightContainer/ComponentContainer/ComponentBodyContainer/ComponentScrollContainer/ComponentVBoxContainer")
+NewModifierButtonObj = ExtResource("8_colxt")
+CreationContainer = NodePath("../../TopContainer/MidContainer/CreationContainer")
+CreationContainerVBox = NodePath("../../TopContainer/MidContainer/CreationContainer/CreateComponentTab/ScrollContainer/CreationVBox")
+CreationButtonObj = ExtResource("8_ekt68")
+FieldRangeObj = ExtResource("9_bmuti")
 
 [node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("BulletPoolNode")]
 script = ExtResource("4_cwq5m")
@@ -121,6 +128,7 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 offset_left = -1.0
 offset_bottom = -0.000152588
+mouse_filter = 2
 
 [node name="TimelineDetails" type="Control" parent="BotContainer/TimelineTab"]
 layout_mode = 1
