@@ -22,12 +22,15 @@ namespace Editor
         private bool _rangeMouseDragging = false;
         private double _doubleClickCurrentTick = 999.0;
         private double _previousMaxLineEditValue = 0.0;
+        private double _currentMaxLineEditValue = 0.0;
         private double _previousMinLineEditValue = 0.0;
+        private double _currentMinLineEditValue = 0.0;
         private Control _currentHoldingPoint;
         private Control _selectedLineEdit = null;
         private double _selectedLineEditTick = 500.0;
         private List<Control> _hoveringRangePoints = new();
         private List<Control> _rangePointNodes = new();
+        private List<Vector2> _expandedPointListCache = new();
         private readonly char[] _lineEditAllowedCharacters = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '-' };
 
         public void Init(ModifierRange rangeModifier)
@@ -35,7 +38,9 @@ namespace Editor
             RangeModifier = rangeModifier;
 
             _previousMaxLineEditValue = RangeModifier.Range.Max.Value;
+            _currentMaxLineEditValue = RangeModifier.Range.Max.Value;
             _previousMinLineEditValue = RangeModifier.Range.Min.Value;
+            _currentMinLineEditValue = RangeModifier.Range.Min.Value;
             MaxLineEditNode.Text = RangeModifier.Range.Max.Value.ToString();
             MinLineEditNode.Text = RangeModifier.Range.Min.Value.ToString();
             UpdateMidLine(RangeModifier.Range.Max.Value, RangeModifier.Range.Min.Value);
@@ -44,7 +49,10 @@ namespace Editor
             MidLineEditNode.TextChanged += (newText) => OnLineEditTextChangeMid(newText);
             MinLineEditNode.TextChanged += (newText) => OnLineEditTextChangeMin(newText);
 
-            foreach (Vector2 point in RangeModifier.Range.Points)
+            var modifierRangePointsPhysical = RangeModifier.Range.Points;
+            modifierRangePointsPhysical.RemoveAt(0);
+            modifierRangePointsPhysical.RemoveAt(modifierRangePointsPhysical.Count - 1);
+            foreach (Vector2 point in modifierRangePointsPhysical)
             {
                 CreatePoint(point);
             }
@@ -172,7 +180,9 @@ namespace Editor
                 RangeLineNode.AddPoint(worldSpacePosition);
             }
 
-            UpdateRange(_previousMaxLineEditValue, _previousMinLineEditValue, expandedPointList);
+            _expandedPointListCache = expandedPointList;
+
+            UpdateRange(_currentMaxLineEditValue, _currentMinLineEditValue, expandedPointList);
         }
 
         public void ToggleRange()
@@ -353,8 +363,13 @@ namespace Editor
             double value = ParseLineEditValue(MidLineEditNode);
             double valuesDiff = (_previousMaxLineEditValue - _previousMinLineEditValue) / 2;
 
+            _currentMaxLineEditValue = value + valuesDiff;
+            _currentMinLineEditValue = value - valuesDiff;
+
             MaxLineEditNode.Text = (value + valuesDiff).ToString();
             MinLineEditNode.Text = (value - valuesDiff).ToString();
+
+            UpdateRange(_currentMaxLineEditValue, _currentMinLineEditValue, _expandedPointListCache);
         }
 
         private void OnLineEditTextChangeMax(string newText)
@@ -367,13 +382,19 @@ namespace Editor
             if (value < _previousMinLineEditValue)
             {
                 MinLineEditNode.Text = value.ToString();
+                _currentMaxLineEditValue = value;
+                _currentMinLineEditValue = value;
                 UpdateMidLine(value, value);
             }
             else
             {
                 MinLineEditNode.Text = _previousMinLineEditValue.ToString();
+                _currentMaxLineEditValue = value;
+                _currentMinLineEditValue = _previousMinLineEditValue;
                 UpdateMidLine(value, _previousMinLineEditValue);
             }
+
+            UpdateRange(_currentMaxLineEditValue, _currentMinLineEditValue, _expandedPointListCache);
         }
 
         private void OnLineEditTextChangeMin(string newText)
@@ -386,13 +407,19 @@ namespace Editor
             if (value > _previousMaxLineEditValue)
             {
                 MaxLineEditNode.Text = value.ToString();
+                _currentMaxLineEditValue = value;
+                _currentMinLineEditValue = value;
                 UpdateMidLine(value, value);
             }
             else
             {
                 MaxLineEditNode.Text = _previousMaxLineEditValue.ToString();
+                _currentMaxLineEditValue = _previousMaxLineEditValue;
+                _currentMinLineEditValue = value;
                 UpdateMidLine(_previousMaxLineEditValue, value);
             }
+
+            UpdateRange(_currentMaxLineEditValue, _currentMinLineEditValue, _expandedPointListCache);
         }
 
         private void OnFocusChanged(Control control)
@@ -421,9 +448,11 @@ namespace Editor
 
         private void UpdateRange(double max, double min, List<Vector2> pointList)
         {
-            RangeModifier.Range.Max = new RefDouble(max);
-            RangeModifier.Range.Min = new RefDouble(min);
+            RangeModifier.Range.Max.Value = max;
+            RangeModifier.Range.Min.Value = min;
             RangeModifier.Range.Points = pointList;
+            GD.Print("Update!");
+            GDE.PrintRange(RangeModifier.Range);
         }
     }
 }

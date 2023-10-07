@@ -22,6 +22,14 @@ namespace Editor
             _openedComponent = component;
             ComponentNameLabel.Text = component.Name;
 
+            foreach (IModifier modifier in component.Modifiers)
+            {
+                if (modifier.Active)
+                {
+                    AddModifierField(modifier);
+                }
+            }
+
             _newModifierPlusButton = NewModifierButtonObj.Instantiate<Button>();
             _newModifierPlusButton.Pressed += () => CreateBoxController.OnClickNewModifier(_openedComponent, this);
             ComponentsVBox.AddChild(_newModifierPlusButton);
@@ -38,12 +46,17 @@ namespace Editor
         {
             modifier.Active = true;
 
-            FieldRange fieldRange = FieldRangeObj.Instantiate<FieldRange>();
-            fieldRange.Init((ModifierRange)modifier);
-            ComponentsVBox.AddChild(fieldRange);
+            AddModifierField(modifier);
 
             ComponentsVBox.MoveChild(_newModifierPlusButton, ComponentsVBox.GetChildCount() - 1);
             CreateBoxController.CloseCreationBox();
+        }
+
+        private void AddModifierField(IModifier modifier)
+        {
+            FieldRange fieldRange = FieldRangeObj.Instantiate<FieldRange>();
+            fieldRange.Init((ModifierRange)modifier);
+            ComponentsVBox.AddChild(fieldRange);
         }
 
         private void ClearComponentsVBox()
