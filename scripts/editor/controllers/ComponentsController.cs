@@ -8,7 +8,6 @@ namespace Editor
     public partial class ComponentsController : Node
     {
         [Export] public CreateBoxController CreateBoxController { get; private set; }
-        [Export] public Control ComponentContainer { get; private set; }
         [Export] public Label ComponentNameLabel { get; private set; }
         [Export] public VBoxContainer ComponentsVBox { get; private set; }
         [Export] public PackedScene NewModifierButtonObj { get; private set; }
@@ -38,11 +37,12 @@ namespace Editor
         public void CreateModifierField(IModifier modifier)
         {
             modifier.Active = true;
-            Control fieldRange = FieldRangeObj.Instantiate<Control>();
+
+            FieldRange fieldRange = FieldRangeObj.Instantiate<FieldRange>();
+            fieldRange.Init((ModifierRange)modifier);
             ComponentsVBox.AddChild(fieldRange);
 
             ComponentsVBox.MoveChild(_newModifierPlusButton, ComponentsVBox.GetChildCount() - 1);
-
             CreateBoxController.CloseCreationBox();
         }
 

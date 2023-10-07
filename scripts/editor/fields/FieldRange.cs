@@ -17,6 +17,7 @@ namespace Editor
         [Export] public LineEdit MinLineEditNode;
         [Export] public Line2D RangeLineNode;
         [Export] public PackedScene RangePointObj;
+        public ModifierRange RangeModifier { get; private set; }
         private bool _rangeExpanded = false;
         private bool _rangeMouseDragging = false;
         private double _doubleClickCurrentTick = 999.0;
@@ -29,27 +30,33 @@ namespace Editor
         private List<Control> _rangePointNodes = new();
         private readonly char[] _lineEditAllowedCharacters = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '-' };
 
-        public override void _Ready()
+        public void Init(ModifierRange rangeModifier)
         {
-            ResizeController resizeController = GetNode<ResizeController>("/root/Editor/Controllers/ResizeController");
-            resizeController.WindowResized += OnWindowResize;
+            RangeModifier = rangeModifier;
 
-            CreatePoint(new Vector2(0.0f, 0.5f));
-            CreatePoint(new Vector2(1.0f, 0.5f));
-
-            MaxLineEditNode.Text = "100";
-            MidLineEditNode.Text = "0";
-            MinLineEditNode.Text = "-100";
-            _previousMaxLineEditValue = 100.0;
-            _previousMinLineEditValue = -100.0;
+            _previousMaxLineEditValue = RangeModifier.Range.Max.Value;
+            _previousMinLineEditValue = RangeModifier.Range.Min.Value;
+            MaxLineEditNode.Text = RangeModifier.Range.Max.Value.ToString();
+            MinLineEditNode.Text = RangeModifier.Range.Min.Value.ToString();
+            UpdateMidLine(RangeModifier.Range.Max.Value, RangeModifier.Range.Min.Value);
 
             MaxLineEditNode.TextChanged += (newText) => OnLineEditTextChangeMax(newText);
             MidLineEditNode.TextChanged += (newText) => OnLineEditTextChangeMid(newText);
             MinLineEditNode.TextChanged += (newText) => OnLineEditTextChangeMin(newText);
 
-            GetViewport().GuiFocusChanged += OnFocusChanged;
+            foreach (Vector2 point in RangeModifier.Range.Points)
+            {
+                CreatePoint(point);
+            }
 
             UpdateLines();
+        }
+
+        public override void _Ready()
+        {
+            ResizeController resizeController = GetNode<ResizeController>("/root/Editor/Controllers/ResizeController");
+            resizeController.WindowResized += OnWindowResize;
+            GetViewport().GuiFocusChanged += OnFocusChanged;
         }
 
         public override void _Process(double delta)
@@ -164,6 +171,8 @@ namespace Editor
                 Vector2 worldSpacePosition = RangeSpaceToWorldSpace(point);
                 RangeLineNode.AddPoint(worldSpacePosition);
             }
+
+            UpdateRange(_previousMaxLineEditValue, _previousMinLineEditValue, expandedPointList);
         }
 
         public void ToggleRange()
@@ -408,6 +417,13 @@ namespace Editor
                 if (_selectedLineEdit != null && _selectedLineEditTick > 0.5)
                     _selectedLineEdit.ReleaseFocus();
             }
+        }
+
+        private void UpdateRange(double max, double min, List<Vector2> pointList)
+        {
+            RangeModifier.Range.Max = new RefDouble(max);
+            RangeModifier.Range.Min = new RefDouble(min);
+            RangeModifier.Range.Points = pointList;
         }
     }
 }

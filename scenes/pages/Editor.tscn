@@ -55,16 +55,12 @@ script = ExtResource("4_kkpwu")
 TemplatesTree = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab/TemplatesTree")
 PlayController = NodePath("../PlayController")
 
-[node name="ComponentsController" type="Node" parent="Controllers" node_paths=PackedStringArray("CreateBoxController", "ComponentContainer", "ComponentNameLabel", "ComponentsVBox", "CreationContainer", "CreationContainerVBox")]
+[node name="ComponentsController" type="Node" parent="Controllers" node_paths=PackedStringArray("CreateBoxController", "ComponentNameLabel", "ComponentsVBox")]
 script = ExtResource("7_78ycr")
 CreateBoxController = NodePath("../CreateBoxController")
-ComponentContainer = NodePath("../../TopContainer/RightContainer/ComponentContainer")
 ComponentNameLabel = NodePath("../../TopContainer/RightContainer/ComponentContainer/ComponentTopBar/NameLabel")
 ComponentsVBox = NodePath("../../TopContainer/RightContainer/ComponentContainer/ComponentBodyContainer/ComponentScrollContainer/ComponentVBoxContainer")
 NewModifierButtonObj = ExtResource("8_colxt")
-CreationContainer = NodePath("../../TopContainer/MidContainer/CreationContainer")
-CreationContainerVBox = NodePath("../../TopContainer/MidContainer/CreationContainer/CreateComponentTab/ScrollContainer/CreationVBox")
-CreationButtonObj = ExtResource("8_ekt68")
 FieldRangeObj = ExtResource("9_bmuti")
 
 [node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("BulletPoolNode")]
@@ -382,6 +378,7 @@ position = Vector2(400, 700)
 texture = ExtResource("8_hqx5x")
 
 [node name="CreationContainer" type="Control" parent="TopContainer/MidContainer"]
+visible = false
 layout_mode = 1
 anchor_left = 0.05
 anchor_top = 0.05

@@ -4,7 +4,7 @@ using System;
 
 public partial class CreateBoxController : Node
 {
-    [Export] public SequenceController SequenceController { get; private set; }
+    [Export] public SequenceController SequenceController { get; private set; } //Remove when adding component button programatically
     [Export] public Control CreationContainer { get; private set; }
     [Export] public VBoxContainer CreationContainerVBox { get; private set; }
     [Export] public PackedScene CreationButtonObj { get; private set; }

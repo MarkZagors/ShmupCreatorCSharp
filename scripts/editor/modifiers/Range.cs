@@ -5,16 +5,16 @@ namespace Editor
 {
     public class Range
     {
-        public double Max { get; set; }
-        public double Min { get; set; }
+        public RefDouble Max { get; set; }
+        public RefDouble Min { get; set; }
         public List<Vector2> Points { get; set; }
 
         public static Range From(double max, double min)
         {
             return new Range
             {
-                Max = max,
-                Min = min,
+                Max = new RefDouble(max),
+                Min = new RefDouble(min),
                 Points = new List<Vector2> {
                     new Vector2(0.0f, 0.5f),
                     new Vector2(0.0f, 0.5f),

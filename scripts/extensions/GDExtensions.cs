@@ -12,5 +12,10 @@ namespace ExtensionMethods
 
             GD.Print($"Ping! Called Method: {stackFrames[1].GetMethod()}");
         }
+
+        public static void PrintRange(Editor.Range range)
+        {
+            GD.Print($"Max: {range.Max.Value}, Min: {range.Min.Value}, Points: {range.Points.ToStringMembers()}");
+        }
     }
 }
