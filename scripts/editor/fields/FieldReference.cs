@@ -6,6 +6,7 @@ namespace Editor
 {
     public partial class FieldReference : Control
     {
+        [Signal] public delegate void UpdateEventHandler();
         [Export] public Label RefLabelNode { get; private set; }
         public ModifierRef ReferenceModifier { get; private set; }
         private SequenceController _sequenceController;
@@ -60,6 +61,7 @@ namespace Editor
         {
             RefLabelNode.Text = addingComponent.Name;
             ReferenceModifier.Ref = addingComponent;
+            EmitSignal(SignalName.Update);
         }
 
         public void OnMouseEntered()

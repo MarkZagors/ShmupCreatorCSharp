@@ -7,6 +7,7 @@ namespace Editor
 {
     public partial class ComponentsController : Node
     {
+        [Signal] public delegate void UpdateEventHandler();
         [Export] public CreateBoxController CreateBoxController { get; private set; }
         [Export] public Label ComponentNameLabel { get; private set; }
         [Export] public VBoxContainer ComponentsVBox { get; private set; }
@@ -61,22 +62,26 @@ namespace Editor
                 case ModifierRange modifierRange:
                     var fieldRange = FieldRangeObj.Instantiate<FieldRange>();
                     fieldRange.Init(modifierRange);
+                    fieldRange.Update += () => EmitSignal(SignalName.Update);
                     ComponentsVBox.AddChild(fieldRange);
                     break;
                 case ModifierRef modifierRef:
                     var fieldRef = FieldReferenceObj.Instantiate<FieldReference>();
                     fieldRef.Init(modifierRef);
+                    fieldRef.Update += () => EmitSignal(SignalName.Update);
                     ComponentsVBox.AddChild(fieldRef);
                     break;
                 case ModifierInteger modifierInteger:
                     var fieldInt = FieldIntegerObj.Instantiate<FieldInteger>();
                     fieldInt.Init(modifierInteger);
+                    fieldInt.Update += () => EmitSignal(SignalName.Update);
                     ComponentsVBox.AddChild(fieldInt);
                     break;
                 default:
                     GD.PrintErr($"AddModifierField in Components Controller doesn't support modifier: {modifier}");
                     break;
             }
+            EmitSignal(SignalName.Update);
         }
 
         private void ClearComponentsVBox()

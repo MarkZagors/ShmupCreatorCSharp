@@ -70,6 +70,7 @@ namespace Editor
             GD.Print($"Sequence added at time {Time:0.0}");
 
             UpdateUI();
+            EmitSignal(SignalName.Update);
         }
 
         private bool CheckIfSequenceOverlap()

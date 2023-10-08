@@ -6,6 +6,7 @@ namespace Editor
 {
     public partial class SequenceController : Node
     {
+        [Signal] public delegate void UpdateEventHandler();
         [Export] public ComponentsController ComponentsController { get; private set; }
         [Export] public CreateBoxController CreateBoxController { get; private set; }
         [Export] public Tree SequenceTree { get; private set; }
@@ -125,6 +126,7 @@ namespace Editor
             _openedSequence.Components.Add(component);
             _sequenceTreeLookup.Add(componentTreeItem, component);
             CreateBoxController.CloseCreationBox();
+            EmitSignal(SignalName.Update);
         }
 
         public void OnItemMouseSelected(Vector2 mousePos, int mouseIndex)

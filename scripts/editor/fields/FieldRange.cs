@@ -8,6 +8,7 @@ namespace Editor
 {
     public partial class FieldRange : Control, IField
     {
+        [Signal] public delegate void UpdateEventHandler();
         [Export] double DoubleClickThreshold = 0.35;
         [Export] public Control RangeContainerNode;
         [Export] public Control RangeControllerNode;
@@ -456,8 +457,7 @@ namespace Editor
             RangeModifier.Range.Max.Value = max;
             RangeModifier.Range.Min.Value = min;
             RangeModifier.Range.Points = pointList;
-            GD.Print("Update!");
-            GDE.PrintRange(RangeModifier.Range);
+            EmitSignal(SignalName.Update);
         }
     }
 }

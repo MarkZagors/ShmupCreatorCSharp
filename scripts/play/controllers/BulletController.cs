@@ -8,6 +8,8 @@ namespace Editor
     public partial class BulletController : Node
     {
         [Export] public PlayController PlayController { get; private set; }
+        [Export] public ComponentsController ComponentsController { get; private set; }
+        [Export] public SequenceController SequenceController { get; private set; }
         [Export] public Node2D BulletPoolNode { get; private set; }
         [Export] public PackedScene BulletNodeObj { get; private set; }
         [Export] public int BulletPoolSize { get; private set; } = 100;
@@ -30,6 +32,8 @@ namespace Editor
             _sequenceList = PlayController.SequenceList;
 
             PlayController.Update += Update;
+            ComponentsController.Update += Update;
+            SequenceController.Update += Update;
         }
 
         public void Update()

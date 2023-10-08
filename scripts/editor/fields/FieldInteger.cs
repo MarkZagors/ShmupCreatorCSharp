@@ -6,6 +6,7 @@ namespace Editor
 {
     public partial class FieldInteger : Control, IField
     {
+        [Signal] public delegate void UpdateEventHandler();
         [Export] public LineEdit NumberFieldLineEdit { get; set; }
         public ModifierInteger ModifierInteger { get; private set; }
         private readonly char[] _lineEditAllowedCharacters = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
@@ -40,6 +41,7 @@ namespace Editor
             ModifierInteger.Value = value;
 
             NumberFieldLineEdit.CaretColumn = 999;
+            EmitSignal(SignalName.Update);
         }
     }
 }
