@@ -23,13 +23,18 @@ namespace Editor
                         ComponentType.BULLET
                     }
                 },
+                new ModifierInteger {
+                    ID = ModifierID.BUNDLE_COUNT,
+                    Active = true,
+                    Value = 1
+                },
                 new ModifierRange {
                     ID = ModifierID.BUNDLE_ANGLE,
                     Range = Range.From(180,-180)
                 },
                 new ModifierRange {
                     ID = ModifierID.BUNDLE_SPEED,
-                    Range = Range.From(2, 0)
+                    Range = Range.From(500, 0)
                 },
             };
         }

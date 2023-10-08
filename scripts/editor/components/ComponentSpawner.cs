@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using static Editor.Enums;
 
 namespace Editor
 {
@@ -16,6 +17,13 @@ namespace Editor
             TreeItem = treeItem;
             Modifiers = new List<IModifier>
             {
+                new ModifierRef {
+                    ID = ModifierID.SPAWNER_REF,
+                    Active = true,
+                    AllowedComponentTypes = new() {
+                        ComponentType.BUNDLE
+                    }
+                },
             };
         }
     }

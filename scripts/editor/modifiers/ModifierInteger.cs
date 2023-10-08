@@ -1,9 +1,9 @@
 namespace Editor
 {
-    public class ModifierRange : IModifier
+    public class ModifierInteger : IModifier
     {
         public ModifierID ID { get; set; }
         public bool Active { get; set; } = false;
-        public Range Range { get; set; }
+        public int Value { get; set; } = 0;
     }
 }

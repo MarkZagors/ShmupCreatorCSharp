@@ -13,6 +13,7 @@ namespace Editor
         [Export] public PackedScene NewModifierButtonObj { get; private set; }
         [Export] public PackedScene FieldRangeObj { get; private set; }
         [Export] public PackedScene FieldReferenceObj { get; private set; }
+        [Export] public PackedScene FieldIntegerObj { get; private set; }
         private IComponent _openedComponent;
         private Button _newModifierPlusButton;
 
@@ -66,6 +67,11 @@ namespace Editor
                     var fieldRef = FieldReferenceObj.Instantiate<FieldReference>();
                     fieldRef.Init(modifierRef);
                     ComponentsVBox.AddChild(fieldRef);
+                    break;
+                case ModifierInteger modifierInteger:
+                    var fieldInt = FieldIntegerObj.Instantiate<FieldInteger>();
+                    fieldInt.Init(modifierInteger);
+                    ComponentsVBox.AddChild(fieldInt);
                     break;
                 default:
                     GD.PrintErr($"AddModifierField in Components Controller doesn't support modifier: {modifier}");

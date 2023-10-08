@@ -7,8 +7,10 @@ namespace Editor
     public enum ModifierID
     {
         BUNDLE_REF_BULLET,
+        BUNDLE_COUNT,
         BUNDLE_ANGLE,
         BUNDLE_SPEED,
+        SPAWNER_REF
     }
 
     public static class ModifierNamer
@@ -18,6 +20,7 @@ namespace Editor
             {ModifierID.BUNDLE_REF_BULLET, "Bullet Data"},
             {ModifierID.BUNDLE_ANGLE, "Angle"},
             {ModifierID.BUNDLE_SPEED, "Speed"},
+            {ModifierID.SPAWNER_REF, "Bundle Data"},
         };
 
         public static string Get(ModifierID id)
