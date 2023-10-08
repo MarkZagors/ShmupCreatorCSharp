@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using static Editor.Enums;
 
 namespace Editor
 {
@@ -8,6 +9,7 @@ namespace Editor
         public string Name { get; set; }
         public TreeItem TreeItem { get; set; }
         public List<IModifier> Modifiers { get; set; }
+        public Enums.ComponentType Type { get; set; } = Enums.ComponentType.BUNDLE;
 
         public ComponentBundle(string name, TreeItem treeItem)
         {
@@ -16,6 +18,9 @@ namespace Editor
             Modifiers = new List<IModifier> {
                 new ModifierRef {
                     ID = ModifierID.BUNDLE_REF_BULLET,
+                    AllowedComponentTypes = new() {
+                        ComponentType.BULLET
+                    }
                 },
                 new ModifierRange {
                     ID = ModifierID.BUNDLE_ANGLE,
@@ -23,7 +28,7 @@ namespace Editor
                 },
                 new ModifierRange {
                     ID = ModifierID.BUNDLE_SPEED,
-                    Range = Range.From(1, -1)
+                    Range = Range.From(2, 0)
                 },
             };
         }

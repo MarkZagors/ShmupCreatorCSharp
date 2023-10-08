@@ -196,6 +196,17 @@ namespace Editor
             TemplatesTab.Visible = true;
             SequenceTab.Visible = false;
         }
+
+        public IComponent GetSelectedComponent()
+        {
+            var valid = _sequenceTreeLookup.TryGetValue(_selectedTreeItem, out IComponent component);
+            if (valid)
+                return _sequenceTreeLookup[_selectedTreeItem];
+            else
+            {
+                return null;
+            }
+        }
     }
 }
 

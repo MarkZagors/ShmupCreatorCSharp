@@ -3,10 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://6aax5g0j0hlo" path="res://scenes/editor/fields/BaseField.tscn" id="1_yfffv"]
 [ext_resource type="Script" path="res://scripts/editor/fields/FieldReference.cs" id="2_c3qm4"]
 
-[node name="ReferenceField" instance=ExtResource("1_yfffv")]
+[node name="ReferenceField" node_paths=PackedStringArray("RefLabelNode") instance=ExtResource("1_yfffv")]
 script = ExtResource("2_c3qm4")
+RefLabelNode = NodePath("RefLabel")
 
-[node name="Label" type="Label" parent="." index="2"]
+[node name="RefLabel" type="Label" parent="." index="2"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 1.0
@@ -17,3 +18,6 @@ offset_bottom = 50.0
 text = "<null>"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[connection signal="mouse_entered" from="." to="." method="OnMouseEntered"]
+[connection signal="mouse_exited" from="." to="." method="OnMouseExited"]

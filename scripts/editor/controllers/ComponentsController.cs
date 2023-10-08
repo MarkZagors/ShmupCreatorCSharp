@@ -80,5 +80,10 @@ namespace Editor
                 vboxChild.QueueFree();
             }
         }
+
+        public IComponent GetOpenedComponent()
+        {
+            return _openedComponent;
+        }
     }
 }
