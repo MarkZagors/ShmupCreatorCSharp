@@ -70,18 +70,60 @@ namespace Editor
 
         public void CreateBullet()
         {
-            TreeItem root = SequenceTree.GetRoot();
-            TreeItem bulletComponentTreeItem = root.CreateChild();
-            var name = WrapComponentName("Bullet", _openedSequence.Components);
-            IComponent bulletComponent = new ComponentBullet
-            (
-                name: name,
-                treeItem: bulletComponentTreeItem
-            );
+            CreateComponent(Enums.ComponentType.BULLET);
+        }
 
-            bulletComponentTreeItem.SetText(0, name);
-            _openedSequence.Components.Add(bulletComponent);
-            _sequenceTreeLookup.Add(bulletComponentTreeItem, bulletComponent);
+        public void CreateBundle()
+        {
+            CreateComponent(Enums.ComponentType.BUNDLE);
+        }
+
+        public void CreateSpawner()
+        {
+            CreateComponent(Enums.ComponentType.SPAWNER);
+        }
+
+        private void CreateComponent(Enums.ComponentType componentType)
+        {
+            TreeItem root = SequenceTree.GetRoot();
+            TreeItem componentTreeItem = root.CreateChild();
+            IComponent component = null;
+            string name = "NOT ADDED";
+
+            switch (componentType)
+            {
+                case Enums.ComponentType.BULLET:
+                    name = WrapComponentName("Bullet", _openedSequence.Components);
+                    component = new ComponentBullet
+                    (
+                        name: name,
+                        treeItem: componentTreeItem
+                    );
+                    break;
+                case Enums.ComponentType.BUNDLE:
+                    name = WrapComponentName("Bundle", _openedSequence.Components);
+                    component = new ComponentBundle
+                    (
+                        name: name,
+                        treeItem: componentTreeItem
+                    );
+                    break;
+                case Enums.ComponentType.SPAWNER:
+                    name = WrapComponentName("Spawner", _openedSequence.Components);
+                    component = new ComponentSpawner
+                    (
+                        name: name,
+                        treeItem: componentTreeItem
+                    );
+                    break;
+                default:
+                    GD.PushError($"Component type not implemented in Create Component!: {componentType}");
+                    break;
+            }
+
+            componentTreeItem.SetText(0, name);
+            _openedSequence.Components.Add(component);
+            _sequenceTreeLookup.Add(componentTreeItem, component);
             CreateBoxController.CloseCreationBox();
         }
 

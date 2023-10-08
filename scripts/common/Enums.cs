@@ -7,5 +7,11 @@ namespace Editor
             FORWARD,
             BACKWARD
         }
+
+        public enum ComponentType {
+            BULLET,
+            BUNDLE,
+            SPAWNER
+        }
     }
 }

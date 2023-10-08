@@ -26,6 +26,16 @@ public partial class CreateBoxController : Node
         bulletButton.Text = "Bullet";
         bulletButton.Pressed += () => SequenceController.CreateBullet();
         CreationContainerVBox.AddChild(bulletButton);
+
+        Button bundleButton = CreationButtonObj.Instantiate<Button>();
+        bundleButton.Text = "Bundle";
+        bundleButton.Pressed += () => SequenceController.CreateBundle();
+        CreationContainerVBox.AddChild(bundleButton);
+
+        Button spawnerButton = CreationButtonObj.Instantiate<Button>();
+        spawnerButton.Text = "Spawner";
+        spawnerButton.Pressed += () => SequenceController.CreateSpawner();
+        CreationContainerVBox.AddChild(spawnerButton);
     }
 
 
