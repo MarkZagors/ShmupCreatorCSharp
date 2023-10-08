@@ -96,6 +96,10 @@ namespace Editor
                     }
                 }
             }
+
+            _bulletPool.ClearPool();
+
+            Update();
         }
 
         private void GenerateSpawners(ComponentSpawner spawnerComponent)
@@ -119,10 +123,6 @@ namespace Editor
             );
 
             _spawnerList.Add(spawner);
-
-            _bulletPool.ClearPool();
-
-            Update();
         }
 
         private static double[] GetEqualSizePoints(int n)
