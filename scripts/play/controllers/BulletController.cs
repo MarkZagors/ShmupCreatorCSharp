@@ -38,8 +38,8 @@ namespace Editor
 
         public void Update()
         {
-            GDE.PrintHere();
-            GD.Print(PlayController.Time);
+            foreach (Sequence sequence in _sequenceList) {
+            }
         }
     }
 }

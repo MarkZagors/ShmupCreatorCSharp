@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using static Editor.Enums;
 
@@ -10,6 +11,7 @@ namespace Editor
         public TreeItem TreeItem { get; set; }
         public List<IModifier> Modifiers { get; set; }
         public Enums.ComponentType Type { get; set; } = Enums.ComponentType.BUNDLE;
+        private Dictionary<ModifierID, IModifier> _modifiersLookup;
 
         public ComponentBundle(string name, TreeItem treeItem)
         {
@@ -27,6 +29,7 @@ namespace Editor
                     ID = ModifierID.BUNDLE_COUNT,
                     Active = true,
                     Value = 1,
+                    IsStructureChanging = true
                 },
                 new ModifierRange {
                     ID = ModifierID.BUNDLE_ANGLE,
@@ -37,6 +40,19 @@ namespace Editor
                     Range = Range.From(500, 0)
                 },
             };
+            _modifiersLookup = Modifiers.ToDictionary(modifier => modifier.ID);
+        }
+
+        public IModifier GetModifier(ModifierID modifierID)
+        {
+            if (_modifiersLookup.ContainsKey(modifierID))
+            {
+                return _modifiersLookup[modifierID];
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

@@ -9,5 +9,6 @@ namespace Editor
         public TreeItem TreeItem { get; set; }
         public List<IModifier> Modifiers { get; set; }
         public Enums.ComponentType Type { get; set; }
+        public IModifier GetModifier(ModifierID modifierID);
     }
 }

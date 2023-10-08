@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using static Editor.Enums;
 
@@ -10,6 +11,7 @@ namespace Editor
         public TreeItem TreeItem { get; set; }
         public List<IModifier> Modifiers { get; set; }
         public Enums.ComponentType Type { get; set; } = Enums.ComponentType.SPAWNER;
+        private Dictionary<ModifierID, IModifier> _modifiersLookup;
 
         public ComponentSpawner(string name, TreeItem treeItem)
         {
@@ -25,6 +27,19 @@ namespace Editor
                     }
                 },
             };
+            _modifiersLookup = Modifiers.ToDictionary(modifier => modifier.ID);
+        }
+
+        public IModifier GetModifier(ModifierID modifierID)
+        {
+            if (_modifiersLookup.ContainsKey(modifierID))
+            {
+                return _modifiersLookup[modifierID];
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

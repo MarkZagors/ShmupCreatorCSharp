@@ -157,7 +157,8 @@ namespace Editor
         private void ClickOnComponent(TreeItem selectedTreeItem)
         {
             ComponentsController.OpenComponent(
-                _sequenceTreeLookup[selectedTreeItem]
+                _sequenceTreeLookup[selectedTreeItem],
+                _openedSequence
             );
         }
 
