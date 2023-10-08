@@ -16,6 +16,11 @@ namespace Editor
         {
             ReferenceModifier = modifierRef;
 
+            if (ReferenceModifier.Ref != null)
+            {
+                RefLabelNode.Text = ReferenceModifier.Ref.Name;
+            }
+
             GetNode<Label>("FieldName").Text = ModifierNamer.Get(modifierRef.ID);
         }
 
@@ -54,6 +59,7 @@ namespace Editor
         private void AddReference(IComponent addingComponent)
         {
             RefLabelNode.Text = addingComponent.Name;
+            ReferenceModifier.Ref = addingComponent;
         }
 
         public void OnMouseEntered()

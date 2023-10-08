@@ -18,6 +18,7 @@ namespace Editor
             Modifiers = new List<IModifier> {
                 new ModifierRef {
                     ID = ModifierID.BUNDLE_REF_BULLET,
+                    Active = true,
                     AllowedComponentTypes = new() {
                         ComponentType.BULLET
                     }
