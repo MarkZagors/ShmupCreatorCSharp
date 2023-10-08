@@ -1,3 +1,4 @@
+using ExtensionMethods;
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -6,9 +7,12 @@ namespace Editor
 {
     public partial class BulletController : Node
     {
+        [Export] public PlayController PlayController { get; private set; }
         [Export] public Node2D BulletPoolNode { get; private set; }
         [Export] public PackedScene BulletNodeObj { get; private set; }
         [Export] public int BulletPoolSize { get; private set; } = 100;
+        private List<BulletData> _bulletDataList = new();
+        private List<Sequence> _sequenceList;
 
         private List<Node> _bulletPool = new();
 
@@ -22,8 +26,16 @@ namespace Editor
 
                 _bulletPool.Add(bullet);
             }
+
+            _sequenceList = PlayController.SequenceList;
+
+            PlayController.Update += Update;
         }
 
-
+        public void Update()
+        {
+            GDE.PrintHere();
+            GD.Print(PlayController.Time);
+        }
     }
 }

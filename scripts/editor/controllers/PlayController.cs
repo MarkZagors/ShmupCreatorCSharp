@@ -7,6 +7,7 @@ namespace Editor
 {
     public partial class PlayController : Node
     {
+        [Signal] public delegate void UpdateEventHandler();
         [Export] public double ScrollTick { get; private set; } = 0.25;
         [Export] public SequenceController SequenceController { get; private set; }
         [Export] public Label TimelineTimeLabel { get; private set; }
@@ -95,6 +96,7 @@ namespace Editor
         private void ProcessPlay(double delta)
         {
             Time += delta;
+            EmitSignal(SignalName.Update);
         }
 
         private void TogglePlaying()
@@ -121,6 +123,7 @@ namespace Editor
                 Time -= ScrollTick;
                 Time = Math.Max(Time, 0.0);
             }
+            EmitSignal(SignalName.Update);
         }
 
         //=================

@@ -67,8 +67,9 @@ FieldRangeObj = ExtResource("9_bmuti")
 FieldReferenceObj = ExtResource("9_m4j1e")
 FieldIntegerObj = ExtResource("10_u1pli")
 
-[node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("BulletPoolNode")]
+[node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayController", "BulletPoolNode")]
 script = ExtResource("4_cwq5m")
+PlayController = NodePath("../PlayController")
 BulletPoolNode = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/SubViewportContainer/PlayViewport/BulletPool")
 BulletNodeObj = ExtResource("6_wfl5l")
 
