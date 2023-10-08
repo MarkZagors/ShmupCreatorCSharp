@@ -1,15 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://c4hljf0assyf3"]
+[gd_scene load_steps=3 format=3 uid="uid://c4hljf0assyf3"]
 
 [ext_resource type="PackedScene" uid="uid://6aax5g0j0hlo" path="res://scenes/editor/fields/BaseField.tscn" id="1_4q41d"]
 [ext_resource type="Script" path="res://scripts/editor/fields/FieldInteger.cs" id="2_q47cg"]
 
-[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_vr4yi"]
-size = Vector2(0, 0)
-
-[node name="IntegerField" instance=ExtResource("1_4q41d")]
+[node name="IntegerField" node_paths=PackedStringArray("NumberFieldLineEdit") instance=ExtResource("1_4q41d")]
 script = ExtResource("2_q47cg")
+NumberFieldLineEdit = NodePath("NumberField")
 
-[node name="NumberField" type="SpinBox" parent="." index="2"]
+[node name="NumberField" type="LineEdit" parent="." index="2"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.54
@@ -19,5 +17,6 @@ offset_top = 7.0
 offset_right = -5.99997
 offset_bottom = 42.0
 grow_horizontal = 2
-theme_override_icons/updown = SubResource("PlaceholderTexture2D_vr4yi")
 select_all_on_focus = true
+
+[connection signal="text_changed" from="NumberField" to="." method="OnLineTextChange"]

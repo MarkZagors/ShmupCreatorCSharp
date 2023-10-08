@@ -18,6 +18,7 @@ namespace Editor
         private static readonly Dictionary<ModifierID, string> _nameList = new()
         {
             {ModifierID.BUNDLE_REF_BULLET, "Bullet Data"},
+            {ModifierID.BUNDLE_COUNT, "Count"},
             {ModifierID.BUNDLE_ANGLE, "Angle"},
             {ModifierID.BUNDLE_SPEED, "Speed"},
             {ModifierID.SPAWNER_REF, "Bundle Data"},

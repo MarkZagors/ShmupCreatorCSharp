@@ -26,7 +26,7 @@ namespace Editor
                 new ModifierInteger {
                     ID = ModifierID.BUNDLE_COUNT,
                     Active = true,
-                    Value = 1
+                    Value = 1,
                 },
                 new ModifierRange {
                     ID = ModifierID.BUNDLE_ANGLE,
