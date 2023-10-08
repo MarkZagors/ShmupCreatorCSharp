@@ -18,6 +18,10 @@ namespace Editor
                     ID = ModifierID.BUNDLE_ANGLE,
                     Range = Range.From(180,-180)
                 },
+                new ModifierRange {
+                    ID = ModifierID.BUNDLE_SPEED,
+                    Range = Range.From(180,-180)
+                },
             };
         }
     }

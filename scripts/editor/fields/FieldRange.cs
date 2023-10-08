@@ -57,6 +57,8 @@ namespace Editor
                 CreatePoint(point);
             }
 
+            GetNode<Label>("FieldName").Text = ModifierNamer.Get(rangeModifier.ID);
+
             UpdateLines();
         }
 
