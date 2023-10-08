@@ -16,19 +16,15 @@ namespace Editor
         private readonly List<Spawner> _spawnerList = new();
         private List<Sequence> _sequenceList;
         private Vector2 _bossPosition = new Vector2(400, 200);
-
-        private List<Node> _bulletPool = new();
+        private BulletPool _bulletPool;
 
         public override void _Ready()
         {
-            for (int i = 0; i < BulletPoolSize; i++)
-            {
-                Node2D bullet = BulletNodeObj.Instantiate<Node2D>();
-                bullet.Visible = false;
-                BulletPoolNode.AddChild(bullet);
-
-                _bulletPool.Add(bullet);
-            }
+            _bulletPool = new BulletPool(
+                poolGroupNode: BulletPoolNode,
+                bulletObj: BulletNodeObj,
+                poolSize: 512
+            );
 
             _sequenceList = PlayController.SequenceList;
 
@@ -67,11 +63,17 @@ namespace Editor
                     bulletData.Speed = (float)speedRange.GetValueAt(pointX);
 
                     bulletData.Position = new Vector2(
-                        (bulletData.Speed * MathF.Cos(bulletData.Angle) * (float)spawnerTime) + _bossPosition.X,
-                        (bulletData.Speed * MathF.Sin(bulletData.Angle) * (float)spawnerTime) + _bossPosition.Y
+                        (bulletData.Speed * MathF.Cos(bulletData.Angle * Calc.Deg2Rad) * (float)spawnerTime) + _bossPosition.X,
+                        (bulletData.Speed * MathF.Sin(bulletData.Angle * Calc.Deg2Rad) * (float)spawnerTime) + _bossPosition.Y
                     );
 
-                    GD.Print(bulletData.Position);
+                    if (bulletData.Node == null)
+                    {
+                        bulletData.Node = _bulletPool.GetBullet();
+                    }
+
+                    bulletData.Node.Position = bulletData.Position;
+                    bulletData.Node.RotationDegrees = bulletData.Angle;
                 }
             }
         }
@@ -117,6 +119,8 @@ namespace Editor
             );
 
             _spawnerList.Add(spawner);
+
+            _bulletPool.ClearPool();
 
             Update();
         }
