@@ -11,6 +11,7 @@ namespace Editor
         public TreeItem TreeItem { get; set; }
         public List<IModifier> Modifiers { get; set; }
         public Enums.ComponentType Type { get; set; } = Enums.ComponentType.SPAWNER;
+        public bool Valid { get; set; } = false;
         private Dictionary<ModifierID, IModifier> _modifiersLookup;
 
         public ComponentSpawner(string name, TreeItem treeItem)
@@ -40,6 +41,11 @@ namespace Editor
             {
                 return null;
             }
+        }
+
+        public ComponentBundle GetBundleComponent()
+        {
+            return (ComponentBundle)((ModifierRef)GetModifier(ModifierID.SPAWNER_REF)).Ref;
         }
     }
 }

@@ -8,6 +8,7 @@ namespace Editor
     public partial class ComponentsController : Node
     {
         [Signal] public delegate void UpdateEventHandler();
+        [Signal] public delegate void OnValidRestructureEventHandler();
         [Export] public CreateBoxController CreateBoxController { get; private set; }
         [Export] public Label ComponentNameLabel { get; private set; }
         [Export] public VBoxContainer ComponentsVBox { get; private set; }
@@ -105,7 +106,8 @@ namespace Editor
                 var bundleRefNested = (ModifierRef)spawnRef.Ref.GetModifier(ModifierID.BUNDLE_REF_BULLET);
                 if (bundleRefNested.Ref != null)
                 {
-                    GD.Print("Valid!");
+                    ((ComponentSpawner)_openedComponent).Valid = true;
+                    EmitSignal(SignalName.OnValidRestructure);
                 }
             }
             else if (bundleRef != null)
@@ -119,7 +121,8 @@ namespace Editor
                         var bundleRefInSpawner = (ModifierRef)spawnRefInSequence.Ref.GetModifier(ModifierID.BUNDLE_REF_BULLET);
                         if (bundleRefInSpawner.Ref == bundleRef.Ref)
                         {
-                            GD.Print("Valid!");
+                            ((ComponentSpawner)component).Valid = true;
+                            EmitSignal(SignalName.OnValidRestructure);
                         }
                     }
                 }
