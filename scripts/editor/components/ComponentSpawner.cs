@@ -12,12 +12,14 @@ namespace Editor
         public List<IModifier> Modifiers { get; set; }
         public Enums.ComponentType Type { get; set; } = Enums.ComponentType.SPAWNER;
         public bool Valid { get; set; } = false;
+        public Sequence Sequence { get; set; } = null;
         private Dictionary<ModifierID, IModifier> _modifiersLookup;
 
-        public ComponentSpawner(string name, TreeItem treeItem)
+        public ComponentSpawner(string name, TreeItem treeItem, Sequence sequence)
         {
             Name = name;
             TreeItem = treeItem;
+            Sequence = sequence;
             Modifiers = new List<IModifier>
             {
                 new ModifierRef {

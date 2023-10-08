@@ -114,7 +114,8 @@ namespace Editor
                     component = new ComponentSpawner
                     (
                         name: name,
-                        treeItem: componentTreeItem
+                        treeItem: componentTreeItem,
+                        sequence: _openedSequence
                     );
                     break;
                 default:

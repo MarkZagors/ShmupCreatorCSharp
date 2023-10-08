@@ -13,7 +13,7 @@ namespace Editor
         [Export] public Node2D BulletPoolNode { get; private set; }
         [Export] public PackedScene BulletNodeObj { get; private set; }
         [Export] public int BulletPoolSize { get; private set; } = 100;
-        private List<Spawner> _spawnerList = new();
+        private readonly List<Spawner> _spawnerList = new();
         private List<Sequence> _sequenceList;
         private Vector2 _bossPosition = new Vector2(400, 200);
 
@@ -43,17 +43,35 @@ namespace Editor
         {
             foreach (Spawner spawner in _spawnerList)
             {
+                double spawnerTime = PlayController.Time - spawner.Component.Sequence.Time;
+                if (spawnerTime < 0.0) continue;
+
+                ComponentBundle bundle = spawner.Component.GetBundleComponent();
+
+                Range angleRange =
+                    (bundle.GetModifier(ModifierID.BUNDLE_ANGLE) as ModifierRange)
+                    .Range;
+
+                Range speedRange =
+                    (bundle.GetModifier(ModifierID.BUNDLE_SPEED) as ModifierRange)
+                    .Range;
+
                 double[] pointArray = GetEqualSizePoints(spawner.BulletCount);
+
                 for (int i = 0; i < spawner.BulletCount; i++)
                 {
-                    ComponentBundle bundle = spawner.Component.GetBundleComponent();
-
-                    Range angleRange =
-                        (bundle.GetModifier(ModifierID.BUNDLE_ANGLE) as ModifierRange)
-                        .Range;
-
                     var pointX = pointArray[i];
-                    GD.Print($"[{spawner}] X: {pointX}, Y: {angleRange.GetValueAt(pointX)}");
+
+                    BulletData bulletData = spawner.Bullets[i];
+                    bulletData.Angle = (float)angleRange.GetValueAt(pointX);
+                    bulletData.Speed = (float)speedRange.GetValueAt(pointX);
+
+                    bulletData.Position = new Vector2(
+                        (bulletData.Speed * MathF.Cos(bulletData.Angle) * (float)spawnerTime) + _bossPosition.X,
+                        (bulletData.Speed * MathF.Sin(bulletData.Angle) * (float)spawnerTime) + _bossPosition.Y
+                    );
+
+                    GD.Print(bulletData.Position);
                 }
             }
         }
@@ -68,17 +86,17 @@ namespace Editor
                 {
                     if (component.Type == Enums.ComponentType.SPAWNER)
                     {
-                        var spawner = (ComponentSpawner)component;
-                        if (spawner.Valid)
+                        var spawnerComponent = (ComponentSpawner)component;
+                        if (spawnerComponent.Valid)
                         {
-                            GenerateSpawnerBulletData(spawner);
+                            GenerateSpawners(spawnerComponent);
                         }
                     }
                 }
             }
         }
 
-        private void GenerateSpawnerBulletData(ComponentSpawner spawnerComponent)
+        private void GenerateSpawners(ComponentSpawner spawnerComponent)
         {
             ComponentBundle bundle = spawnerComponent.GetBundleComponent();
             int bulletCount =
@@ -92,7 +110,7 @@ namespace Editor
                 bulletDataArray[i] = bulletData;
             }
 
-            Spawner spawner = new Spawner(
+            Spawner spawner = new(
                 component: spawnerComponent,
                 bullets: bulletDataArray,
                 bulletCount: bulletCount
@@ -103,7 +121,7 @@ namespace Editor
             Update();
         }
 
-        private double[] GetEqualSizePoints(int n)
+        private static double[] GetEqualSizePoints(int n)
         {
             double f = 0.0f;
             double distanceInterval = 1.0 / n;
