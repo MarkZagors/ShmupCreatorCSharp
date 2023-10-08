@@ -12,6 +12,7 @@ namespace Editor
         [Export] public VBoxContainer ComponentsVBox { get; private set; }
         [Export] public PackedScene NewModifierButtonObj { get; private set; }
         [Export] public PackedScene FieldRangeObj { get; private set; }
+        [Export] public PackedScene FieldReferenceObj { get; private set; }
         private IComponent _openedComponent;
         private Button _newModifierPlusButton;
 
@@ -54,9 +55,22 @@ namespace Editor
 
         private void AddModifierField(IModifier modifier)
         {
-            FieldRange fieldRange = FieldRangeObj.Instantiate<FieldRange>();
-            fieldRange.Init((ModifierRange)modifier);
-            ComponentsVBox.AddChild(fieldRange);
+            switch (modifier)
+            {
+                case ModifierRange modifierRange:
+                    var fieldRange = FieldRangeObj.Instantiate<FieldRange>();
+                    fieldRange.Init(modifierRange);
+                    ComponentsVBox.AddChild(fieldRange);
+                    break;
+                case ModifierRef modifierRef:
+                    var fieldRef = FieldReferenceObj.Instantiate<FieldReference>();
+                    fieldRef.Init(modifierRef);
+                    ComponentsVBox.AddChild(fieldRef);
+                    break;
+                default:
+                    GD.PrintErr($"AddModifierField in Components Controller doesn't support modifier: {modifier}");
+                    break;
+            }
         }
 
         private void ClearComponentsVBox()

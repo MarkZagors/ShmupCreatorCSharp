@@ -6,14 +6,16 @@ namespace Editor
 {
     public enum ModifierID
     {
+        BUNDLE_REF_BULLET,
         BUNDLE_ANGLE,
-        BUNDLE_SPEED
+        BUNDLE_SPEED,
     }
 
     public static class ModifierNamer
     {
         private static readonly Dictionary<ModifierID, string> _nameList = new()
         {
+            {ModifierID.BUNDLE_REF_BULLET, "Bullet Data"},
             {ModifierID.BUNDLE_ANGLE, "Angle"},
             {ModifierID.BUNDLE_SPEED, "Speed"},
         };
