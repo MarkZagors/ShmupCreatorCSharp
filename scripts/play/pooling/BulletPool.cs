@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Godot;
 
 namespace Editor
@@ -35,7 +36,7 @@ namespace Editor
                 if (!_bulletPool[i].Visible)
                 {
                     _bulletPool[i].Visible = true;
-                    GD.Print("Bullet created");
+                    GD.Print("Bullet activated");
                     return _bulletPool[i];
                 }
             }
@@ -48,6 +49,37 @@ namespace Editor
             {
                 _bulletPool[i].Visible = false;
             }
+        }
+
+        public static void ClearSpawner(Spawner spawner)
+        {
+            for (int i = 0; i < spawner.Bullets.Length; i++)
+            {
+                if (spawner.Bullets[i].Node != null)
+                {
+                    spawner.Bullets[i].Node.Visible = false;
+                    spawner.Bullets[i].Node = null;
+                }
+            }
+        }
+
+        public static bool BorderCheck(BulletData bulletData, Rect borderRect)
+        {
+            if (
+                bulletData.Position.X > borderRect.X + borderRect.Width ||
+                bulletData.Position.X < borderRect.X ||
+                bulletData.Position.Y > borderRect.Y + borderRect.Height ||
+                bulletData.Position.X < borderRect.Y
+            )
+            {
+                if (bulletData.Node != null)
+                {
+                    bulletData.Node.Visible = false;
+                    bulletData.Node = null;
+                }
+                return false;
+            }
+            return true;
         }
     }
 }

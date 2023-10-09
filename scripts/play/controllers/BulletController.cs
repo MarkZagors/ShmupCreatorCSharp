@@ -17,6 +17,7 @@ namespace Editor
         private List<Sequence> _sequenceList;
         private Vector2 _bossPosition = new Vector2(400, 200);
         private BulletPool _bulletPool;
+        private Rect _windowRect = new Rect(0, 0, 768, 1024);
 
         public override void _Ready()
         {
@@ -40,7 +41,11 @@ namespace Editor
             foreach (Spawner spawner in _spawnerList)
             {
                 double spawnerTime = PlayController.Time - spawner.Component.Sequence.Time;
-                if (spawnerTime < 0.0) continue;
+                if (spawnerTime < 0.0)
+                {
+                    BulletPool.ClearSpawner(spawner);
+                    continue;
+                }
 
                 ComponentBundle bundle = spawner.Component.GetBundleComponent();
 
@@ -67,13 +72,17 @@ namespace Editor
                         (bulletData.Speed * MathF.Sin(bulletData.Angle * Calc.Deg2Rad) * (float)spawnerTime) + _bossPosition.Y
                     );
 
-                    if (bulletData.Node == null)
+                    bool isBulletInBorder = BulletPool.BorderCheck(bulletData, _windowRect);
+                    if (isBulletInBorder)
                     {
-                        bulletData.Node = _bulletPool.GetBullet();
-                    }
+                        if (bulletData.Node == null)
+                        {
+                            bulletData.Node = _bulletPool.GetBullet();
+                        }
 
-                    bulletData.Node.Position = bulletData.Position;
-                    bulletData.Node.RotationDegrees = bulletData.Angle;
+                        bulletData.Node.Position = bulletData.Position;
+                        bulletData.Node.RotationDegrees = bulletData.Angle;
+                    }
                 }
             }
         }
