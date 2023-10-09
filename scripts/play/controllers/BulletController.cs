@@ -15,9 +15,9 @@ namespace Editor
         [Export] public int BulletPoolSize { get; private set; } = 100;
         private readonly List<Spawner> _spawnerList = new();
         private List<Sequence> _sequenceList;
-        private Vector2 _bossPosition = new Vector2(400, 200);
+        private Vector2 _bossPosition = new(400, 200);
         private BulletPool _bulletPool;
-        private Rect _windowRect = new Rect(0, 0, 768, 1024);
+        private Rect _windowRect = new(0, 0, 768, 1024);
 
         public override void _Ready()
         {
@@ -75,10 +75,7 @@ namespace Editor
                     bool isBulletInBorder = BulletPool.BorderCheck(bulletData, _windowRect);
                     if (isBulletInBorder)
                     {
-                        if (bulletData.Node == null)
-                        {
-                            bulletData.Node = _bulletPool.GetBullet();
-                        }
+                        bulletData.Node ??= _bulletPool.GetBullet();
 
                         bulletData.Node.Position = bulletData.Position;
                         bulletData.Node.RotationDegrees = bulletData.Angle;

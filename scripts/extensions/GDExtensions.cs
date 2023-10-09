@@ -7,7 +7,7 @@ namespace ExtensionMethods
     {
         public static void PrintHere()
         {
-            StackTrace stackTrace = new StackTrace();
+            StackTrace stackTrace = new();
             StackFrame[] stackFrames = stackTrace.GetFrames();
 
             GD.Print($"Ping! Called Method: {stackFrames[1].GetMethod()}");

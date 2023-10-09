@@ -7,10 +7,10 @@ namespace Editor
 {
     public class BulletPool
     {
-        private Node2D _poolGroupNode;
-        private PackedScene _bulletObj;
-        private int _poolSize;
-        private Node2D[] _bulletPool;
+        private readonly Node2D _poolGroupNode;
+        private readonly PackedScene _bulletObj;
+        private readonly int _poolSize;
+        private readonly Node2D[] _bulletPool;
 
         public BulletPool(Node2D poolGroupNode, PackedScene bulletObj, int poolSize)
         {

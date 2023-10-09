@@ -13,7 +13,7 @@ namespace Editor
         public Enums.ComponentType Type { get; set; } = Enums.ComponentType.SPAWNER;
         public bool Valid { get; set; } = false;
         public Sequence Sequence { get; set; } = null;
-        private Dictionary<ModifierID, IModifier> _modifiersLookup;
+        private readonly Dictionary<ModifierID, IModifier> _modifiersLookup;
 
         public ComponentSpawner(string name, TreeItem treeItem, Sequence sequence)
         {

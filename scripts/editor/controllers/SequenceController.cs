@@ -14,7 +14,7 @@ namespace Editor
         [Export] public Control SequenceTab { get; private set; }
 
         private Sequence _openedSequence;
-        private Dictionary<TreeItem, IComponent> _sequenceTreeLookup = new();
+        private readonly Dictionary<TreeItem, IComponent> _sequenceTreeLookup = new();
         private TreeItem _selectedTreeItem;
         private Vector2 _treeItemSelectionMousePos;
 
@@ -205,7 +205,7 @@ namespace Editor
         {
             var valid = _sequenceTreeLookup.TryGetValue(_selectedTreeItem, out IComponent component);
             if (valid)
-                return _sequenceTreeLookup[_selectedTreeItem];
+                return component;
             else
             {
                 return null;

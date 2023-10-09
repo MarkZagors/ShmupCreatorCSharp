@@ -10,7 +10,7 @@ namespace Editor
         public TreeItem TreeItem { get; set; }
         public List<IModifier> Modifiers { get; set; }
         public Enums.ComponentType Type { get; set; } = Enums.ComponentType.BULLET;
-        private Dictionary<ModifierID, IModifier> _modifiersLookup;
+        private readonly Dictionary<ModifierID, IModifier> _modifiersLookup;
 
         public ComponentBullet(string name, TreeItem treeItem)
         {

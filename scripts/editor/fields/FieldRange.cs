@@ -29,8 +29,8 @@ namespace Editor
         private Control _currentHoldingPoint;
         private Control _selectedLineEdit = null;
         private double _selectedLineEditTick = 500.0;
-        private List<Control> _hoveringRangePoints = new();
-        private List<Control> _rangePointNodes = new();
+        private readonly List<Control> _hoveringRangePoints = new();
+        private readonly List<Control> _rangePointNodes = new();
         private List<Vector2> _expandedPointListCache = new();
         private readonly char[] _lineEditAllowedCharacters = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '-' };
 
@@ -274,7 +274,7 @@ namespace Editor
             return pointList;
         }
 
-        private void SetRangeContextPosition(Control controlNode, Vector2 pointPos)
+        private static void SetRangeContextPosition(Control controlNode, Vector2 pointPos)
         {
             controlNode.AnchorRight = pointPos.X;
             controlNode.AnchorLeft = pointPos.X;
@@ -282,7 +282,7 @@ namespace Editor
             controlNode.AnchorTop = pointPos.Y;
         }
 
-        private bool IsInsideRangeContext(Vector2 pointPos)
+        private static bool IsInsideRangeContext(Vector2 pointPos)
         {
             if (
                 pointPos.X > 0.0 && pointPos.X < 1.0 &&
@@ -344,7 +344,7 @@ namespace Editor
             lineEdit.CaretColumn = 999;
         }
 
-        private double ParseLineEditValue(LineEdit lineEdit)
+        private static double ParseLineEditValue(LineEdit lineEdit)
         {
             double value = 0.0;
             if (lineEdit.Text.Length != 0)

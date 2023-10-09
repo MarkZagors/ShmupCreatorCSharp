@@ -2,61 +2,65 @@ using Editor;
 using Godot;
 using System;
 
-public partial class CreateBoxController : Node
+namespace Editor
 {
-    [Export] public SequenceController SequenceController { get; private set; } //Remove when adding component button programatically
-    [Export] public Control CreationContainer { get; private set; }
-    [Export] public VBoxContainer CreationContainerVBox { get; private set; }
-    [Export] public PackedScene CreationButtonObj { get; private set; }
 
-    public void CloseCreationBox()
+    public partial class CreateBoxController : Node
     {
-        CreationContainer.Visible = false;
-        foreach (Button childButton in CreationContainerVBox.GetChildren())
+        [Export] public SequenceController SequenceController { get; private set; } //Remove when adding component button programatically
+        [Export] public Control CreationContainer { get; private set; }
+        [Export] public VBoxContainer CreationContainerVBox { get; private set; }
+        [Export] public PackedScene CreationButtonObj { get; private set; }
+
+        public void CloseCreationBox()
         {
-            childButton.QueueFree();
-        }
-    }
-
-    public void OnClickNewComponent()
-    {
-        CreationContainer.Visible = true;
-
-        Button bulletButton = CreationButtonObj.Instantiate<Button>();
-        bulletButton.Text = "Bullet";
-        bulletButton.Pressed += () => SequenceController.CreateBullet();
-        CreationContainerVBox.AddChild(bulletButton);
-
-        Button bundleButton = CreationButtonObj.Instantiate<Button>();
-        bundleButton.Text = "Bundle";
-        bundleButton.Pressed += () => SequenceController.CreateBundle();
-        CreationContainerVBox.AddChild(bundleButton);
-
-        Button spawnerButton = CreationButtonObj.Instantiate<Button>();
-        spawnerButton.Text = "Spawner";
-        spawnerButton.Pressed += () => SequenceController.CreateSpawner();
-        CreationContainerVBox.AddChild(spawnerButton);
-    }
-
-
-    public void OnClickNewModifier(IComponent component, ComponentsController componentsController)
-    {
-        CreationContainer.Visible = true;
-
-        foreach (IModifier modifier in component.Modifiers)
-        {
-            if (!modifier.Active)
+            CreationContainer.Visible = false;
+            foreach (Button childButton in CreationContainerVBox.GetChildren())
             {
-                Button modifierButton = CreationButtonObj.Instantiate<Button>();
-                modifierButton.Text = ModifierNamer.Get(modifier.ID);
-                modifierButton.Pressed += () => componentsController.CreateModifierField(modifier);
-                CreationContainerVBox.AddChild(modifierButton);
+                childButton.QueueFree();
             }
         }
-    }
 
-    public void OnClickCloseNewComponent()
-    {
-        CloseCreationBox();
+        public void OnClickNewComponent()
+        {
+            CreationContainer.Visible = true;
+
+            Button bulletButton = CreationButtonObj.Instantiate<Button>();
+            bulletButton.Text = "Bullet";
+            bulletButton.Pressed += () => SequenceController.CreateBullet();
+            CreationContainerVBox.AddChild(bulletButton);
+
+            Button bundleButton = CreationButtonObj.Instantiate<Button>();
+            bundleButton.Text = "Bundle";
+            bundleButton.Pressed += () => SequenceController.CreateBundle();
+            CreationContainerVBox.AddChild(bundleButton);
+
+            Button spawnerButton = CreationButtonObj.Instantiate<Button>();
+            spawnerButton.Text = "Spawner";
+            spawnerButton.Pressed += () => SequenceController.CreateSpawner();
+            CreationContainerVBox.AddChild(spawnerButton);
+        }
+
+
+        public void OnClickNewModifier(IComponent component, ComponentsController componentsController)
+        {
+            CreationContainer.Visible = true;
+
+            foreach (IModifier modifier in component.Modifiers)
+            {
+                if (!modifier.Active)
+                {
+                    Button modifierButton = CreationButtonObj.Instantiate<Button>();
+                    modifierButton.Text = ModifierNamer.Get(modifier.ID);
+                    modifierButton.Pressed += () => componentsController.CreateModifierField(modifier);
+                    CreationContainerVBox.AddChild(modifierButton);
+                }
+            }
+        }
+
+        public void OnClickCloseNewComponent()
+        {
+            CloseCreationBox();
+        }
     }
 }
