@@ -13,11 +13,12 @@ namespace Editor
         [Export] public Label TimelineTimeLabel { get; private set; }
         [Export] public VBoxContainer LanesNode { get; private set; }
         [Export] public PackedScene SequenceIconObj { get; private set; }
-
+        [Export] public Control ComponentBodyContainer { get; private set; }
         public bool Playing { get; private set; } = false;
         public double Time { get; private set; } = 0.0;
         public List<Sequence> SequenceList { get; private set; } = new();
         public double LanesWidth { get; private set; } = 5.0;
+        private bool _mouseOverContainerScroll = false;
 
         public override void _Ready()
         {
@@ -31,16 +32,20 @@ namespace Editor
                 TogglePlaying();
             }
 
-            if (Input.IsActionJustPressed("editor_scrollup"))
+            if (!IsMouseOverBodyContainer())
             {
-                ScrollTime(ScrollDirection.FORWARD);
-                UpdateUI();
-            }
 
-            if (Input.IsActionJustPressed("editor_scrolldown"))
-            {
-                ScrollTime(ScrollDirection.BACKWARD);
-                UpdateUI();
+                if (Input.IsActionJustPressed("editor_scrollup"))
+                {
+                    ScrollTime(ScrollDirection.FORWARD);
+                    UpdateUI();
+                }
+
+                if (Input.IsActionJustPressed("editor_scrolldown"))
+                {
+                    ScrollTime(ScrollDirection.BACKWARD);
+                    UpdateUI();
+                }
             }
 
             if (Playing)
@@ -89,6 +94,13 @@ namespace Editor
         private void ClickSequence(Sequence sequence)
         {
             SequenceController.OpenSequence(sequence);
+        }
+
+        private bool IsMouseOverBodyContainer()
+        {
+            var mousePos = GetViewport().GetMousePosition();
+            var componentBodyRect = ComponentBodyContainer.GetGlobalRect();
+            return componentBodyRect.HasPoint(mousePos);
         }
 
         //=================

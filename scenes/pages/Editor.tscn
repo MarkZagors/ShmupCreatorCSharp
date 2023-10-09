@@ -37,12 +37,13 @@ BottomContainerResizeBar = NodePath("../../BotContainer/ResizeBar")
 LeftContainerResizeBar = NodePath("../../TopContainer/LeftContainer/ResizeBar")
 RightContainerResizeBar = NodePath("../../TopContainer/RightContainer/ResizeBar")
 
-[node name="PlayController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "TimelineTimeLabel", "LanesNode")]
+[node name="PlayController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "TimelineTimeLabel", "LanesNode", "ComponentBodyContainer")]
 script = ExtResource("2_hudip")
 SequenceController = NodePath("../SequenceController")
 TimelineTimeLabel = NodePath("../../BotContainer/TimelineTab/TimelineDetails/TimeLabel")
 LanesNode = NodePath("../../BotContainer/TimelineTab/MainContainer/LanesVBox")
 SequenceIconObj = ExtResource("4_t8vuy")
+ComponentBodyContainer = NodePath("../../TopContainer/RightContainer/ComponentContainer/ComponentBodyContainer")
 
 [node name="SequenceController" type="Node" parent="Controllers" node_paths=PackedStringArray("ComponentsController", "CreateBoxController", "SequenceTree", "TemplatesTab", "SequenceTab")]
 script = ExtResource("7_ofb54")
