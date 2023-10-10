@@ -17,7 +17,7 @@ namespace Editor
         private List<Sequence> _sequenceList;
         private Vector2 _bossPosition = new(400, 200);
         private BulletPool _bulletPool;
-        private Rect _windowRect = new(0, 0, 768, 1024);
+        private Rect _windowRect = new(-100, -100, 968, 1224);
 
         public override void _Ready()
         {
