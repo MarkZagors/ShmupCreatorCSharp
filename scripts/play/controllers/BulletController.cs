@@ -57,6 +57,10 @@ namespace Editor
                     (bundle.GetModifier(ModifierID.BUNDLE_SPEED) as ModifierRange)
                     .Range;
 
+                Range sizeRange =
+                    (bundle.GetModifier(ModifierID.BUNDLE_SIZE) as ModifierRange)
+                    .Range;
+
                 double[] pointArray = GetEqualSizePoints(spawner.BulletCount);
 
                 for (int i = 0; i < spawner.BulletCount; i++)
@@ -66,6 +70,7 @@ namespace Editor
                     BulletData bulletData = spawner.Bullets[i];
                     bulletData.Angle = (float)angleRange.GetValueAt(pointX);
                     bulletData.Speed = (float)speedRange.GetValueAt(pointX);
+                    bulletData.Size = (float)sizeRange.GetValueAt(pointX);
 
                     bulletData.Position = new Vector2(
                         (bulletData.Speed * MathF.Cos(bulletData.Angle * Calc.Deg2Rad) * (float)spawnerTime) + _bossPosition.X,
@@ -79,6 +84,7 @@ namespace Editor
 
                         bulletData.Node.Position = bulletData.Position;
                         bulletData.Node.RotationDegrees = bulletData.Angle;
+                        bulletData.Node.Scale = new Vector2(bulletData.Size, bulletData.Size);
                     }
                 }
             }

@@ -39,6 +39,10 @@ namespace Editor
                     ID = ModifierID.BUNDLE_SPEED,
                     Range = Range.From(500, 0)
                 },
+                new ModifierRange {
+                    ID = ModifierID.BUNDLE_SIZE,
+                    Range = Range.From(2, 0)
+                },
             };
             _modifiersLookup = Modifiers.ToDictionary(modifier => modifier.ID);
         }

@@ -8,5 +8,6 @@ namespace Editor
         public Vector2 Position { get; set; } = new();
         public float Angle { get; set; } = 0;
         public float Speed { get; set; } = 0;
+        public float Size { get; set; } = 1.0f;
     }
 }

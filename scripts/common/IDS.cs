@@ -10,6 +10,7 @@ namespace Editor
         BUNDLE_COUNT,
         BUNDLE_ANGLE,
         BUNDLE_SPEED,
+        BUNDLE_SIZE,
         SPAWNER_REF
     }
 
@@ -21,6 +22,7 @@ namespace Editor
             {ModifierID.BUNDLE_COUNT, "Count"},
             {ModifierID.BUNDLE_ANGLE, "Angle"},
             {ModifierID.BUNDLE_SPEED, "Speed"},
+            {ModifierID.BUNDLE_SIZE, "Size"},
             {ModifierID.SPAWNER_REF, "Bundle Data"},
         };
 
