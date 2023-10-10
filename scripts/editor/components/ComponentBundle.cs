@@ -29,6 +29,7 @@ namespace Editor
                     ID = ModifierID.BUNDLE_COUNT,
                     Active = true,
                     Value = 1,
+                    MaxValue = 5000,
                     IsStructureChanging = true
                 },
                 new ModifierRange {
