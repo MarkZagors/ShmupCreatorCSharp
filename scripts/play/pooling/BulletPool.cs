@@ -11,6 +11,7 @@ namespace Editor
         private readonly PackedScene _bulletObj;
         private readonly int _poolSize;
         private readonly Node2D[] _bulletPool;
+        private int _headIndex = 0;
 
         public BulletPool(Node2D poolGroupNode, PackedScene bulletObj, int poolSize)
         {
@@ -33,11 +34,12 @@ namespace Editor
         {
             for (int i = 0; i < _poolSize; i++)
             {
-                if (!_bulletPool[i].Visible)
+                int index = (_headIndex + i) % _poolSize;
+                if (!_bulletPool[index].Visible)
                 {
-                    _bulletPool[i].Visible = true;
-                    GD.Print("Bullet activated");
-                    return _bulletPool[i];
+                    _bulletPool[index].Visible = true;
+                    _headIndex = index + 1;
+                    return _bulletPool[index];
                 }
             }
             throw new IndexOutOfRangeException("Bullet Pool is overflown!");

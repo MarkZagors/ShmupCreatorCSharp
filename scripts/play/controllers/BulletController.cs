@@ -24,7 +24,7 @@ namespace Editor
             _bulletPool = new BulletPool(
                 poolGroupNode: BulletPoolNode,
                 bulletObj: BulletNodeObj,
-                poolSize: 512
+                poolSize: 4096
             );
 
             _sequenceList = PlayController.SequenceList;
