@@ -174,6 +174,8 @@ namespace Editor
 
         private void UpdateLines()
         {
+            if (!IsInstanceValid(RangeLineNode)) return;
+
             RangeLineNode.ClearPoints();
 
             List<Vector2> expandedPointList = GetExpandedPointList();
