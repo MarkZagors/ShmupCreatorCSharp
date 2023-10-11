@@ -18,9 +18,22 @@ namespace Editor
             TreeItem = treeItem;
             Modifiers = new List<IModifier>
             {
+                new ModifierInteger {
+                    ID = ModifierID.TIMER_LOOP_COUNT,
+                    Active = false,
+                    Value = 0,
+                    MaxValue = 5000,
+                    IsStructureChanging = true
+                },
+                new ModifierDouble {
+                    ID = ModifierID.TIMER_PROCESS_TIME,
+                    Active = false,
+                    Value = 0,
+                    MaxValue = 5000,
+                },
                 new ModifierDouble {
                     ID = ModifierID.TIMER_LOOP_TIME,
-                    Active = true,
+                    Active = false,
                     Value = 1,
                     MaxValue = 5000,
                 },
