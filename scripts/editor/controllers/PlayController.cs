@@ -1,3 +1,4 @@
+using ExtensionMethods;
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -15,11 +16,15 @@ namespace Editor
         [Export] public PackedScene SequenceIconObj { get; private set; }
         [Export] public Control ComponentBodyContainer { get; private set; }
         [Export] public Control StartingLanesBorderNode { get; private set; }
+        [Export] public Control LanesMainControllerContainer { get; private set; }
+        [Export] public Control LanesClickZone { get; private set; }
+        [Export] public Control LaneClickLine { get; private set; }
         public bool Playing { get; private set; } = false;
         public double Time { get; private set; } = 0.0;
         public List<Sequence> SequenceList { get; private set; } = new();
         public double LanesWidth { get; private set; } = 5.0;
         private bool _mouseOverContainerScroll = false;
+        private bool _mouseOverSequence = false;
 
         public override void _Ready()
         {
@@ -32,6 +37,8 @@ namespace Editor
             {
                 TogglePlaying();
             }
+
+            ProcessLaneHoverAndClick();
 
             if (!IsMouseOverBodyContainer())
             {
@@ -71,6 +78,8 @@ namespace Editor
             SequenceList.Add(newSequence);
 
             sequenceNode.GetNode<Button>("Button").Pressed += () => ClickSequence(newSequence);
+            sequenceNode.GetNode<Button>("Button").MouseEntered += () => OnSequenceHover();
+            sequenceNode.GetNode<Button>("Button").MouseExited += () => OnSequenceUnHover();
 
             laneOne.AddChild(sequenceNode);
             GD.Print($"Sequence added at time {Time:0.0}");
@@ -102,6 +111,59 @@ namespace Editor
             var mousePos = GetViewport().GetMousePosition();
             var componentBodyRect = ComponentBodyContainer.GetGlobalRect();
             return componentBodyRect.HasPoint(mousePos);
+        }
+
+        private bool IsMouseOverLanesConroller()
+        {
+            var mousePos = GetViewport().GetMousePosition();
+            var lanesClickZoneRect = LanesClickZone.GetGlobalRect();
+            return lanesClickZoneRect.HasPoint(mousePos);
+        }
+
+        private Vector2 GetMousePositionInLanesContext()
+        {
+            //TODO: refactor into static method
+            var mousePos = LanesMainControllerContainer.GetLocalMousePosition();
+            return new Vector2
+            {
+                X = (float)Mathf.Clamp(mousePos.X / LanesMainControllerContainer.Size.X, 0.0, 1.0),
+                Y = (float)Mathf.Clamp(mousePos.Y / LanesMainControllerContainer.Size.Y, 0.0, 1.0),
+            };
+        }
+
+        private void ProcessLaneHoverAndClick()
+        {
+            if (IsMouseOverLanesConroller() && !_mouseOverSequence)
+            {
+                Vector2 mousePos = GetMousePositionInLanesContext();
+                LaneClickLine.Visible = true;
+                LaneClickLine.AnchorLeft = mousePos.X;
+                LaneClickLine.AnchorRight = mousePos.X;
+
+                double timePos = ((mousePos.X - 0.5) * 2 * LanesWidth) + Time;
+                LaneClickLine.GetNode<Label>("TimeLabel").Text = $"{timePos:0.00}";
+
+                if (Input.IsActionJustPressed("mouse_click"))
+                {
+                    Time = timePos;
+                    UpdateUI();
+                    EmitSignal(SignalName.Update);
+                }
+            }
+            else
+            {
+                LaneClickLine.Visible = false;
+            }
+        }
+
+        private void OnSequenceHover()
+        {
+            _mouseOverSequence = true;
+        }
+
+        private void OnSequenceUnHover()
+        {
+            _mouseOverSequence = false;
         }
 
         //=================
@@ -164,6 +226,7 @@ namespace Editor
                 sequence.Node.AnchorRight = (float)anchor;
             }
             StartingLanesBorderNode.AnchorRight = (float)(0.5 - Time * 0.5 / LanesWidth);
+            LanesClickZone.AnchorLeft = StartingLanesBorderNode.AnchorRight;
         }
     }
 }

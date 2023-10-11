@@ -38,7 +38,7 @@ BottomContainerResizeBar = NodePath("../../BotContainer/ResizeBar")
 LeftContainerResizeBar = NodePath("../../TopContainer/LeftContainer/ResizeBar")
 RightContainerResizeBar = NodePath("../../TopContainer/RightContainer/ResizeBar")
 
-[node name="PlayController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "TimelineTimeLabel", "LanesNode", "ComponentBodyContainer", "StartingLanesBorderNode")]
+[node name="PlayController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "TimelineTimeLabel", "LanesNode", "ComponentBodyContainer", "StartingLanesBorderNode", "LanesMainControllerContainer", "LanesClickZone", "LaneClickLine")]
 script = ExtResource("2_hudip")
 SequenceController = NodePath("../SequenceController")
 TimelineTimeLabel = NodePath("../../BotContainer/TimelineTab/TimelineDetails/TimeLabel")
@@ -46,6 +46,9 @@ LanesNode = NodePath("../../BotContainer/TimelineTab/MainContainer/LanesVBox")
 SequenceIconObj = ExtResource("4_t8vuy")
 ComponentBodyContainer = NodePath("../../TopContainer/RightContainer/ComponentContainer/ComponentBodyContainer")
 StartingLanesBorderNode = NodePath("../../BotContainer/TimelineTab/MainContainer/StartingBorder")
+LanesMainControllerContainer = NodePath("../../BotContainer/TimelineTab/MainContainer")
+LanesClickZone = NodePath("../../BotContainer/TimelineTab/MainContainer/LanesClickZone")
+LaneClickLine = NodePath("../../BotContainer/TimelineTab/MainContainer/LaneClickLine")
 
 [node name="SequenceController" type="Node" parent="Controllers" node_paths=PackedStringArray("ComponentsController", "CreateBoxController", "SequenceTree", "TemplatesTab", "SequenceTab")]
 script = ExtResource("7_ofb54")
@@ -134,6 +137,15 @@ custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 color = Color(0.152941, 0.152941, 0.184314, 1)
 
+[node name="LanesClickZone" type="Control" parent="BotContainer/TimelineTab/MainContainer"]
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
 [node name="StartingBorder" type="ColorRect" parent="BotContainer/TimelineTab/MainContainer"]
 layout_mode = 1
 anchors_preset = -1
@@ -141,7 +153,31 @@ anchor_right = 0.5
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.0820313, 0.078125, 0.101563, 1)
+color = Color(0.0823529, 0.0784314, 0.101961, 0.72549)
+
+[node name="LaneClickLine" type="ColorRect" parent="BotContainer/TimelineTab/MainContainer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -1.0
+mouse_filter = 2
+color = Color(1, 1, 1, 0.529412)
+
+[node name="TimeLabel" type="Label" parent="BotContainer/TimelineTab/MainContainer/LaneClickLine"]
+self_modulate = Color(1, 1, 1, 0.588235)
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -73.0
+offset_top = -23.9999
+offset_right = -6.5
+offset_bottom = 2.00012
+text = "500.0"
+horizontal_alignment = 2
 
 [node name="MiddleSeperator" type="ColorRect" parent="BotContainer/TimelineTab/MainContainer"]
 layout_mode = 1
