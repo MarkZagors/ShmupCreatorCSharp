@@ -84,6 +84,11 @@ namespace Editor
             CreateComponent(Enums.ComponentType.SPAWNER);
         }
 
+        public void CreateTimer()
+        {
+            CreateComponent(Enums.ComponentType.TIMER);
+        }
+
         private void CreateComponent(Enums.ComponentType componentType)
         {
             TreeItem root = SequenceTree.GetRoot();
@@ -116,6 +121,14 @@ namespace Editor
                         name: name,
                         treeItem: componentTreeItem,
                         sequence: _openedSequence
+                    );
+                    break;
+                case Enums.ComponentType.TIMER:
+                    name = WrapComponentName("Timer", _openedSequence.Components);
+                    component = new ComponentTimer
+                    (
+                        name: name,
+                        treeItem: componentTreeItem
                     );
                     break;
                 default:

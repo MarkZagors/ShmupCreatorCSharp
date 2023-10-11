@@ -4,7 +4,6 @@ using System;
 
 namespace Editor
 {
-
     public partial class CreateBoxController : Node
     {
         [Export] public SequenceController SequenceController { get; private set; } //Remove when adding component button programatically
@@ -39,6 +38,11 @@ namespace Editor
             spawnerButton.Text = "Spawner";
             spawnerButton.Pressed += () => SequenceController.CreateSpawner();
             CreationContainerVBox.AddChild(spawnerButton);
+
+            Button timerButton = CreationButtonObj.Instantiate<Button>();
+            timerButton.Text = "Timer";
+            timerButton.Pressed += () => SequenceController.CreateTimer();
+            CreationContainerVBox.AddChild(timerButton);
         }
 
 

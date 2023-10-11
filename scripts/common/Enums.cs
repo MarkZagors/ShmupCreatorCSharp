@@ -8,10 +8,12 @@ namespace Editor
             BACKWARD
         }
 
-        public enum ComponentType {
+        public enum ComponentType
+        {
             BULLET,
             BUNDLE,
-            SPAWNER
+            SPAWNER,
+            TIMER
         }
     }
 }
