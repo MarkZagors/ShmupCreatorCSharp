@@ -109,7 +109,7 @@ namespace Editor
 
         private void CheckValidSpawnerConnection()
         {
-            var spawnRef = (ModifierRef)_openedComponent.GetModifier(ModifierID.SPAWNER_REF);
+            var spawnRef = (ModifierRef)_openedComponent.GetModifier(ModifierID.SPAWNER_REF_BUNDLE);
             var bundleRef = (ModifierRef)_openedComponent.GetModifier(ModifierID.BUNDLE_REF_BULLET);
             if (spawnRef != null)
             {
@@ -124,7 +124,7 @@ namespace Editor
             {
                 foreach (IComponent component in _openedSequence.Components)
                 {
-                    var spawnRefInSequence = (ModifierRef)component.GetModifier(ModifierID.SPAWNER_REF);
+                    var spawnRefInSequence = (ModifierRef)component.GetModifier(ModifierID.SPAWNER_REF_BUNDLE);
                     if (spawnRefInSequence != null && spawnRefInSequence.Ref != null)
                     {
                         //If there is a spawner in the opened sequence, check if its ref is the same as the modified components

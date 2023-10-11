@@ -23,7 +23,7 @@ namespace Editor
             Modifiers = new List<IModifier>
             {
                 new ModifierRef {
-                    ID = ModifierID.SPAWNER_REF,
+                    ID = ModifierID.SPAWNER_REF_BUNDLE,
                     Active = true,
                     AllowedComponentTypes = new() {
                         ComponentType.BUNDLE
@@ -47,7 +47,7 @@ namespace Editor
 
         public ComponentBundle GetBundleComponent()
         {
-            return (ComponentBundle)((ModifierRef)GetModifier(ModifierID.SPAWNER_REF)).Ref;
+            return (ComponentBundle)((ModifierRef)GetModifier(ModifierID.SPAWNER_REF_BUNDLE)).Ref;
         }
     }
 }

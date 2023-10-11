@@ -11,10 +11,10 @@ namespace Editor
         BUNDLE_ANGLE,
         BUNDLE_SPEED,
         BUNDLE_SIZE,
-        SPAWNER_REF,
+        SPAWNER_REF_BUNDLE,
         TIMER_LOOP_COUNT,
         TIMER_PROCESS_TIME,
-        TIMER_LOOP_TIME
+        TIMER_WAIT_TIME
     }
 
     public static class ModifierNamer
@@ -26,10 +26,10 @@ namespace Editor
             {ModifierID.BUNDLE_ANGLE, "Angle"},
             {ModifierID.BUNDLE_SPEED, "Speed"},
             {ModifierID.BUNDLE_SIZE, "Size"},
-            {ModifierID.SPAWNER_REF, "Bundle Data"},
+            {ModifierID.SPAWNER_REF_BUNDLE, "Bundle Data"},
             {ModifierID.TIMER_LOOP_COUNT, "Loop Count"},
             {ModifierID.TIMER_PROCESS_TIME, "Process Time"},
-            {ModifierID.TIMER_LOOP_TIME, "Loop Time"},
+            {ModifierID.TIMER_WAIT_TIME, "Wait Time"},
         };
 
         public static string Get(ModifierID id)

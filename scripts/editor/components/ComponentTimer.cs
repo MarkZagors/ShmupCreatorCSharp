@@ -32,7 +32,7 @@ namespace Editor
                     MaxValue = 5000,
                 },
                 new ModifierDouble {
-                    ID = ModifierID.TIMER_LOOP_TIME,
+                    ID = ModifierID.TIMER_WAIT_TIME,
                     Active = false,
                     Value = 1,
                     MaxValue = 5000,
