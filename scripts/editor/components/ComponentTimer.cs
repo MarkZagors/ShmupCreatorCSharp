@@ -21,7 +21,7 @@ namespace Editor
                 new ModifierInteger {
                     ID = ModifierID.TIMER_LOOP_COUNT,
                     Active = false,
-                    Value = 0,
+                    Value = 1,
                     MaxValue = 5000,
                     IsStructureChanging = true
                 },

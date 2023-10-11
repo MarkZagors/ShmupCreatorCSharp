@@ -109,6 +109,7 @@ namespace Editor
 
         private void CheckValidSpawnerConnection()
         {
+            bool validRestructure = false;
             var spawnRef = (ModifierRef)_openedComponent.GetModifier(ModifierID.SPAWNER_REF_BUNDLE);
             var bundleRef = (ModifierRef)_openedComponent.GetModifier(ModifierID.BUNDLE_REF_BULLET);
             if (spawnRef != null && spawnRef.Ref != null)
@@ -117,7 +118,7 @@ namespace Editor
                 if (bundleRefNested != null && bundleRefNested.Ref != null)
                 {
                     ((ComponentSpawner)_openedComponent).Valid = true;
-                    EmitSignal(SignalName.OnValidRestructure);
+                    validRestructure = true;
                 }
             }
             else if (bundleRef != null)
@@ -132,11 +133,21 @@ namespace Editor
                         if (bundleRefInSpawner.Ref == bundleRef.Ref)
                         {
                             ((ComponentSpawner)component).Valid = true;
-                            EmitSignal(SignalName.OnValidRestructure);
+                            validRestructure = true;
                         }
                     }
                 }
             }
+            else if (
+                _openedComponent.Type == Enums.ComponentType.TIMER
+            )
+            {
+                //Catch all for different types of valid restructure, add more in the future, if restructure not triggering
+                validRestructure = true;
+            }
+
+            if (validRestructure)
+                EmitSignal(SignalName.OnValidRestructure);
         }
 
         private void ClearComponentsVBox()

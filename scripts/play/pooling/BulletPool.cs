@@ -100,12 +100,15 @@ namespace Editor
 
         public static void ClearSpawner(Spawner spawner)
         {
-            for (int i = 0; i < spawner.Bullets.Length; i++)
+            for (int i = 0; i < spawner.Timer.LoopCount; i++)
             {
-                if (spawner.Bullets[i].Node != null)
+                for (int j = 0; j < spawner.Bullets.Length; j++)
                 {
-                    spawner.Bullets[i].Node.Visible = false;
-                    spawner.Bullets[i].Node = null;
+                    if (spawner.Bullets[i, j].Node != null)
+                    {
+                        spawner.Bullets[i, j].Node.Visible = false;
+                        spawner.Bullets[i, j].Node = null;
+                    }
                 }
             }
         }

@@ -56,5 +56,10 @@ namespace Editor
         {
             return (ComponentBundle)((ModifierRef)GetModifier(ModifierID.SPAWNER_REF_BUNDLE)).Ref;
         }
+
+        public ComponentTimer GetSpawnTimerComponent()
+        {
+            return (ComponentTimer)((ModifierRef)GetModifier(ModifierID.SPAWNER_REF_SPAWN_TIMER)).Ref;
+        }
     }
 }

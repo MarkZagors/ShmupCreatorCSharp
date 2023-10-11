@@ -50,6 +50,8 @@ namespace Editor
 
                 ComponentBundle bundle = spawner.Component.GetBundleComponent();
 
+                GD.Print(spawner.Timer.LoopCount);
+
                 Range angleRange =
                     (bundle.GetModifier(ModifierID.BUNDLE_ANGLE) as ModifierRange)
                     .Range;
@@ -64,28 +66,31 @@ namespace Editor
 
                 double[] pointArray = GetEqualSizePoints(spawner.BulletCount);
 
-                for (int i = 0; i < spawner.BulletCount; i++)
+                for (int i = 0; i < spawner.Timer.LoopCount; i++)
                 {
-                    var pointX = pointArray[i];
-
-                    BulletData bulletData = spawner.Bullets[i];
-                    bulletData.Angle = (float)angleRange.GetValueAt(pointX);
-                    bulletData.Speed = (float)speedRange.GetValueAt(pointX);
-                    bulletData.Size = (float)sizeRange.GetValueAt(pointX);
-
-                    bulletData.Position = new Vector2(
-                        (bulletData.Speed * MathF.Cos(bulletData.Angle * Calc.Deg2Rad) * (float)spawnerTime) + _bossPosition.X,
-                        (bulletData.Speed * MathF.Sin(bulletData.Angle * Calc.Deg2Rad) * (float)spawnerTime) + _bossPosition.Y
-                    );
-
-                    bool isBulletInBorder = BulletPool.BorderCheck(bulletData, _windowRect);
-                    if (isBulletInBorder)
+                    for (int j = 0; j < spawner.BulletCount; j++)
                     {
-                        bulletData.Node ??= _bulletPool.GetBullet();
+                        var pointX = pointArray[j];
 
-                        bulletData.Node.Position = bulletData.Position;
-                        bulletData.Node.RotationDegrees = bulletData.Angle;
-                        bulletData.Node.Scale = new Vector2(bulletData.Size, bulletData.Size);
+                        BulletData bulletData = spawner.Bullets[i, j];
+                        bulletData.Angle = (float)angleRange.GetValueAt(pointX);
+                        bulletData.Speed = (float)speedRange.GetValueAt(pointX);
+                        bulletData.Size = (float)sizeRange.GetValueAt(pointX);
+
+                        bulletData.Position = new Vector2(
+                            (bulletData.Speed * MathF.Cos(bulletData.Angle * Calc.Deg2Rad) * (float)spawnerTime) + _bossPosition.X,
+                            (bulletData.Speed * MathF.Sin(bulletData.Angle * Calc.Deg2Rad) * (float)spawnerTime) + _bossPosition.Y
+                        );
+
+                        bool isBulletInBorder = BulletPool.BorderCheck(bulletData, _windowRect);
+                        if (isBulletInBorder)
+                        {
+                            bulletData.Node ??= _bulletPool.GetBullet();
+
+                            bulletData.Node.Position = bulletData.Position;
+                            bulletData.Node.RotationDegrees = bulletData.Angle;
+                            bulletData.Node.Scale = new Vector2(bulletData.Size, bulletData.Size);
+                        }
                     }
                 }
             }
@@ -118,21 +123,52 @@ namespace Editor
         private void GenerateSpawners(ComponentSpawner spawnerComponent)
         {
             ComponentBundle bundle = spawnerComponent.GetBundleComponent();
+            ComponentTimer spawnTimerComponent = spawnerComponent.GetSpawnTimerComponent();
+
             int bulletCount =
                 (bundle.GetModifier(ModifierID.BUNDLE_COUNT) as ModifierInteger)
                 .Value;
 
-            BulletData[] bulletDataArray = new BulletData[bulletCount];
-            for (int i = 0; i < bulletCount; i++)
+            Timer spawnTimer;
+            if (spawnTimerComponent == null)
             {
-                var bulletData = new BulletData { };
-                bulletDataArray[i] = bulletData;
+                spawnTimer = new Timer(
+                    waitTime: 1.0f,
+                    processTime: 0.0f,
+                    loopCount: 1
+                );
+            }
+            else
+            {
+                spawnTimer = new Timer(
+                    waitTime:
+                        (float)(spawnTimerComponent.GetModifier(ModifierID.TIMER_WAIT_TIME) as ModifierDouble)
+                        .Value,
+                    processTime:
+                        (float)(spawnTimerComponent.GetModifier(ModifierID.TIMER_PROCESS_TIME) as ModifierDouble)
+                        .Value,
+                    loopCount:
+                        (spawnTimerComponent.GetModifier(ModifierID.TIMER_LOOP_COUNT) as ModifierInteger)
+                        .Value
+                );
+            }
+
+            //Bullet data[][] = x = loop index, y = bullet index
+            BulletData[,] bulletDataArray = new BulletData[spawnTimer.LoopCount, bulletCount];
+            for (int i = 0; i < spawnTimer.LoopCount; i++)
+            {
+                for (int j = 0; j < bulletCount; j++)
+                {
+                    var bulletData = new BulletData { };
+                    bulletDataArray[i, j] = bulletData;
+                }
             }
 
             Spawner spawner = new(
                 component: spawnerComponent,
                 bullets: bulletDataArray,
-                bulletCount: bulletCount
+                bulletCount: bulletCount,
+                timer: spawnTimer
             );
 
             _spawnerList.Add(spawner);
