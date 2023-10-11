@@ -102,13 +102,18 @@ namespace Editor
         {
             for (int i = 0; i < spawner.Timer.LoopCount; i++)
             {
-                for (int j = 0; j < spawner.Bullets.Length; j++)
+                ClearSpawnerWave(spawner, i);
+            }
+        }
+
+        public static void ClearSpawnerWave(Spawner spawner, int waveIndex)
+        {
+            for (int j = 0; j < spawner.Bullets.GetLength(1); j++)
+            {
+                if (spawner.Bullets[waveIndex, j].Node != null)
                 {
-                    if (spawner.Bullets[i, j].Node != null)
-                    {
-                        spawner.Bullets[i, j].Node.Visible = false;
-                        spawner.Bullets[i, j].Node = null;
-                    }
+                    spawner.Bullets[waveIndex, j].Node.Visible = false;
+                    spawner.Bullets[waveIndex, j].Node = null;
                 }
             }
         }

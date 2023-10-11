@@ -41,16 +41,14 @@ namespace Editor
         {
             foreach (Spawner spawner in _spawnerList)
             {
-                double spawnerTime = PlayController.Time - spawner.Component.Sequence.Time;
-                if (spawnerTime < 0.0)
+                double sequenceSpawnTime = PlayController.Time - spawner.Component.Sequence.Time;
+                if (sequenceSpawnTime < 0.0)
                 {
-                    BulletPool.ClearSpawner(spawner);
+                    // BulletPool.ClearSpawner(spawner);
                     continue;
                 }
 
                 ComponentBundle bundle = spawner.Component.GetBundleComponent();
-
-                GD.Print(spawner.Timer.LoopCount);
 
                 Range angleRange =
                     (bundle.GetModifier(ModifierID.BUNDLE_ANGLE) as ModifierRange)
@@ -71,6 +69,14 @@ namespace Editor
                     for (int j = 0; j < spawner.BulletCount; j++)
                     {
                         var pointX = pointArray[j];
+                        var bulletSpawnTime = sequenceSpawnTime - spawner.Timer.TiggerOffsets[i];
+
+                        if (bulletSpawnTime < 0.0)
+                        {
+                            //Bullet wave not yet spawned by time, skip
+                            // BulletPool.ClearSpawnerWave(spawner, i);
+                            continue;
+                        }
 
                         BulletData bulletData = spawner.Bullets[i, j];
                         bulletData.Angle = (float)angleRange.GetValueAt(pointX);
@@ -78,8 +84,8 @@ namespace Editor
                         bulletData.Size = (float)sizeRange.GetValueAt(pointX);
 
                         bulletData.Position = new Vector2(
-                            (bulletData.Speed * MathF.Cos(bulletData.Angle * Calc.Deg2Rad) * (float)spawnerTime) + _bossPosition.X,
-                            (bulletData.Speed * MathF.Sin(bulletData.Angle * Calc.Deg2Rad) * (float)spawnerTime) + _bossPosition.Y
+                            (bulletData.Speed * MathF.Cos(bulletData.Angle * Calc.Deg2Rad) * (float)bulletSpawnTime) + _bossPosition.X,
+                            (bulletData.Speed * MathF.Sin(bulletData.Angle * Calc.Deg2Rad) * (float)bulletSpawnTime) + _bossPosition.Y
                         );
 
                         bool isBulletInBorder = BulletPool.BorderCheck(bulletData, _windowRect);
