@@ -18,7 +18,12 @@ namespace Editor
             TreeItem = treeItem;
             Modifiers = new List<IModifier>
             {
-                //Modifiers here
+                new ModifierDouble {
+                    ID = ModifierID.TIMER_LOOP_TIME,
+                    Active = true,
+                    Value = 1,
+                    MaxValue = 5000,
+                },
             };
             _modifiersLookup = Modifiers.ToDictionary(modifier => modifier.ID);
         }

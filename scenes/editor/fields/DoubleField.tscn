@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://cpus4vl8tcta2"]
+
+[ext_resource type="PackedScene" uid="uid://6aax5g0j0hlo" path="res://scenes/editor/fields/BaseField.tscn" id="1_r46a4"]
+[ext_resource type="Script" path="res://scripts/editor/fields/FieldDouble.cs" id="2_nw46l"]
+
+[node name="IntegerField" node_paths=PackedStringArray("NumberFieldLineEdit") instance=ExtResource("1_r46a4")]
+script = ExtResource("2_nw46l")
+NumberFieldLineEdit = NodePath("NumberField")
+
+[node name="NumberField" type="LineEdit" parent="." index="2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.54
+anchor_right = 1.0
+offset_left = 1.52588e-05
+offset_top = 7.0
+offset_right = -5.99997
+offset_bottom = 42.0
+grow_horizontal = 2
+select_all_on_focus = true
+
+[connection signal="text_changed" from="NumberField" to="." method="OnLineTextChange"]

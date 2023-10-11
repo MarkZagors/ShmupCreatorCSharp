@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=17 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://chvjbvhm3exrb" path="res://scenes/editor/fields/RangeField.tscn" id="9_bmuti"]
 [ext_resource type="PackedScene" uid="uid://23l8mdbbtext" path="res://scenes/editor/fields/ReferenceField.tscn" id="9_m4j1e"]
 [ext_resource type="PackedScene" uid="uid://c4hljf0assyf3" path="res://scenes/editor/fields/IntegerField.tscn" id="10_u1pli"]
+[ext_resource type="PackedScene" uid="uid://cpus4vl8tcta2" path="res://scenes/editor/fields/DoubleField.tscn" id="11_sil1u"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/CreateBoxController.cs" id="12_kakms"]
 
 [node name="Editor" type="Control"]
@@ -67,6 +68,7 @@ NewModifierButtonObj = ExtResource("8_colxt")
 FieldRangeObj = ExtResource("9_bmuti")
 FieldReferenceObj = ExtResource("9_m4j1e")
 FieldIntegerObj = ExtResource("10_u1pli")
+FieldDoubleObj = ExtResource("11_sil1u")
 
 [node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayController", "ComponentsController", "SequenceController", "BulletPoolNode")]
 script = ExtResource("4_cwq5m")
