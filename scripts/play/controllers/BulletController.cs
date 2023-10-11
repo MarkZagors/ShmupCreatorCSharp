@@ -44,7 +44,7 @@ namespace Editor
                 double sequenceSpawnTime = PlayController.Time - spawner.Component.Sequence.Time;
                 if (sequenceSpawnTime < 0.0)
                 {
-                    // BulletPool.ClearSpawner(spawner);
+                    BulletPool.ClearSpawner(spawner);
                     continue;
                 }
 
@@ -84,10 +84,18 @@ namespace Editor
 
                 for (int i = 0; i < spawner.Timer.LoopCount; i++)
                 {
+                    var bulletSpawnTimeOffset = sequenceSpawnTime - spawner.Timer.TiggerOffsets[i];
+                    if (bulletSpawnTimeOffset < 0.0)
+                    {
+                        //Bullet wave not yet spawned by time, skip
+                        BulletPool.ClearSpawnerWave(spawner, i);
+                        continue;
+                    }
+
                     for (int j = 0; j < spawner.BulletCount; j++)
                     {
                         var pointX = pointArray[j];
-                        var bulletSpawnTime = sequenceSpawnTime - spawner.Timer.TiggerOffsets[i];
+                        var bulletSpawnTime = bulletSpawnTimeOffset;
 
                         if (timerProcessCurve != null)
                         {
@@ -96,9 +104,7 @@ namespace Editor
 
                         if (bulletSpawnTime < 0.0)
                         {
-                            //Bullet wave not yet spawned by time, skip
-                            //TODO: Clear other waves
-                            // BulletPool.ClearSpawnerWave(spawner, i);
+                            //skip individual bullets if not in time frame
                             continue;
                         }
 
