@@ -29,6 +29,13 @@ namespace Editor
                         ComponentType.BUNDLE
                     }
                 },
+                new ModifierRef {
+                    ID = ModifierID.SPAWNER_REF_SPAWN_TIMER,
+                    Active = true,
+                    AllowedComponentTypes = new() {
+                        ComponentType.TIMER
+                    }
+                },
             };
             _modifiersLookup = Modifiers.ToDictionary(modifier => modifier.ID);
         }

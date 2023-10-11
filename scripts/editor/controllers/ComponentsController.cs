@@ -111,10 +111,10 @@ namespace Editor
         {
             var spawnRef = (ModifierRef)_openedComponent.GetModifier(ModifierID.SPAWNER_REF_BUNDLE);
             var bundleRef = (ModifierRef)_openedComponent.GetModifier(ModifierID.BUNDLE_REF_BULLET);
-            if (spawnRef != null)
+            if (spawnRef != null && spawnRef.Ref != null)
             {
                 var bundleRefNested = (ModifierRef)spawnRef.Ref.GetModifier(ModifierID.BUNDLE_REF_BULLET);
-                if (bundleRefNested.Ref != null)
+                if (bundleRefNested != null && bundleRefNested.Ref != null)
                 {
                     ((ComponentSpawner)_openedComponent).Valid = true;
                     EmitSignal(SignalName.OnValidRestructure);
