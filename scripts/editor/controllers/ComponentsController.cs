@@ -97,6 +97,8 @@ namespace Editor
                     fieldDouble.Update += () =>
                     {
                         EmitSignal(SignalName.Update);
+                        if (modifierDouble.IsStructureChanging)
+                            CheckValidSpawnerConnection();
                     };
                     ComponentsVBox.AddChild(fieldDouble);
                     break;

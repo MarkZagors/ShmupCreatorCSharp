@@ -41,10 +41,11 @@ namespace Editor
         {
             foreach (Spawner spawner in _spawnerList)
             {
+                BulletPool.ClearSpawner(spawner);
+
                 double sequenceSpawnTime = PlayController.Time - spawner.Component.Sequence.Time;
                 if (sequenceSpawnTime < 0.0)
                 {
-                    BulletPool.ClearSpawner(spawner);
                     continue;
                 }
 
@@ -88,7 +89,7 @@ namespace Editor
                     if (bulletSpawnTimeOffset < 0.0)
                     {
                         //Bullet wave not yet spawned by time, skip
-                        BulletPool.ClearSpawnerWave(spawner, i);
+                        // BulletPool.ClearSpawnerWave(spawner, i);
                         continue;
                     }
 

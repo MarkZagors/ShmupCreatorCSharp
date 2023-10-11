@@ -30,6 +30,7 @@ namespace Editor
                     Active = false,
                     Value = 0,
                     MaxValue = 5000,
+                    IsStructureChanging = true
                 },
                 new ModifierDouble {
                     ID = ModifierID.TIMER_WAIT_TIME,
