@@ -38,13 +38,14 @@ BottomContainerResizeBar = NodePath("../../BotContainer/ResizeBar")
 LeftContainerResizeBar = NodePath("../../TopContainer/LeftContainer/ResizeBar")
 RightContainerResizeBar = NodePath("../../TopContainer/RightContainer/ResizeBar")
 
-[node name="PlayController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "TimelineTimeLabel", "LanesNode", "ComponentBodyContainer")]
+[node name="PlayController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "TimelineTimeLabel", "LanesNode", "ComponentBodyContainer", "StartingLanesBorderNode")]
 script = ExtResource("2_hudip")
 SequenceController = NodePath("../SequenceController")
 TimelineTimeLabel = NodePath("../../BotContainer/TimelineTab/TimelineDetails/TimeLabel")
 LanesNode = NodePath("../../BotContainer/TimelineTab/MainContainer/LanesVBox")
 SequenceIconObj = ExtResource("4_t8vuy")
 ComponentBodyContainer = NodePath("../../TopContainer/RightContainer/ComponentContainer/ComponentBodyContainer")
+StartingLanesBorderNode = NodePath("../../BotContainer/TimelineTab/MainContainer/StartingBorder")
 
 [node name="SequenceController" type="Node" parent="Controllers" node_paths=PackedStringArray("ComponentsController", "CreateBoxController", "SequenceTree", "TemplatesTab", "SequenceTab")]
 script = ExtResource("7_ofb54")
@@ -132,6 +133,15 @@ grow_vertical = 2
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 color = Color(0.152941, 0.152941, 0.184314, 1)
+
+[node name="StartingBorder" type="ColorRect" parent="BotContainer/TimelineTab/MainContainer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0820313, 0.078125, 0.101563, 1)
 
 [node name="MiddleSeperator" type="ColorRect" parent="BotContainer/TimelineTab/MainContainer"]
 layout_mode = 1

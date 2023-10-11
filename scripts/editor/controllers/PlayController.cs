@@ -14,6 +14,7 @@ namespace Editor
         [Export] public VBoxContainer LanesNode { get; private set; }
         [Export] public PackedScene SequenceIconObj { get; private set; }
         [Export] public Control ComponentBodyContainer { get; private set; }
+        [Export] public Control StartingLanesBorderNode { get; private set; }
         public bool Playing { get; private set; } = false;
         public double Time { get; private set; } = 0.0;
         public List<Sequence> SequenceList { get; private set; } = new();
@@ -162,6 +163,7 @@ namespace Editor
                 sequence.Node.AnchorLeft = (float)anchor;
                 sequence.Node.AnchorRight = (float)anchor;
             }
+            StartingLanesBorderNode.AnchorRight = (float)(0.5 - Time * 0.5 / LanesWidth);
         }
     }
 }
