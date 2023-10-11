@@ -49,6 +49,7 @@ namespace Editor
                 }
 
                 ComponentBundle bundle = spawner.Component.GetBundleComponent();
+                ComponentTimer spawnTimerComponent = spawner.Component.GetSpawnTimerComponent();
 
                 Range angleRange =
                     (bundle.GetModifier(ModifierID.BUNDLE_ANGLE) as ModifierRange)
@@ -62,6 +63,23 @@ namespace Editor
                     (bundle.GetModifier(ModifierID.BUNDLE_SIZE) as ModifierRange)
                     .Range;
 
+                Range timerProcessCurve = null;
+                if (spawnTimerComponent != null)
+                {
+                    timerProcessCurve =
+                        (spawnTimerComponent.GetModifier(ModifierID.TIMER_PROCESS_CURVE) as ModifierRange)
+                        .Range;
+
+                    spawner.Timer.UpdateTimer(
+                        waitTime:
+                            (float)(spawnTimerComponent.GetModifier(ModifierID.TIMER_WAIT_TIME) as ModifierDouble)
+                            .Value,
+                        processTime:
+                            (float)(spawnTimerComponent.GetModifier(ModifierID.TIMER_PROCESS_TIME) as ModifierDouble)
+                            .Value
+                    );
+                }
+
                 double[] pointArray = GetEqualSizePoints(spawner.BulletCount);
 
                 for (int i = 0; i < spawner.Timer.LoopCount; i++)
@@ -71,9 +89,15 @@ namespace Editor
                         var pointX = pointArray[j];
                         var bulletSpawnTime = sequenceSpawnTime - spawner.Timer.TiggerOffsets[i];
 
+                        if (timerProcessCurve != null)
+                        {
+                            bulletSpawnTime -= timerProcessCurve.GetValueAt(pointX) * spawner.Timer.ProcessTime;
+                        }
+
                         if (bulletSpawnTime < 0.0)
                         {
                             //Bullet wave not yet spawned by time, skip
+                            //TODO: Clear other waves
                             // BulletPool.ClearSpawnerWave(spawner, i);
                             continue;
                         }

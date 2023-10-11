@@ -17,7 +17,8 @@ namespace Editor
 
         TIMER_LOOP_COUNT,
         TIMER_PROCESS_TIME,
-        TIMER_WAIT_TIME
+        TIMER_WAIT_TIME,
+        TIMER_PROCESS_CURVE,
     }
 
     public static class ModifierNamer
@@ -36,6 +37,7 @@ namespace Editor
             {ModifierID.TIMER_LOOP_COUNT, "Loop Count"},
             {ModifierID.TIMER_PROCESS_TIME, "Process Time"},
             {ModifierID.TIMER_WAIT_TIME, "Wait Time"},
+            {ModifierID.TIMER_PROCESS_CURVE, "Process Curve"},
         };
 
         public static string Get(ModifierID id)

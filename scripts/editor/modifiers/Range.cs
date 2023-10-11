@@ -25,6 +25,21 @@ namespace Editor
             };
         }
 
+        public static Range TiltedUp(double max, double min)
+        {
+            return new Range
+            {
+                Max = new RefDouble(max),
+                Min = new RefDouble(min),
+                Points = new List<Vector2> {
+                    new Vector2(0.0f, 1.0f),
+                    new Vector2(0.0f, 1.0f),
+                    new Vector2(1.0f, 0.0f),
+                    new Vector2(1.0f, 0.0f),
+                }
+            };
+        }
+
         public double GetValueAt(double x)
         {
             if (x < Points[0].X || x > Points[^1].X)

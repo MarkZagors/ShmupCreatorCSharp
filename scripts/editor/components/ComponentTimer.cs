@@ -37,6 +37,10 @@ namespace Editor
                     Value = 1,
                     MaxValue = 5000,
                 },
+                new ModifierRange {
+                    ID = ModifierID.TIMER_PROCESS_CURVE,
+                    Range = Range.TiltedUp(1,0)
+                },
             };
             _modifiersLookup = Modifiers.ToDictionary(modifier => modifier.ID);
         }
