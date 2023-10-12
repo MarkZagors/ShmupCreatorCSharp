@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=18 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
@@ -16,6 +16,7 @@
 [ext_resource type="PackedScene" uid="uid://c4hljf0assyf3" path="res://scenes/editor/fields/IntegerField.tscn" id="10_u1pli"]
 [ext_resource type="PackedScene" uid="uid://cpus4vl8tcta2" path="res://scenes/editor/fields/DoubleField.tscn" id="11_sil1u"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/CreateBoxController.cs" id="12_kakms"]
+[ext_resource type="Script" path="res://scripts/play/controllers/PlayerController.cs" id="16_l3vls"]
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -88,6 +89,11 @@ SequenceController = NodePath("../SequenceController")
 CreationContainer = NodePath("../../TopContainer/MidContainer/CreationContainer")
 CreationContainerVBox = NodePath("../../TopContainer/MidContainer/CreationContainer/CreateComponentTab/ScrollContainer/CreationVBox")
 CreationButtonObj = ExtResource("8_ekt68")
+
+[node name="PlayerController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayerNode")]
+script = ExtResource("16_l3vls")
+PlayerNode = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/SubViewportContainer/PlayViewport/PlayerSprite")
+Speed = 500.0
 
 [node name="BotContainer" type="Control" parent="."]
 layout_mode = 1
