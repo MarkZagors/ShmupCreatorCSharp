@@ -17,6 +17,7 @@ namespace Editor
         [Export] public PackedScene FieldReferenceObj { get; private set; }
         [Export] public PackedScene FieldIntegerObj { get; private set; }
         [Export] public PackedScene FieldDoubleObj { get; private set; }
+        [Export] public PackedScene FieldOptionsObj { get; private set; }
         private IComponent _openedComponent;
         private Sequence _openedSequence;
         private Button _newModifierPlusButton;
@@ -101,6 +102,15 @@ namespace Editor
                             CheckValidSpawnerConnection();
                     };
                     ComponentsVBox.AddChild(fieldDouble);
+                    break;
+                case ModifierOptions modifierOptions:
+                    var fieldOptions = FieldOptionsObj.Instantiate<FieldOptions>();
+                    fieldOptions.Init(modifierOptions);
+                    fieldOptions.Update += () =>
+                    {
+                        EmitSignal(SignalName.Update);
+                    };
+                    ComponentsVBox.AddChild(fieldOptions);
                     break;
                 default:
                     GD.PrintErr($"AddModifierField in Components Controller doesn't support modifier: {modifier}");

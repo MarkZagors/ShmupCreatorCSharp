@@ -44,6 +44,9 @@ namespace Editor
                     ID = ModifierID.BUNDLE_SIZE,
                     Range = Range.From(2, 0)
                 },
+                new ModifierOptions {
+                    ID = ModifierID.BUNDLE_TARGET,
+                },
             };
             _modifiersLookup = Modifiers.ToDictionary(modifier => modifier.ID);
         }

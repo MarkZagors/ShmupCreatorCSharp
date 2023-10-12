@@ -11,6 +11,7 @@ namespace Editor
         BUNDLE_ANGLE,
         BUNDLE_SPEED,
         BUNDLE_SIZE,
+        BUNDLE_TARGET,
 
         SPAWNER_REF_BUNDLE,
         SPAWNER_REF_SPAWN_TIMER,
@@ -30,6 +31,7 @@ namespace Editor
             {ModifierID.BUNDLE_ANGLE, "Angle"},
             {ModifierID.BUNDLE_SPEED, "Speed"},
             {ModifierID.BUNDLE_SIZE, "Size"},
+            {ModifierID.BUNDLE_TARGET, "Target"},
 
             {ModifierID.SPAWNER_REF_BUNDLE, "Bundle Data"},
             {ModifierID.SPAWNER_REF_SPAWN_TIMER, "Spawn Timer"},
