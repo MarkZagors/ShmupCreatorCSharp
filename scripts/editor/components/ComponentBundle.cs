@@ -46,6 +46,11 @@ namespace Editor
                 },
                 new ModifierOptions {
                     ID = ModifierID.BUNDLE_TARGET,
+                    Options = new() {
+                        Option.TARGET_NO_TARGET,
+                        Option.TARGET_PLAYER
+                    },
+                    SelectedOption = Option.TARGET_NO_TARGET
                 },
             };
             _modifiersLookup = Modifiers.ToDictionary(modifier => modifier.ID);

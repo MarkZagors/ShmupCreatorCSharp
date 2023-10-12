@@ -3,11 +3,12 @@
 [ext_resource type="PackedScene" uid="uid://6aax5g0j0hlo" path="res://scenes/editor/fields/BaseField.tscn" id="1_a4x3c"]
 [ext_resource type="Script" path="res://scripts/editor/fields/FieldOptions.cs" id="2_ij7r1"]
 
-[node name="OptionsField" instance=ExtResource("1_a4x3c")]
+[node name="OptionsField" node_paths=PackedStringArray("OptionButton") instance=ExtResource("1_a4x3c")]
 anchors_preset = 0
 anchor_right = 0.0
 offset_right = 350.0
 script = ExtResource("2_ij7r1")
+OptionButton = NodePath("OptionButton")
 
 [node name="FieldName" parent="." index="1"]
 text = "Option
