@@ -13,7 +13,7 @@ namespace Editor
         public Enums.ComponentType Type { get; set; } = Enums.ComponentType.SPAWNER;
         public bool Valid { get; set; } = false;
         public Sequence Sequence { get; set; } = null;
-        private readonly Dictionary<ModifierID, IModifier> _modifiersLookup;
+        private readonly LookupHelper _lookupHelper;
 
         public ComponentSpawner(string name, TreeItem treeItem, Sequence sequence)
         {
@@ -37,29 +37,22 @@ namespace Editor
                     }
                 },
             };
-            _modifiersLookup = Modifiers.ToDictionary(modifier => modifier.ID);
+            _lookupHelper = new LookupHelper(Modifiers);
         }
 
         public IModifier GetModifier(ModifierID modifierID)
         {
-            if (_modifiersLookup.ContainsKey(modifierID))
-            {
-                return _modifiersLookup[modifierID];
-            }
-            else
-            {
-                return null;
-            }
+            return _lookupHelper.GetModifier(modifierID);
         }
 
         public ComponentBundle GetBundleComponent()
         {
-            return (ComponentBundle)((ModifierRef)GetModifier(ModifierID.SPAWNER_REF_BUNDLE)).Ref;
+            return _lookupHelper.GetRefComponent<ComponentBundle>(ModifierID.SPAWNER_REF_BUNDLE);
         }
 
         public ComponentTimer GetSpawnTimerComponent()
         {
-            return (ComponentTimer)((ModifierRef)GetModifier(ModifierID.SPAWNER_REF_SPAWN_TIMER)).Ref;
+            return _lookupHelper.GetRefComponent<ComponentTimer>(ModifierID.SPAWNER_REF_SPAWN_TIMER);
         }
     }
 }

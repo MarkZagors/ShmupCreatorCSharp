@@ -11,7 +11,7 @@ namespace Editor
         public TreeItem TreeItem { get; set; }
         public List<IModifier> Modifiers { get; set; }
         public Enums.ComponentType Type { get; set; } = Enums.ComponentType.BUNDLE;
-        private readonly Dictionary<ModifierID, IModifier> _modifiersLookup;
+        private readonly LookupHelper _lookupHelper;
 
         public ComponentBundle(string name, TreeItem treeItem)
         {
@@ -53,19 +53,12 @@ namespace Editor
                     SelectedOption = Option.TARGET_NO_TARGET
                 },
             };
-            _modifiersLookup = Modifiers.ToDictionary(modifier => modifier.ID);
+            _lookupHelper = new LookupHelper(Modifiers);
         }
 
         public IModifier GetModifier(ModifierID modifierID)
         {
-            if (_modifiersLookup.ContainsKey(modifierID))
-            {
-                return _modifiersLookup[modifierID];
-            }
-            else
-            {
-                return null;
-            }
+            return _lookupHelper.GetModifier(modifierID);
         }
     }
 }
