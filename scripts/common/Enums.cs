@@ -1,19 +1,16 @@
 namespace Editor
 {
-    public static class Enums
+    public enum ScrollDirection
     {
-        public enum ScrollDirection
-        {
-            FORWARD,
-            BACKWARD
-        }
+        FORWARD,
+        BACKWARD
+    }
 
-        public enum ComponentType
-        {
-            BULLET,
-            BUNDLE,
-            SPAWNER,
-            TIMER
-        }
+    public enum ComponentType
+    {
+        BULLET,
+        BUNDLE,
+        SPAWNER,
+        TIMER
     }
 }

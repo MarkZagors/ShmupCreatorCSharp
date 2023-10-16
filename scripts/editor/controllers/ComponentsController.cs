@@ -151,7 +151,7 @@ namespace Editor
                 }
             }
             else if (
-                _openedComponent.Type == Enums.ComponentType.TIMER
+                _openedComponent.Type == ComponentType.TIMER
             )
             {
                 //Catch all for different types of valid restructure, add more in the future, if restructure not triggering

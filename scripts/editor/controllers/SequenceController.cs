@@ -71,25 +71,25 @@ namespace Editor
 
         public void CreateBullet()
         {
-            CreateComponent(Enums.ComponentType.BULLET);
+            CreateComponent(ComponentType.BULLET);
         }
 
         public void CreateBundle()
         {
-            CreateComponent(Enums.ComponentType.BUNDLE);
+            CreateComponent(ComponentType.BUNDLE);
         }
 
         public void CreateSpawner()
         {
-            CreateComponent(Enums.ComponentType.SPAWNER);
+            CreateComponent(ComponentType.SPAWNER);
         }
 
         public void CreateTimer()
         {
-            CreateComponent(Enums.ComponentType.TIMER);
+            CreateComponent(ComponentType.TIMER);
         }
 
-        private void CreateComponent(Enums.ComponentType componentType)
+        private void CreateComponent(ComponentType componentType)
         {
             TreeItem root = SequenceTree.GetRoot();
             TreeItem componentTreeItem = root.CreateChild();
@@ -98,7 +98,7 @@ namespace Editor
 
             switch (componentType)
             {
-                case Enums.ComponentType.BULLET:
+                case ComponentType.BULLET:
                     name = WrapComponentName("Bullet", _openedSequence.Components);
                     component = new ComponentBullet
                     (
@@ -106,7 +106,7 @@ namespace Editor
                         treeItem: componentTreeItem
                     );
                     break;
-                case Enums.ComponentType.BUNDLE:
+                case ComponentType.BUNDLE:
                     name = WrapComponentName("Bundle", _openedSequence.Components);
                     component = new ComponentBundle
                     (
@@ -114,7 +114,7 @@ namespace Editor
                         treeItem: componentTreeItem
                     );
                     break;
-                case Enums.ComponentType.SPAWNER:
+                case ComponentType.SPAWNER:
                     name = WrapComponentName("Spawner", _openedSequence.Components);
                     component = new ComponentSpawner
                     (
@@ -123,7 +123,7 @@ namespace Editor
                         sequence: _openedSequence
                     );
                     break;
-                case Enums.ComponentType.TIMER:
+                case ComponentType.TIMER:
                     name = WrapComponentName("Timer", _openedSequence.Components);
                     component = new ComponentTimer
                     (

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Godot;
-using static Editor.Enums;
 
 namespace Editor
 {
@@ -10,7 +9,7 @@ namespace Editor
         public string Name { get; set; }
         public TreeItem TreeItem { get; set; }
         public List<IModifier> Modifiers { get; set; }
-        public Enums.ComponentType Type { get; set; } = Enums.ComponentType.BUNDLE;
+        public ComponentType Type { get; set; } = ComponentType.BUNDLE;
         private readonly LookupHelper _lookupHelper;
 
         public ComponentBundle(string name, TreeItem treeItem)

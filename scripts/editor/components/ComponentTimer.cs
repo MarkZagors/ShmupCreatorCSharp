@@ -9,7 +9,7 @@ namespace Editor
         public string Name { get; set; }
         public TreeItem TreeItem { get; set; }
         public List<IModifier> Modifiers { get; set; }
-        public Enums.ComponentType Type { get; set; } = Enums.ComponentType.TIMER;
+        public ComponentType Type { get; set; } = ComponentType.TIMER;
         private readonly LookupHelper _lookupHelper;
 
         public ComponentTimer(string name, TreeItem treeItem)

@@ -141,7 +141,7 @@ namespace Editor
             {
                 foreach (IComponent component in sequence.Components)
                 {
-                    if (component.Type == Enums.ComponentType.SPAWNER)
+                    if (component.Type == ComponentType.SPAWNER)
                     {
                         var spawnerComponent = (ComponentSpawner)component;
                         if (spawnerComponent.Valid)

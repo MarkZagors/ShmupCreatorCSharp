@@ -2,7 +2,6 @@ using ExtensionMethods;
 using Godot;
 using System;
 using System.Collections.Generic;
-using ScrollDirection = Editor.Enums.ScrollDirection;
 
 namespace Editor
 {

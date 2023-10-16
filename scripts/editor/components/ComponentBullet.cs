@@ -9,7 +9,7 @@ namespace Editor
         public string Name { get; set; }
         public TreeItem TreeItem { get; set; }
         public List<IModifier> Modifiers { get; set; }
-        public Enums.ComponentType Type { get; set; } = Enums.ComponentType.BULLET;
+        public ComponentType Type { get; set; } = ComponentType.BULLET;
         private readonly LookupHelper _lookupHelper;
 
         public ComponentBullet(string name, TreeItem treeItem)
@@ -26,6 +26,6 @@ namespace Editor
         public IModifier GetModifier(ModifierID modifierID)
         {
             return _lookupHelper.GetModifier(modifierID);
-        }  
+        }
     }
 }
