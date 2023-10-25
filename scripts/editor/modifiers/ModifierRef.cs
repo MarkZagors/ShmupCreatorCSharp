@@ -4,9 +4,9 @@ namespace Editor
 {
     public class ModifierRef : IModifier
     {
-        public ModifierID ID { get; set; }
+        required public ModifierID ID { get; set; }
+        required public List<ComponentType> AllowedComponentTypes { get; set; }
         public bool Active { get; set; } = false;
-        public List<ComponentType> AllowedComponentTypes { get; set; }
         public IComponent Ref { get; set; } = null;
     }
 }

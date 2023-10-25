@@ -69,10 +69,11 @@ namespace Editor
             var sequenceNode = SequenceIconObj.Instantiate<Control>();
             var laneOne = LanesNode.GetChild<Control>(0);
             var newSequence = new Sequence
-            (
-                time: this.Time,
-                node: sequenceNode
-            );
+            {
+                Time = this.Time,
+                Node = sequenceNode,
+                Components = new List<IComponent>(),
+            };
 
             SequenceList.Add(newSequence);
 

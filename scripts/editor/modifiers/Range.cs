@@ -6,9 +6,9 @@ namespace Editor
 {
     public class Range
     {
-        public RefDouble Max { get; set; }
-        public RefDouble Min { get; set; }
-        public List<Vector2> Points { get; set; }
+        required public RefDouble Max { get; set; }
+        required public RefDouble Min { get; set; }
+        required public List<Vector2> Points { get; set; }
 
         public static Range From(double max, double min)
         {
