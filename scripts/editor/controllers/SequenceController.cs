@@ -7,16 +7,28 @@ namespace Editor
     public partial class SequenceController : Node
     {
         [Signal] public delegate void UpdateEventHandler();
+
+        [ExportGroup("Controllers")]
         [Export] public ComponentsController ComponentsController { get; private set; }
         [Export] public CreateBoxController CreateBoxController { get; private set; }
+
+        [ExportGroup("Nodes")]
         [Export] public Tree SequenceTree { get; private set; }
         [Export] public Control TemplatesTab { get; private set; }
         [Export] public Control SequenceTab { get; private set; }
+
+        [ExportGroup("Icons")]
+        [Export] public Texture2D IconBullet { get; private set; }
+        [Export] public Texture2D IconBundle { get; private set; }
+        [Export] public Texture2D IconSpawner { get; private set; }
+        [Export] public Texture2D IconTimer { get; private set; }
 
         private Sequence _openedSequence;
         private readonly Dictionary<TreeItem, IComponent> _sequenceTreeLookup = new();
         private TreeItem _selectedTreeItem;
         private Vector2 _treeItemSelectionMousePos;
+
+        private const int TREE_ITEM_HEIGHT = 32;
 
         public override void _Ready()
         {
@@ -60,10 +72,12 @@ namespace Editor
 
             TreeItem root = SequenceTree.CreateItem();
             root.SetText(0, "Sequence");
+            root.CustomMinimumHeight = TREE_ITEM_HEIGHT;
 
             foreach (IComponent component in _openedSequence.Components)
             {
                 TreeItem treeItem = root.CreateChild();
+                treeItem.CustomMinimumHeight = TREE_ITEM_HEIGHT;
                 treeItem.SetText(0, component.Name);
                 _sequenceTreeLookup.Add(treeItem, component);
             }
@@ -85,6 +99,7 @@ namespace Editor
                         name: name,
                         treeItem: componentTreeItem
                     );
+                    componentTreeItem.SetIcon(0, IconBullet);
                     break;
                 case ComponentType.BUNDLE:
                     name = WrapComponentName("Bundle", _openedSequence.Components);
@@ -93,6 +108,7 @@ namespace Editor
                         name: name,
                         treeItem: componentTreeItem
                     );
+                    componentTreeItem.SetIcon(0, IconBundle);
                     break;
                 case ComponentType.SPAWNER:
                     name = WrapComponentName("Spawner", _openedSequence.Components);
@@ -102,6 +118,7 @@ namespace Editor
                         treeItem: componentTreeItem,
                         sequence: _openedSequence
                     );
+                    componentTreeItem.SetIcon(0, IconSpawner);
                     break;
                 case ComponentType.TIMER:
                     name = WrapComponentName("Timer", _openedSequence.Components);
@@ -110,6 +127,7 @@ namespace Editor
                         name: name,
                         treeItem: componentTreeItem
                     );
+                    componentTreeItem.SetIcon(0, IconTimer);
                     break;
                 default:
                     GD.PushError($"Component type not implemented in Create Component!: {componentType}");
@@ -117,6 +135,9 @@ namespace Editor
             }
 
             componentTreeItem.SetText(0, name);
+            componentTreeItem.SetIconMaxWidth(0, TREE_ITEM_HEIGHT);
+            componentTreeItem.CustomMinimumHeight = TREE_ITEM_HEIGHT;
+
             _openedSequence.Components.Add(component);
             _sequenceTreeLookup.Add(componentTreeItem, component);
             CreateBoxController.CloseCreationBox();

@@ -11,13 +11,17 @@ namespace Editor
         private TreeItem _draggingTreeItem = null;
         private bool _isMouseInMidContainer = false;
 
+        private const int TREE_ITEM_HEIGHT = 32;
+
         public override void _Ready()
         {
             TreeItem root = TemplatesTree.CreateItem();
             root.SetText(0, "Templates");
+            root.CustomMinimumHeight = TREE_ITEM_HEIGHT;
 
             TreeItem newSequenceItem = root.CreateChild();
             newSequenceItem.SetText(0, "New Sequence");
+            newSequenceItem.CustomMinimumHeight = TREE_ITEM_HEIGHT;
             // TreeItem testGroup = root.CreateChild();
             // testGroup.SetText(0, "Test Group");
             // TreeItem testChild = testGroup.CreateChild();

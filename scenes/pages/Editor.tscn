@@ -1,13 +1,17 @@
-[gd_scene load_steps=19 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=23 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
 [ext_resource type="Script" path="res://scripts/play/controllers/BulletController.cs" id="4_cwq5m"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/TemplatesController.cs" id="4_kkpwu"]
 [ext_resource type="PackedScene" uid="uid://f1o6rqauvyg1" path="res://scenes/editor/SequenceIcon.tscn" id="4_t8vuy"]
+[ext_resource type="Texture2D" uid="uid://bospwk7xkxfko" path="res://sprites/editor/icon-bullet.png" id="5_opp2g"]
+[ext_resource type="Texture2D" uid="uid://cs0x77tftvyhj" path="res://sprites/editor/icon-bundle.png" id="6_aifs7"]
 [ext_resource type="PackedScene" uid="uid://07bui71vctke" path="res://scenes/play/Bullet.tscn" id="6_wfl5l"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/ComponentsController.cs" id="7_78ycr"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/SequenceController.cs" id="7_ofb54"]
+[ext_resource type="Texture2D" uid="uid://bbotcfeambjrq" path="res://sprites/editor/icon-spawner.png" id="7_utqfi"]
+[ext_resource type="Texture2D" uid="uid://6qoml11gm2y3" path="res://sprites/editor/icon-timer.png" id="8_4nsb4"]
 [ext_resource type="PackedScene" uid="uid://dp8iasxokwhsu" path="res://scenes/editor/CreateModifierButton.tscn" id="8_colxt"]
 [ext_resource type="PackedScene" uid="uid://cajgj2ywqkpxx" path="res://scenes/editor/CreationBoxButton.tscn" id="8_ekt68"]
 [ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://sprites/icon.svg" id="8_hqx5x"]
@@ -59,6 +63,10 @@ CreateBoxController = NodePath("../CreateBoxController")
 SequenceTree = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/SequenceTab/SequenceTree")
 TemplatesTab = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab")
 SequenceTab = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/SequenceTab")
+IconBullet = ExtResource("5_opp2g")
+IconBundle = ExtResource("6_aifs7")
+IconSpawner = ExtResource("7_utqfi")
+IconTimer = ExtResource("8_4nsb4")
 
 [node name="TemplatesController" type="Node" parent="Controllers" node_paths=PackedStringArray("TemplatesTree", "PlayController")]
 script = ExtResource("4_kkpwu")
