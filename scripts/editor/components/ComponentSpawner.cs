@@ -30,7 +30,6 @@ namespace Editor
                 },
                 new ModifierRef {
                     ID = ModifierID.SPAWNER_REF_SPAWN_TIMER,
-                    Active = true,
                     AllowedComponentTypes = new() {
                         ComponentType.TIMER
                     }
