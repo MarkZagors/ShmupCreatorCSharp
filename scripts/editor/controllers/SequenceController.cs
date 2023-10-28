@@ -69,27 +69,7 @@ namespace Editor
             }
         }
 
-        public void CreateBullet()
-        {
-            CreateComponent(ComponentType.BULLET);
-        }
-
-        public void CreateBundle()
-        {
-            CreateComponent(ComponentType.BUNDLE);
-        }
-
-        public void CreateSpawner()
-        {
-            CreateComponent(ComponentType.SPAWNER);
-        }
-
-        public void CreateTimer()
-        {
-            CreateComponent(ComponentType.TIMER);
-        }
-
-        private void CreateComponent(ComponentType componentType)
+        public void CreateComponent(ComponentType componentType)
         {
             TreeItem root = SequenceTree.GetRoot();
             TreeItem componentTreeItem = root.CreateChild();

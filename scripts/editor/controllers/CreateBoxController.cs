@@ -26,22 +26,22 @@ namespace Editor
 
             Button bulletButton = CreationButtonObj.Instantiate<Button>();
             bulletButton.Text = "Bullet";
-            bulletButton.Pressed += () => SequenceController.CreateBullet();
+            bulletButton.Pressed += () => SequenceController.CreateComponent(ComponentType.BULLET);
             CreationContainerVBox.AddChild(bulletButton);
 
             Button bundleButton = CreationButtonObj.Instantiate<Button>();
             bundleButton.Text = "Bundle";
-            bundleButton.Pressed += () => SequenceController.CreateBundle();
+            bundleButton.Pressed += () => SequenceController.CreateComponent(ComponentType.BUNDLE);
             CreationContainerVBox.AddChild(bundleButton);
 
             Button spawnerButton = CreationButtonObj.Instantiate<Button>();
             spawnerButton.Text = "Spawner";
-            spawnerButton.Pressed += () => SequenceController.CreateSpawner();
+            spawnerButton.Pressed += () => SequenceController.CreateComponent(ComponentType.SPAWNER);
             CreationContainerVBox.AddChild(spawnerButton);
 
             Button timerButton = CreationButtonObj.Instantiate<Button>();
             timerButton.Text = "Timer";
-            timerButton.Pressed += () => SequenceController.CreateTimer();
+            timerButton.Pressed += () => SequenceController.CreateComponent(ComponentType.TIMER);
             CreationContainerVBox.AddChild(timerButton);
         }
 
