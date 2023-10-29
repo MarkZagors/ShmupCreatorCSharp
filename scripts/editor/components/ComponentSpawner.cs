@@ -12,13 +12,15 @@ namespace Editor
         public ComponentType Type { get; set; } = ComponentType.SPAWNER;
         public bool Valid { get; set; } = false;
         public Sequence Sequence { get; set; } = null;
+        public Texture2D Icon { get; set; }
         private readonly LookupHelper _lookupHelper;
 
-        public ComponentSpawner(string name, TreeItem treeItem, Sequence sequence)
+        public ComponentSpawner(string name, TreeItem treeItem, Sequence sequence, Texture2D icon)
         {
             Name = name;
             TreeItem = treeItem;
             Sequence = sequence;
+            Icon = icon;
             Modifiers = new List<IModifier>
             {
                 new ModifierRef {

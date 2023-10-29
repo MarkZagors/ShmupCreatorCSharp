@@ -30,6 +30,7 @@ namespace Editor
             _openedSequence = sequence;
 
             ComponentNameLabel.Text = component.Name;
+            ComponentNameLabel.GetNode<TextureRect>("ComponentIcon").Texture = component.Icon;
 
             foreach (IModifier modifier in component.Modifiers)
             {

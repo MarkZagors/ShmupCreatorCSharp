@@ -10,12 +10,14 @@ namespace Editor
         public TreeItem TreeItem { get; set; }
         public List<IModifier> Modifiers { get; set; }
         public ComponentType Type { get; set; } = ComponentType.BULLET;
+        public Texture2D Icon { get; set; }
         private readonly LookupHelper _lookupHelper;
 
-        public ComponentBullet(string name, TreeItem treeItem)
+        public ComponentBullet(string name, TreeItem treeItem, Texture2D icon)
         {
             Name = name;
             TreeItem = treeItem;
+            Icon = icon;
             Modifiers = new List<IModifier>
             {
                 //Modifiers here

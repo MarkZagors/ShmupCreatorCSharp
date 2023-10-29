@@ -10,12 +10,14 @@ namespace Editor
         public TreeItem TreeItem { get; set; }
         public List<IModifier> Modifiers { get; set; }
         public ComponentType Type { get; set; } = ComponentType.TIMER;
+        public Texture2D Icon { get; set; }
         private readonly LookupHelper _lookupHelper;
 
-        public ComponentTimer(string name, TreeItem treeItem)
+        public ComponentTimer(string name, TreeItem treeItem, Texture2D icon)
         {
             Name = name;
             TreeItem = treeItem;
+            Icon = icon;
             Modifiers = new List<IModifier>
             {
                 new ModifierInteger {

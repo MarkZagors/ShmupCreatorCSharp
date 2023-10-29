@@ -97,18 +97,18 @@ namespace Editor
                     component = new ComponentBullet
                     (
                         name: name,
-                        treeItem: componentTreeItem
+                        treeItem: componentTreeItem,
+                        icon: IconBullet
                     );
-                    componentTreeItem.SetIcon(0, IconBullet);
                     break;
                 case ComponentType.BUNDLE:
                     name = WrapComponentName("Bundle", _openedSequence.Components);
                     component = new ComponentBundle
                     (
                         name: name,
-                        treeItem: componentTreeItem
+                        treeItem: componentTreeItem,
+                        icon: IconBundle
                     );
-                    componentTreeItem.SetIcon(0, IconBundle);
                     break;
                 case ComponentType.SPAWNER:
                     name = WrapComponentName("Spawner", _openedSequence.Components);
@@ -116,18 +116,18 @@ namespace Editor
                     (
                         name: name,
                         treeItem: componentTreeItem,
-                        sequence: _openedSequence
+                        sequence: _openedSequence,
+                        icon: IconSpawner
                     );
-                    componentTreeItem.SetIcon(0, IconSpawner);
                     break;
                 case ComponentType.TIMER:
                     name = WrapComponentName("Timer", _openedSequence.Components);
                     component = new ComponentTimer
                     (
                         name: name,
-                        treeItem: componentTreeItem
+                        treeItem: componentTreeItem,
+                        icon: IconTimer
                     );
-                    componentTreeItem.SetIcon(0, IconTimer);
                     break;
                 default:
                     GD.PushError($"Component type not implemented in Create Component!: {componentType}");
@@ -135,6 +135,7 @@ namespace Editor
             }
 
             componentTreeItem.SetText(0, name);
+            componentTreeItem.SetIcon(0, component.Icon);
             componentTreeItem.SetIconMaxWidth(0, TREE_ITEM_HEIGHT);
             componentTreeItem.CustomMinimumHeight = TREE_ITEM_HEIGHT;
 
