@@ -122,7 +122,6 @@ namespace Editor
 
         private void CheckValidSpawnerConnection()
         {
-            bool validRestructure = false;
             var spawnRef = (ModifierRef)OpenedComponent.GetModifier(ModifierID.SPAWNER_REF_BUNDLE);
             var bundleRef = (ModifierRef)OpenedComponent.GetModifier(ModifierID.BUNDLE_REF_BULLET);
             if (spawnRef != null && spawnRef.Ref != null)
@@ -131,36 +130,43 @@ namespace Editor
                 if (bundleRefNested != null && bundleRefNested.Ref != null)
                 {
                     ((ComponentSpawner)OpenedComponent).Valid = true;
-                    validRestructure = true;
+                    EmitSignal(SignalName.OnValidRestructure);
                 }
+                return;
             }
-            else if (bundleRef != null)
+
+            if (bundleRef != null)
             {
-                foreach (IComponent component in _openedSequence.Components)
-                {
-                    var spawnRefInSequence = (ModifierRef)component.GetModifier(ModifierID.SPAWNER_REF_BUNDLE);
-                    if (spawnRefInSequence != null && spawnRefInSequence.Ref != null)
-                    {
-                        //If there is a spawner in the opened sequence, check if its ref is the same as the modified components
-                        var bundleRefInSpawner = (ModifierRef)spawnRefInSequence.Ref.GetModifier(ModifierID.BUNDLE_REF_BULLET);
-                        if (bundleRefInSpawner.Ref == bundleRef.Ref)
-                        {
-                            ((ComponentSpawner)component).Valid = true;
-                            validRestructure = true;
-                        }
-                    }
-                }
+                CheckValidSpawnerConnectionFromBundleRef(bundleRef);
+                return;
             }
-            else if (
+
+            if (
                 OpenedComponent.Type == ComponentType.TIMER
             )
             {
                 //Catch all for different types of valid restructure, add more in the future, if restructure not triggering
-                validRestructure = true;
-            }
-
-            if (validRestructure)
                 EmitSignal(SignalName.OnValidRestructure);
+                return;
+            }
+        }
+
+        private void CheckValidSpawnerConnectionFromBundleRef(ModifierRef bundleRef)
+        {
+            foreach (IComponent component in _openedSequence.Components)
+            {
+                var spawnRefInSequence = (ModifierRef)component.GetModifier(ModifierID.SPAWNER_REF_BUNDLE);
+                if (spawnRefInSequence != null && spawnRefInSequence.Ref != null)
+                {
+                    //If there is a spawner in the opened sequence, check if its ref is the same as the modified components
+                    var bundleRefInSpawner = (ModifierRef)spawnRefInSequence.Ref.GetModifier(ModifierID.BUNDLE_REF_BULLET);
+                    if (bundleRefInSpawner.Ref == bundleRef.Ref)
+                    {
+                        ((ComponentSpawner)component).Valid = true;
+                        EmitSignal(SignalName.OnValidRestructure);
+                    }
+                }
+            }
         }
 
         private void ClearComponentsVBox()
