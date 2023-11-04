@@ -88,8 +88,6 @@ namespace Editor
                     var bulletSpawnTimeOffset = sequenceSpawnTime - spawner.Timer.TiggerOffsets[i];
                     if (bulletSpawnTimeOffset < 0.0)
                     {
-                        //Bullet wave not yet spawned by time, skip
-                        // BulletPool.ClearSpawnerWave(spawner, i);
                         continue;
                     }
 

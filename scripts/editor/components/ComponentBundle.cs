@@ -4,14 +4,13 @@ using Godot;
 
 namespace Editor
 {
-    public class ComponentBundle : IComponent
+    public class ComponentBundle : BaseComponent, IComponent
     {
         public string Name { get; set; }
         public TreeItem TreeItem { get; set; }
         public List<IModifier> Modifiers { get; set; }
         public ComponentType Type { get; set; } = ComponentType.BUNDLE;
         public Texture2D Icon { get; set; }
-        private readonly LookupHelper _lookupHelper;
 
         public ComponentBundle(string name, TreeItem treeItem, Texture2D icon)
         {
@@ -55,11 +54,6 @@ namespace Editor
                 },
             };
             _lookupHelper = new LookupHelper(Modifiers);
-        }
-
-        public IModifier GetModifier(ModifierID modifierID)
-        {
-            return _lookupHelper.GetModifier(modifierID);
         }
     }
 }

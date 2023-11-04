@@ -4,7 +4,7 @@ using Godot;
 
 namespace Editor
 {
-    public class ComponentSpawner : IComponent
+    public class ComponentSpawner : BaseComponent, IComponent
     {
         public string Name { get; set; }
         public TreeItem TreeItem { get; set; }
@@ -13,7 +13,6 @@ namespace Editor
         public bool Valid { get; set; } = false;
         public Sequence Sequence { get; set; } = null;
         public Texture2D Icon { get; set; }
-        private readonly LookupHelper _lookupHelper;
 
         public ComponentSpawner(string name, TreeItem treeItem, Sequence sequence, Texture2D icon)
         {
@@ -38,11 +37,6 @@ namespace Editor
                 },
             };
             _lookupHelper = new LookupHelper(Modifiers);
-        }
-
-        public IModifier GetModifier(ModifierID modifierID)
-        {
-            return _lookupHelper.GetModifier(modifierID);
         }
 
         public ComponentBundle GetBundleComponent()
