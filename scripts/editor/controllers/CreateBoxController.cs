@@ -24,27 +24,19 @@ namespace Editor
         {
             CreationContainer.Visible = true;
 
-            Button bulletButton = CreationButtonObj.Instantiate<Button>();
-            bulletButton.Text = "Bullet";
-            bulletButton.Pressed += () => SequenceController.CreateComponent(ComponentType.BULLET);
-            CreationContainerVBox.AddChild(bulletButton);
-
-            Button bundleButton = CreationButtonObj.Instantiate<Button>();
-            bundleButton.Text = "Bundle";
-            bundleButton.Pressed += () => SequenceController.CreateComponent(ComponentType.BUNDLE);
-            CreationContainerVBox.AddChild(bundleButton);
-
-            Button spawnerButton = CreationButtonObj.Instantiate<Button>();
-            spawnerButton.Text = "Spawner";
-            spawnerButton.Pressed += () => SequenceController.CreateComponent(ComponentType.SPAWNER);
-            CreationContainerVBox.AddChild(spawnerButton);
-
-            Button timerButton = CreationButtonObj.Instantiate<Button>();
-            timerButton.Text = "Timer";
-            timerButton.Pressed += () => SequenceController.CreateComponent(ComponentType.TIMER);
-            CreationContainerVBox.AddChild(timerButton);
+            RenderNewComponent(ComponentType.BULLET);
+            RenderNewComponent(ComponentType.BUNDLE);
+            RenderNewComponent(ComponentType.SPAWNER);
+            RenderNewComponent(ComponentType.TIMER);
         }
 
+        private void RenderNewComponent(ComponentType componentType)
+        {
+            Button bulletButton = CreationButtonObj.Instantiate<Button>();
+            bulletButton.Text = ComponentNamer.Get(componentType);
+            bulletButton.Pressed += () => SequenceController.CreateComponent(componentType);
+            CreationContainerVBox.AddChild(bulletButton);
+        }
 
         public void OnClickNewModifier(IComponent component, ComponentsController componentsController)
         {
