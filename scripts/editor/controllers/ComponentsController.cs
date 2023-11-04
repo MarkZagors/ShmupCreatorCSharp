@@ -18,7 +18,7 @@ namespace Editor
         [Export] public PackedScene FieldIntegerObj { get; private set; }
         [Export] public PackedScene FieldDoubleObj { get; private set; }
         [Export] public PackedScene FieldOptionsObj { get; private set; }
-        private IComponent _openedComponent;
+        public IComponent OpenedComponent { get; private set; }
         private Sequence _openedSequence;
         private Button _newModifierPlusButton;
 
@@ -26,7 +26,7 @@ namespace Editor
         {
             ClearComponentsVBox();
 
-            _openedComponent = component;
+            OpenedComponent = component;
             _openedSequence = sequence;
 
             ComponentNameLabel.Text = component.Name;
@@ -41,13 +41,13 @@ namespace Editor
             }
 
             _newModifierPlusButton = NewModifierButtonObj.Instantiate<Button>();
-            _newModifierPlusButton.Pressed += () => CreateBoxController.OnClickNewModifier(_openedComponent, this);
+            _newModifierPlusButton.Pressed += () => CreateBoxController.OnClickNewModifier(OpenedComponent, this);
             ComponentsVBox.AddChild(_newModifierPlusButton);
         }
 
         public void ClearComponent()
         {
-            _openedComponent = null;
+            OpenedComponent = null;
             ComponentNameLabel.Text = "[No Component Selected]";
             ClearComponentsVBox();
         }
@@ -123,14 +123,14 @@ namespace Editor
         private void CheckValidSpawnerConnection()
         {
             bool validRestructure = false;
-            var spawnRef = (ModifierRef)_openedComponent.GetModifier(ModifierID.SPAWNER_REF_BUNDLE);
-            var bundleRef = (ModifierRef)_openedComponent.GetModifier(ModifierID.BUNDLE_REF_BULLET);
+            var spawnRef = (ModifierRef)OpenedComponent.GetModifier(ModifierID.SPAWNER_REF_BUNDLE);
+            var bundleRef = (ModifierRef)OpenedComponent.GetModifier(ModifierID.BUNDLE_REF_BULLET);
             if (spawnRef != null && spawnRef.Ref != null)
             {
                 var bundleRefNested = (ModifierRef)spawnRef.Ref.GetModifier(ModifierID.BUNDLE_REF_BULLET);
                 if (bundleRefNested != null && bundleRefNested.Ref != null)
                 {
-                    ((ComponentSpawner)_openedComponent).Valid = true;
+                    ((ComponentSpawner)OpenedComponent).Valid = true;
                     validRestructure = true;
                 }
             }
@@ -152,7 +152,7 @@ namespace Editor
                 }
             }
             else if (
-                _openedComponent.Type == ComponentType.TIMER
+                OpenedComponent.Type == ComponentType.TIMER
             )
             {
                 //Catch all for different types of valid restructure, add more in the future, if restructure not triggering
@@ -169,11 +169,6 @@ namespace Editor
             {
                 vboxChild.QueueFree();
             }
-        }
-
-        public IComponent GetOpenedComponent()
-        {
-            return _openedComponent;
         }
     }
 }

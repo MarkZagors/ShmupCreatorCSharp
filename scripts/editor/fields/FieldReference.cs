@@ -45,7 +45,7 @@ namespace Editor
             if (_mouseHovering)
             {
                 var draggingComponent = _sequenceController.GetSelectedComponent();
-                var openedComponent = _componentsController.GetOpenedComponent();
+                var openedComponent = _componentsController.OpenedComponent;
                 if (
                     draggingComponent != null
                     && openedComponent != draggingComponent
