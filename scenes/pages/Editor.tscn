@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=24 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
@@ -15,6 +15,7 @@
 [ext_resource type="PackedScene" uid="uid://dp8iasxokwhsu" path="res://scenes/editor/CreateModifierButton.tscn" id="8_colxt"]
 [ext_resource type="PackedScene" uid="uid://cajgj2ywqkpxx" path="res://scenes/editor/CreationBoxButton.tscn" id="8_ekt68"]
 [ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://sprites/icon.svg" id="8_hqx5x"]
+[ext_resource type="Texture2D" uid="uid://ektc0ner21wt" path="res://sprites/editor/warning.png" id="9_31nku"]
 [ext_resource type="PackedScene" uid="uid://chvjbvhm3exrb" path="res://scenes/editor/fields/RangeField.tscn" id="9_bmuti"]
 [ext_resource type="PackedScene" uid="uid://23l8mdbbtext" path="res://scenes/editor/fields/ReferenceField.tscn" id="9_m4j1e"]
 [ext_resource type="PackedScene" uid="uid://c4hljf0assyf3" path="res://scenes/editor/fields/IntegerField.tscn" id="10_u1pli"]
@@ -67,6 +68,7 @@ IconBullet = ExtResource("5_opp2g")
 IconBundle = ExtResource("6_aifs7")
 IconSpawner = ExtResource("7_utqfi")
 IconTimer = ExtResource("8_4nsb4")
+IconWarning = ExtResource("9_31nku")
 
 [node name="TemplatesController" type="Node" parent="Controllers" node_paths=PackedStringArray("TemplatesTree", "PlayController")]
 script = ExtResource("4_kkpwu")

@@ -55,5 +55,10 @@ namespace Editor
             };
             _lookupHelper = new LookupHelper(Modifiers);
         }
+
+        public ComponentBullet GetRefBullletComponent()
+        {
+            return _lookupHelper.GetRefComponent<ComponentBullet>(ModifierID.BUNDLE_REF_BULLET);
+        }
     }
 }

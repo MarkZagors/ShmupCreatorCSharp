@@ -22,6 +22,7 @@ namespace Editor
         [Export] public Texture2D IconBundle { get; private set; }
         [Export] public Texture2D IconSpawner { get; private set; }
         [Export] public Texture2D IconTimer { get; private set; }
+        [Export] public Texture2D IconWarning { get; private set; }
 
         private Sequence _openedSequence;
         private readonly Dictionary<TreeItem, IComponent> _sequenceTreeLookup = new();
@@ -35,6 +36,9 @@ namespace Editor
             SequenceTab.GetNode<Label>("NoSelectionLabel").Visible = true;
             SequenceTab.GetNode<Control>("TopSequenceBar").Visible = false;
             SequenceTree.Visible = false;
+
+            ComponentsController.Update += OnComponentUpdate;
+            ComponentsController.OnValidRestructure += OnComponentUpdate;
         }
 
         public override void _Process(double delta)
@@ -137,7 +141,6 @@ namespace Editor
             componentTreeItem.SetText(0, name);
             componentTreeItem.SetCellMode(1, TreeItem.TreeCellMode.Icon);
             componentTreeItem.SetIcon(0, component.Icon);
-            componentTreeItem.SetIcon(1, null);
             componentTreeItem.SetSelectable(1, false);
             componentTreeItem.SetIconMaxWidth(0, TREE_ITEM_HEIGHT);
             componentTreeItem.SetIconMaxWidth(1, TREE_ITEM_HEIGHT);
@@ -148,6 +151,7 @@ namespace Editor
             _openedSequence.Components.Add(component);
             _sequenceTreeLookup.Add(componentTreeItem, component);
             CreateBoxController.CloseCreationBox();
+            OnComponentUpdate();
             EmitSignal(SignalName.Update);
         }
 
@@ -230,6 +234,38 @@ namespace Editor
             else
             {
                 return null;
+            }
+        }
+
+        private void OnComponentUpdate()
+        {
+            GD.Print("Component Update");
+            foreach (var component in _openedSequence.Components)
+            {
+                if (component is ComponentBundle bundle)
+                {
+                    var bulletRef = bundle.GetRefBullletComponent();
+                    if (bulletRef == null)
+                    {
+                        component.TreeItem.SetIcon(1, IconWarning);
+                    }
+                    else
+                    {
+                        component.TreeItem.SetIcon(1, null);
+                    }
+                }
+
+                if (component is ComponentSpawner spawner)
+                {
+                    if (spawner.Valid == false)
+                    {
+                        component.TreeItem.SetIcon(1, IconWarning);
+                    }
+                    else
+                    {
+                        component.TreeItem.SetIcon(1, null);
+                    }
+                }
             }
         }
     }
