@@ -225,7 +225,10 @@ namespace Editor
 
         private void OnRenameTextSubmit(string newText)
         {
-            GD.Print("submit");
+            IComponent component = _sequenceTreeLookup[_selectedTreeItem];
+            component.Name = WrapComponentName(newText, _openedSequence.Components);
+            _selectedTreeItem.SetText(0, component.Name);
+            SequenceRenameLineEdit.Visible = false;
         }
 
         private static string WrapComponentName(string originalName, List<IComponent> components)
