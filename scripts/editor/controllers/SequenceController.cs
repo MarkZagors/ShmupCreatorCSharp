@@ -135,9 +135,15 @@ namespace Editor
             }
 
             componentTreeItem.SetText(0, name);
+            componentTreeItem.SetCellMode(1, TreeItem.TreeCellMode.Icon);
             componentTreeItem.SetIcon(0, component.Icon);
+            componentTreeItem.SetIcon(1, null);
+            componentTreeItem.SetSelectable(1, false);
             componentTreeItem.SetIconMaxWidth(0, TREE_ITEM_HEIGHT);
+            componentTreeItem.SetIconMaxWidth(1, TREE_ITEM_HEIGHT);
             componentTreeItem.CustomMinimumHeight = TREE_ITEM_HEIGHT;
+            SequenceTree.SetColumnExpand(0, true);
+            SequenceTree.SetColumnExpandRatio(0, 3);
 
             _openedSequence.Components.Add(component);
             _sequenceTreeLookup.Add(componentTreeItem, component);
