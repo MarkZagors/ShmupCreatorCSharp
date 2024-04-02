@@ -16,6 +16,7 @@ namespace Editor
         [Export] public Tree SequenceTree { get; private set; }
         [Export] public Control TemplatesTab { get; private set; }
         [Export] public Control SequenceTab { get; private set; }
+        [Export] public LineEdit SequenceRenameLineEdit { get; private set; }
 
         [ExportGroup("Icons")]
         [Export] public Texture2D IconBullet { get; private set; }
@@ -28,8 +29,11 @@ namespace Editor
         private readonly Dictionary<TreeItem, IComponent> _sequenceTreeLookup = new();
         private TreeItem _selectedTreeItem;
         private Vector2 _treeItemSelectionMousePos;
+        private IComponent _lastSelectedComponent = null;
+        private float _doubleClickTimer = 0.0f;
 
         private const int TREE_ITEM_HEIGHT = 32;
+        private const float DOUBLE_CLICK_THRESHOLD = 0.4f;
 
         public override void _Ready()
         {
@@ -39,6 +43,8 @@ namespace Editor
 
             ComponentsController.Update += OnComponentUpdate;
             ComponentsController.OnValidRestructure += OnComponentUpdate;
+
+            SequenceRenameLineEdit.TextSubmitted += OnRenameTextSubmit;
         }
 
         public override void _Process(double delta)
@@ -46,7 +52,9 @@ namespace Editor
             if (Input.IsActionJustReleased("mouse_click"))
             {
                 MouseRelease();
+                CheckRenameDeselect();
             }
+            _doubleClickTimer += (float)delta;
         }
 
         public void OpenSequence(Sequence sequence)
@@ -180,12 +188,44 @@ namespace Editor
             }
         }
 
+        private void CheckRenameDeselect()
+        {
+            if (!SequenceRenameLineEdit.GetGlobalRect().HasPoint(GetViewport().GetMousePosition()) && SequenceRenameLineEdit.Visible)
+            {
+                SequenceRenameLineEdit.Visible = false;
+            }
+        }
+
         private void ClickOnComponent(TreeItem selectedTreeItem)
         {
+            IComponent component = _sequenceTreeLookup[selectedTreeItem];
+            if (component == _lastSelectedComponent && _doubleClickTimer < DOUBLE_CLICK_THRESHOLD)
+            {
+                RenameStart(selectedTreeItem);
+            }
             ComponentsController.OpenComponent(
-                _sequenceTreeLookup[selectedTreeItem],
+                component,
                 _openedSequence
             );
+            _doubleClickTimer = 0.0f;
+            _lastSelectedComponent = component;
+        }
+
+        private void RenameStart(TreeItem selectedTreeItem)
+        {
+            int treeItemindex = selectedTreeItem.GetIndex();
+            int yPos = treeItemindex * 40 + 36 + 50;
+            int xPos = 70;
+            SequenceRenameLineEdit.Position = new Vector2(xPos, yPos);
+            SequenceRenameLineEdit.Visible = true;
+            SequenceRenameLineEdit.Text = selectedTreeItem.GetText(0);
+            SequenceRenameLineEdit.SelectAll();
+            SequenceRenameLineEdit.GrabFocus();
+        }
+
+        private void OnRenameTextSubmit(string newText)
+        {
+            GD.Print("submit");
         }
 
         private static string WrapComponentName(string originalName, List<IComponent> components)

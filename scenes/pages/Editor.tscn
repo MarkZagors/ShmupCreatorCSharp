@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=27 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
@@ -23,6 +23,15 @@
 [ext_resource type="Script" path="res://scripts/editor/controllers/CreateBoxController.cs" id="12_kakms"]
 [ext_resource type="PackedScene" uid="uid://vjqmawifbe18" path="res://scenes/editor/fields/OptionsField.tscn" id="12_lgdx1"]
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayerController.cs" id="16_l3vls"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_om7nb"]
+bg_color = Color(0.0507813, 0.046875, 0.0546875, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p3ybe"]
+bg_color = Color(0.0507813, 0.046875, 0.0546875, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hfve3"]
+bg_color = Color(0.0507813, 0.046875, 0.0546875, 1)
 
 [node name="Editor" type="Control"]
 layout_mode = 3
@@ -57,13 +66,14 @@ LanesMainControllerContainer = NodePath("../../BotContainer/TimelineTab/MainCont
 LanesClickZone = NodePath("../../BotContainer/TimelineTab/MainContainer/LanesClickZone")
 LaneClickLine = NodePath("../../BotContainer/TimelineTab/MainContainer/LaneClickLine")
 
-[node name="SequenceController" type="Node" parent="Controllers" node_paths=PackedStringArray("ComponentsController", "CreateBoxController", "SequenceTree", "TemplatesTab", "SequenceTab")]
+[node name="SequenceController" type="Node" parent="Controllers" node_paths=PackedStringArray("ComponentsController", "CreateBoxController", "SequenceTree", "TemplatesTab", "SequenceTab", "SequenceRenameLineEdit")]
 script = ExtResource("7_ofb54")
 ComponentsController = NodePath("../ComponentsController")
 CreateBoxController = NodePath("../CreateBoxController")
 SequenceTree = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/SequenceTab/SequenceTree")
 TemplatesTab = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab")
 SequenceTab = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/SequenceTab")
+SequenceRenameLineEdit = NodePath("../../TopContainer/LeftContainer/SequenceMainContainer/SequenceTab/SequenceRenameLineEdit")
 IconBullet = ExtResource("5_opp2g")
 IconBundle = ExtResource("6_aifs7")
 IconSpawner = ExtResource("7_utqfi")
@@ -386,6 +396,17 @@ grow_horizontal = 2
 grow_vertical = 2
 columns = 2
 select_mode = 1
+
+[node name="SequenceRenameLineEdit" type="LineEdit" parent="TopContainer/LeftContainer/SequenceMainContainer/SequenceTab"]
+visible = false
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_bottom = 31.0
+grow_horizontal = 2
+theme_override_styles/normal = SubResource("StyleBoxFlat_om7nb")
+theme_override_styles/focus = SubResource("StyleBoxFlat_p3ybe")
+theme_override_styles/read_only = SubResource("StyleBoxFlat_hfve3")
 
 [node name="ResizeBar" type="ColorRect" parent="TopContainer/LeftContainer"]
 layout_mode = 1
