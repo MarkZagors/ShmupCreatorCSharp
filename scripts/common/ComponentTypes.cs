@@ -1,22 +1,26 @@
 using System.Collections.Generic;
 using Godot;
 
-namespace Editor {
+namespace Editor
+{
     public enum ComponentType
     {
         BULLET,
         BUNDLE,
         SPAWNER,
-        TIMER
+        TIMER,
+        MOVEMENT
     }
 
-    public class ComponentNamer {
+    public class ComponentNamer
+    {
         private static readonly Dictionary<ComponentType, string> _nameList = new()
         {
             {ComponentType.BULLET, "Bullet"},
             {ComponentType.BUNDLE, "Bundle"},
             {ComponentType.SPAWNER, "Spawner"},
             {ComponentType.TIMER, "Timer"},
+            {ComponentType.MOVEMENT, "Movement"},
         };
 
         public static string Get(ComponentType id)

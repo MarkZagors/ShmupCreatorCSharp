@@ -141,6 +141,16 @@ namespace Editor
                         icon: IconTimer
                     );
                     break;
+                case ComponentType.MOVEMENT:
+                    name = WrapComponentName("Movement", _openedSequence.Components);
+                    component = new ComponentMovement
+                    (
+                        name: name,
+                        sequence: _openedSequence,
+                        treeItem: componentTreeItem,
+                        icon: IconTimer
+                    );
+                    break;
                 default:
                     GD.PushError($"Component type not implemented in Create Component!: {componentType}");
                     break;
@@ -282,7 +292,6 @@ namespace Editor
 
         private void OnComponentUpdate()
         {
-            GD.Print("Component Update");
             foreach (var component in _openedSequence.Components)
             {
                 if (component is ComponentBundle bundle)

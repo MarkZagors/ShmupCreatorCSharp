@@ -21,6 +21,8 @@ namespace Editor
         TIMER_PROCESS_TIME,
         TIMER_WAIT_TIME,
         TIMER_PROCESS_CURVE,
+
+        MOVEMENT_CURVE,
     }
 
     public static class ModifierNamer
@@ -41,6 +43,8 @@ namespace Editor
             {ModifierID.TIMER_PROCESS_TIME, "Process Time"},
             {ModifierID.TIMER_WAIT_TIME, "Wait Time"},
             {ModifierID.TIMER_PROCESS_CURVE, "Process Curve"},
+
+            {ModifierID.MOVEMENT_CURVE, "Movement Curve"},
         };
 
         public static string Get(ModifierID id)

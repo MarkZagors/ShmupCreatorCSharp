@@ -26,6 +26,7 @@ namespace Editor
             RenderNewComponent(ComponentType.BUNDLE);
             RenderNewComponent(ComponentType.SPAWNER);
             RenderNewComponent(ComponentType.TIMER);
+            RenderNewComponent(ComponentType.MOVEMENT);
         }
 
         private void RenderNewComponent(ComponentType componentType)
