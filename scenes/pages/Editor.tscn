@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=29 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
@@ -24,6 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://vjqmawifbe18" path="res://scenes/editor/fields/OptionsField.tscn" id="12_lgdx1"]
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayerController.cs" id="16_l3vls"]
 [ext_resource type="PackedScene" uid="uid://dt7s6tshy5mib" path="res://scenes/editor/fields/PositionField.tscn" id="18_lgw2h"]
+[ext_resource type="Script" path="res://scripts/editor/controllers/BossMovementController.cs" id="24_raqih"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_om7nb"]
 bg_color = Color(0.0507813, 0.046875, 0.0546875, 1)
@@ -118,6 +119,11 @@ CreationButtonObj = ExtResource("8_ekt68")
 script = ExtResource("16_l3vls")
 PlayerNode = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite")
 Speed = 500.0
+
+[node name="BossMovementController" type="Node" parent="Controllers" node_paths=PackedStringArray("ComponentsController", "PlayController")]
+script = ExtResource("24_raqih")
+ComponentsController = NodePath("../ComponentsController")
+PlayController = NodePath("../PlayController")
 
 [node name="BotContainer" type="Control" parent="."]
 layout_mode = 1

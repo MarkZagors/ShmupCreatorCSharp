@@ -8,7 +8,7 @@ namespace Editor
         public string Name { get; set; }
         public TreeItem TreeItem { get; set; }
         public List<IModifier> Modifiers { get; set; }
-        public ComponentType Type { get; set; } = ComponentType.SPAWNER;
+        public ComponentType Type { get; set; } = ComponentType.MOVEMENT;
         public bool Valid { get; set; } = false;
         public Sequence Sequence { get; set; } = null;
         public Texture2D Icon { get; set; }
@@ -28,6 +28,7 @@ namespace Editor
                 new ModifierDouble {
                     ID = ModifierID.MOVEMENT_TIME,
                     Active = true,
+                    IsMovementTimelineUpdating = true,
                     Value = 1,
                     MaxValue = 10000,
                 },

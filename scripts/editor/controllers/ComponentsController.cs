@@ -9,6 +9,7 @@ namespace Editor
     {
         [Signal] public delegate void UpdateEventHandler();
         [Signal] public delegate void OnValidRestructureEventHandler();
+        [Signal] public delegate void MoveTimelineUpdateEventHandler();
         [Export] public CreateBoxController CreateBoxController { get; private set; }
         [Export] public Label ComponentNameLabel { get; private set; }
         [Export] public VBoxContainer ComponentsVBox { get; private set; }
@@ -103,6 +104,10 @@ namespace Editor
                         if (modifierDouble.IsStructureChanging)
                             CheckValidSpawnerConnection();
                     };
+                    fieldDouble.MoveTimelineUpdate += () =>
+                    {
+                        EmitSignal(SignalName.MoveTimelineUpdate);
+                    };
                     ComponentsVBox.AddChild(fieldDouble);
                     break;
                 case ModifierOptions modifierOptions:
@@ -120,6 +125,10 @@ namespace Editor
                     fieldPosition.Update += () =>
                     {
                         EmitSignal(SignalName.Update);
+                    };
+                    fieldPosition.MoveTimelineUpdate += () =>
+                    {
+                        EmitSignal(SignalName.MoveTimelineUpdate);
                     };
                     ComponentsVBox.AddChild(fieldPosition);
                     break;

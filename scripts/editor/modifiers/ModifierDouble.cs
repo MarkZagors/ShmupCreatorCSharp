@@ -7,5 +7,6 @@ namespace Editor
         public double Value { get; set; } = 0;
         public double MaxValue { get; set; } = 5000;
         public bool IsStructureChanging { get; set; } = false;
+        public bool IsMovementTimelineUpdating { get; set; } = false;
     }
 }
