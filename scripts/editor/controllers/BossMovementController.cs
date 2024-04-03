@@ -78,6 +78,13 @@ namespace Editor
                         x: point.X * (float)componentTime + (float)startTime,
                         y: point.Y
                     );
+                    if (isOverlapping && scaledPoint.X > nextStartTime)
+                    {
+                        double x = (double)((nextStartTime - startTime) / componentTime);
+                        double yIntercept = range.GetYIntercept(x);
+                        points.Add(new Vector2((float)nextStartTime, (float)yIntercept));
+                        break;
+                    }
                     points.Add(scaledPoint);
                 }
 

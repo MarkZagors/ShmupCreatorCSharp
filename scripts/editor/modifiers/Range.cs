@@ -63,5 +63,23 @@ namespace Editor
 
             throw new InvalidOperationException("Unable to find value for given X.");
         }
+
+        public double GetYIntercept(double x)
+        {
+            if (x < Points[0].X || x > Points[^1].X)
+                throw new ArgumentOutOfRangeException(nameof(x), "Given X value is out of range of available points.");
+
+            for (int i = 0; i < Points.Count - 1; i++)
+            {
+                if (x >= Points[i].X && x <= Points[i + 1].X)
+                {
+                    // Linear interpolation
+                    double l = 1.0 - (Points[i].Y + (x - Points[i].X) / (Points[i + 1].X - Points[i].X) * (Points[i + 1].Y - Points[i].Y));
+                    return l;
+                }
+            }
+
+            throw new InvalidOperationException("Unable to find value for given X.");
+        }
     }
 }
