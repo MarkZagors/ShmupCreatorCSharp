@@ -40,6 +40,12 @@ namespace Editor
             };
         }
 
+        // public List<Vector2> GetTruncatedPoints()
+        // {
+        //     List<Vector2> trucatedPoints = Points.GetRange(1, Points.Count - 2);
+        //     return trucatedPoints;
+        // }
+
         public double GetValueAt(double x)
         {
             if (x < Points[0].X || x > Points[^1].X)
