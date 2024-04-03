@@ -21,6 +21,12 @@ namespace Editor
             Icon = icon;
             Modifiers = new List<IModifier>
             {
+                new ModifierDouble {
+                    ID = ModifierID.MOVEMENT_TIME,
+                    Active = true,
+                    Value = 1,
+                    MaxValue = 10000,
+                },
                 new ModifierRange {
                     ID = ModifierID.MOVEMENT_CURVE,
                     Range = Range.TiltedUp(1,0)
