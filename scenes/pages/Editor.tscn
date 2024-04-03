@@ -104,7 +104,7 @@ script = ExtResource("4_cwq5m")
 PlayController = NodePath("../PlayController")
 ComponentsController = NodePath("../ComponentsController")
 SequenceController = NodePath("../SequenceController")
-BulletPoolNode = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/SubViewportContainer/PlayViewport/BulletPool")
+BulletPoolNode = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport/BulletPool")
 BulletNodeObj = ExtResource("6_wfl5l")
 
 [node name="CreateBoxController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "CreationContainer", "CreationContainerVBox")]
@@ -116,7 +116,7 @@ CreationButtonObj = ExtResource("8_ekt68")
 
 [node name="PlayerController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayerNode")]
 script = ExtResource("16_l3vls")
-PlayerNode = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/SubViewportContainer/PlayViewport/PlayerSprite")
+PlayerNode = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite")
 Speed = 500.0
 
 [node name="BotContainer" type="Control" parent="."]
@@ -453,12 +453,12 @@ grow_vertical = 2
 mouse_filter = 2
 ratio = 0.75
 
-[node name="SubViewportContainer" type="SubViewportContainer" parent="TopContainer/MidContainer/PlayAspectContainer"]
+[node name="PlayViewportContainer" type="SubViewportContainer" parent="TopContainer/MidContainer/PlayAspectContainer" groups=["play_viewport"]]
 layout_mode = 2
 mouse_filter = 2
 stretch = true
 
-[node name="PlayViewport" type="SubViewport" parent="TopContainer/MidContainer/PlayAspectContainer/SubViewportContainer"]
+[node name="PlayViewport" type="SubViewport" parent="TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer"]
 disable_3d = true
 handle_input_locally = false
 size = Vector2i(350, 467)
@@ -466,13 +466,13 @@ size_2d_override = Vector2i(768, 1024)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 
-[node name="BulletPool" type="Node2D" parent="TopContainer/MidContainer/PlayAspectContainer/SubViewportContainer/PlayViewport"]
+[node name="BulletPool" type="Node2D" parent="TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport"]
 
-[node name="BossSprite" type="Sprite2D" parent="TopContainer/MidContainer/PlayAspectContainer/SubViewportContainer/PlayViewport"]
+[node name="BossSprite" type="Sprite2D" parent="TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport"]
 position = Vector2(400, 200)
 texture = ExtResource("8_hqx5x")
 
-[node name="PlayerSprite" type="Sprite2D" parent="TopContainer/MidContainer/PlayAspectContainer/SubViewportContainer/PlayViewport"]
+[node name="PlayerSprite" type="Sprite2D" parent="TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport"]
 position = Vector2(400, 700)
 texture = ExtResource("8_hqx5x")
 
