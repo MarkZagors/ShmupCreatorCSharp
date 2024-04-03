@@ -10,6 +10,7 @@ namespace Editor
         required public RefDouble Min { get; set; }
         required public List<Vector2> Points { get; set; }
 
+        // Y = 0.0 is top!
         public static Range From(double max, double min)
         {
             return new Range
@@ -22,6 +23,16 @@ namespace Editor
                     new Vector2(1.0f, 0.5f),
                     new Vector2(1.0f, 0.5f),
                 }
+            };
+        }
+
+        public static Range EmptyPointList(double max, double min)
+        {
+            return new Range
+            {
+                Max = new RefDouble(max),
+                Min = new RefDouble(min),
+                Points = new List<Vector2>()
             };
         }
 
@@ -74,7 +85,7 @@ namespace Editor
                 if (x >= Points[i].X && x <= Points[i + 1].X)
                 {
                     // Linear interpolation
-                    double l = 1.0 - (Points[i].Y + (x - Points[i].X) / (Points[i + 1].X - Points[i].X) * (Points[i + 1].Y - Points[i].Y));
+                    double l = (Points[i].Y + (x - Points[i].X) / (Points[i + 1].X - Points[i].X) * (Points[i + 1].Y - Points[i].Y));
                     return l;
                 }
             }
