@@ -34,7 +34,8 @@ namespace Editor
                 },
                 new ModifierRange {
                     ID = ModifierID.MOVEMENT_CURVE,
-                    Range = Range.TiltedUp(1,0)
+                    Range = Range.TiltedUp(1,0),
+                    IsMovementTimelineUpdating = true
                 },
             };
             _lookupHelper = new LookupHelper(Modifiers);

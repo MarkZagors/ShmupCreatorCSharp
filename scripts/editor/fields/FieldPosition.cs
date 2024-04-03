@@ -6,7 +6,6 @@ namespace Editor
     public partial class FieldPosition : Control
     {
         [Signal] public delegate void UpdateEventHandler();
-        [Signal] public delegate void MoveTimelineUpdateEventHandler();
         [Export] public Button PositionButton { get; private set; }
         public ModifierPosition ModifierPosition { get; private set; }
         public bool IsSelecting { get; set; }
@@ -43,7 +42,6 @@ namespace Editor
                     Vector2 ratio = (mousePos - viewportRect.Position) / viewportRect.Size;
                     Vector2 position = ratio * VIEWPORT_SIZE;
                     ModifierPosition.Position = position;
-                    EmitSignal(SignalName.MoveTimelineUpdate);
                     EmitSignal(SignalName.Update);
                     UpdateUI();
                 }

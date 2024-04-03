@@ -71,7 +71,12 @@ namespace Editor
                 case ModifierRange modifierRange:
                     var fieldRange = FieldRangeObj.Instantiate<FieldRange>();
                     fieldRange.Init(modifierRange);
-                    fieldRange.Update += () => EmitSignal(SignalName.Update);
+                    fieldRange.Update += () =>
+                    {
+                        if (modifierRange.IsMovementTimelineUpdating)
+                            EmitSignal(SignalName.MoveTimelineUpdate);
+                        EmitSignal(SignalName.Update);
+                    };
                     ComponentsVBox.AddChild(fieldRange);
                     break;
                 case ModifierRef modifierRef:
@@ -100,13 +105,11 @@ namespace Editor
                     fieldDouble.Init(modifierDouble);
                     fieldDouble.Update += () =>
                     {
+                        if (modifierDouble.IsMovementTimelineUpdating)
+                            EmitSignal(SignalName.MoveTimelineUpdate);
                         EmitSignal(SignalName.Update);
                         if (modifierDouble.IsStructureChanging)
                             CheckValidSpawnerConnection();
-                    };
-                    fieldDouble.MoveTimelineUpdate += () =>
-                    {
-                        EmitSignal(SignalName.MoveTimelineUpdate);
                     };
                     ComponentsVBox.AddChild(fieldDouble);
                     break;
@@ -124,11 +127,8 @@ namespace Editor
                     fieldPosition.Init(modifierPosition);
                     fieldPosition.Update += () =>
                     {
-                        EmitSignal(SignalName.Update);
-                    };
-                    fieldPosition.MoveTimelineUpdate += () =>
-                    {
                         EmitSignal(SignalName.MoveTimelineUpdate);
+                        EmitSignal(SignalName.Update);
                     };
                     ComponentsVBox.AddChild(fieldPosition);
                     break;

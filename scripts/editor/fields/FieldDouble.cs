@@ -7,7 +7,6 @@ namespace Editor
     public partial class FieldDouble : Control, IField
     {
         [Signal] public delegate void UpdateEventHandler();
-        [Signal] public delegate void MoveTimelineUpdateEventHandler();
         [Export] public LineEdit NumberFieldLineEdit { get; set; }
         public ModifierDouble ModifierDouble { get; private set; }
         private string _oldText = "";
@@ -51,10 +50,6 @@ namespace Editor
 
             _oldText = NumberFieldLineEdit.Text;
 
-            if (ModifierDouble.IsMovementTimelineUpdating)
-            {
-                EmitSignal(SignalName.MoveTimelineUpdate);
-            }
             NumberFieldLineEdit.CaretColumn = 999;
             EmitSignal(SignalName.Update);
         }

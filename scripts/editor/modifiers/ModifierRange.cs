@@ -5,5 +5,6 @@ namespace Editor
         required public ModifierID ID { get; set; }
         required public Range Range { get; set; }
         public bool Active { get; set; } = false;
+        public bool IsMovementTimelineUpdating { get; set; } = false;
     }
 }
