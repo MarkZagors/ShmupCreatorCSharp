@@ -21,6 +21,10 @@ namespace Editor
             Icon = icon;
             Modifiers = new List<IModifier>
             {
+                new ModifierPosition {
+                    ID = ModifierID.MOVEMENT_POSITION,
+                    Active = true,
+                },
                 new ModifierDouble {
                     ID = ModifierID.MOVEMENT_TIME,
                     Active = true,

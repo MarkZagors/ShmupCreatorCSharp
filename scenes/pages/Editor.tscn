@@ -1,4 +1,4 @@
-[gd_scene load_steps=27 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=28 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
@@ -23,6 +23,7 @@
 [ext_resource type="Script" path="res://scripts/editor/controllers/CreateBoxController.cs" id="12_kakms"]
 [ext_resource type="PackedScene" uid="uid://vjqmawifbe18" path="res://scenes/editor/fields/OptionsField.tscn" id="12_lgdx1"]
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayerController.cs" id="16_l3vls"]
+[ext_resource type="PackedScene" uid="uid://dt7s6tshy5mib" path="res://scenes/editor/fields/PositionField.tscn" id="18_lgw2h"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_om7nb"]
 bg_color = Color(0.0507813, 0.046875, 0.0546875, 1)
@@ -96,6 +97,7 @@ FieldReferenceObj = ExtResource("9_m4j1e")
 FieldIntegerObj = ExtResource("10_u1pli")
 FieldDoubleObj = ExtResource("11_sil1u")
 FieldOptionsObj = ExtResource("12_lgdx1")
+FieldPositionObj = ExtResource("18_lgw2h")
 
 [node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayController", "ComponentsController", "SequenceController", "BulletPoolNode")]
 script = ExtResource("4_cwq5m")

@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=3 uid="uid://dt7s6tshy5mib"]
+
+[ext_resource type="PackedScene" uid="uid://6aax5g0j0hlo" path="res://scenes/editor/fields/BaseField.tscn" id="1_mw0ge"]
+[ext_resource type="Script" path="res://scripts/editor/fields/FieldPosition.cs" id="2_jjdm3"]
+
+[node name="PositionField" node_paths=PackedStringArray("PositionButton") instance=ExtResource("1_mw0ge")]
+script = ExtResource("2_jjdm3")
+PositionButton = NodePath("Button")
+
+[node name="Button" type="Button" parent="." index="2"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.54
+anchor_right = 1.0
+offset_left = 1.52588e-05
+offset_top = 7.0
+offset_right = -5.99997
+offset_bottom = 42.0
+text = "Pos"
+
+[connection signal="pressed" from="Button" to="." method="OnButtonPressed"]
