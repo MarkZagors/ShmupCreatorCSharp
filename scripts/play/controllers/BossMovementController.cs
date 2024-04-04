@@ -140,7 +140,7 @@ namespace Editor
             _yRange.Points = pointsY;
         }
 
-        public Vector2 GetXValueAt(float time)
+        public Vector2 GetPosition(float time)
         {
             float x = (float)_xRange.GetValueAtNonInverted(time);
             float y = (float)_yRange.GetValueAtNonInverted(time);

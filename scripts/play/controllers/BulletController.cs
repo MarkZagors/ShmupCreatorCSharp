@@ -120,6 +120,7 @@ namespace Editor
         )
         {
             var bulletSpawnTimeOffset = sequenceSpawnTime - spawner.Timer.TiggerOffsets[bulletIndex];
+            var absoluteBulletSpawnTime = spawner.Component.Sequence.Time + spawner.Timer.TiggerOffsets[bulletIndex];
             if (bulletSpawnTimeOffset < 0.0)
             {
                 return;
@@ -141,14 +142,16 @@ namespace Editor
                     continue;
                 }
 
+                Vector2 bossPositionAtFireTime = BossMovementController.GetPosition((float)absoluteBulletSpawnTime);
+
                 BulletData bulletData = spawner.Bullets[bulletIndex, j];
                 bulletData.Angle = (float)angleRange.GetValueAt(pointX);
                 bulletData.Speed = (float)speedRange.GetValueAt(pointX);
                 bulletData.Size = (float)sizeRange.GetValueAt(pointX);
 
                 bulletData.Position = new Vector2(
-                    (bulletData.Speed * MathF.Cos(bulletData.Angle * Calc.Deg2Rad) * (float)bulletSpawnTime) + _bossPosition.X,
-                    (bulletData.Speed * MathF.Sin(bulletData.Angle * Calc.Deg2Rad) * (float)bulletSpawnTime) + _bossPosition.Y
+                    (bulletData.Speed * MathF.Cos(bulletData.Angle * Calc.Deg2Rad) * (float)bulletSpawnTime) + bossPositionAtFireTime.X,
+                    (bulletData.Speed * MathF.Sin(bulletData.Angle * Calc.Deg2Rad) * (float)bulletSpawnTime) + bossPositionAtFireTime.Y
                 );
 
                 bool isBulletInBorder = BulletPool.BorderCheck(bulletData, _windowRect);
@@ -165,7 +168,7 @@ namespace Editor
 
         private void UpdateBossPosition()
         {
-            Vector2 position = BossMovementController.GetXValueAt((float)PlayController.Time);
+            Vector2 position = BossMovementController.GetPosition((float)PlayController.Time);
             _bossPosition = position;
             BossSprite.Position = _bossPosition;
         }
