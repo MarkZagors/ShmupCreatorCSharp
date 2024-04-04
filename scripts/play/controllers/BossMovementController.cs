@@ -56,10 +56,8 @@ namespace Editor
 
             List<Vector2> pointsX = new();
             List<Vector2> pointsY = new();
-            // List<Vector2> componentWorldPositions = new();
             pointsX.Add(new Vector2(0.0f, WorldToPoint(START_POS).X));
             pointsY.Add(new Vector2(0.0f, WorldToPoint(START_POS).Y));
-            // componentWorldPositions.Add(START_POS);
             for (int i = 0; i < sortedStartList.Count; i++)
             {
                 (double, ComponentMovement) compoenentTimeKeyPairCurrent = sortedStartList[i];
@@ -87,10 +85,8 @@ namespace Editor
                 if (i == 0)
                 {
                     //add first separator point
-                    // pointsX.Add(new Vector2((float)startTime, 1.0f));
                     pointsX.Add(new Vector2((float)startTime, WorldToPoint(START_POS).X));
                     pointsY.Add(new Vector2((float)startTime, WorldToPoint(START_POS).Y));
-                    // componentWorldPositions.Add(START_POS);
                 }
 
                 Vector2 lastXPointPos = pointsX.Last();
@@ -117,12 +113,10 @@ namespace Editor
                             x: (float)nextStartTime,
                             y: (1.0f - (float)yIntercept) * (WorldToPoint(componentPosition).Y - lastYPointPos.Y) + lastYPointPos.Y
                         ));
-                        // componentWorldPositions.Add(componentPosition);
                         break;
                     }
                     pointsX.Add(scaledPointX);
                     pointsY.Add(scaledPointY);
-                    // componentWorldPositions.Add(componentPosition);
                 }
 
                 if (!isOverlapping && nextStartTime != null)
@@ -130,7 +124,6 @@ namespace Editor
                     //add middle separator points
                     pointsX.Add(new Vector2((float)nextStartTime, pointsX.Last().Y));
                     pointsY.Add(new Vector2((float)nextStartTime, pointsY.Last().Y));
-                    // componentWorldPositions.Add(componentPosition);
                 }
 
                 if (i == sortedStartList.Count - 1)
@@ -138,7 +131,6 @@ namespace Editor
                     //add last point
                     pointsX.Add(new Vector2(float.PositiveInfinity, pointsX.Last().Y));
                     pointsY.Add(new Vector2(float.PositiveInfinity, pointsY.Last().Y));
-                    // componentWorldPositions.Add(componentPosition);
                 }
             }
 
@@ -146,11 +138,6 @@ namespace Editor
             _yRange = Range.EmptyPointList(VIEWPORT_SIZE.Y, 0);
             _xRange.Points = pointsX;
             _yRange.Points = pointsY;
-            for (int i = 0; i < pointsX.Count; i++)
-            {
-                Vector2 point = pointsY[i];
-                GD.Print(point);
-            }
         }
 
         public Vector2 GetXValueAt(float time)
