@@ -165,8 +165,8 @@ namespace Editor
 
         private void UpdateBossPosition()
         {
-            float positionX = BossMovementController.GetXValueAt((float)PlayController.Time);
-            _bossPosition = new Vector2(positionX, 200);
+            Vector2 position = BossMovementController.GetXValueAt((float)PlayController.Time);
+            _bossPosition = position;
             BossSprite.Position = _bossPosition;
         }
 
