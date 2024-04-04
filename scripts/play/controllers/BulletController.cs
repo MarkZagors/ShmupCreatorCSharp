@@ -2,6 +2,7 @@ using ExtensionMethods;
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Net.Http.Headers;
 
 namespace Editor
 {
@@ -10,8 +11,10 @@ namespace Editor
         [Export] public PlayController PlayController { get; private set; }
         [Export] public ComponentsController ComponentsController { get; private set; }
         [Export] public SequenceController SequenceController { get; private set; }
+        [Export] public BossMovementController BossMovementController { get; private set; }
         [Export] public Node2D BulletPoolNode { get; private set; }
         [Export] public PackedScene BulletNodeObj { get; private set; }
+        [Export] public Sprite2D BossSprite { get; private set; }
         [Export] public int BulletPoolSize { get; private set; } = 100;
         private readonly List<Spawner> _spawnerList = new();
         private List<Sequence> _sequenceList;
@@ -39,6 +42,7 @@ namespace Editor
 
         private void Update()
         {
+            UpdateBossPosition();
             foreach (Spawner spawner in _spawnerList)
             {
                 UpdateSpawner(spawner);
@@ -157,6 +161,13 @@ namespace Editor
                     bulletData.Node.Scale = new Vector2(bulletData.Size, bulletData.Size);
                 }
             }
+        }
+
+        private void UpdateBossPosition()
+        {
+            float positionX = BossMovementController.GetXValueAt((float)PlayController.Time);
+            _bossPosition = new Vector2(positionX, 200);
+            BossSprite.Position = _bossPosition;
         }
 
         private void RestructureBulletList()

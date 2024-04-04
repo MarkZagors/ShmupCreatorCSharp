@@ -24,7 +24,7 @@
 [ext_resource type="PackedScene" uid="uid://vjqmawifbe18" path="res://scenes/editor/fields/OptionsField.tscn" id="12_lgdx1"]
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayerController.cs" id="16_l3vls"]
 [ext_resource type="PackedScene" uid="uid://dt7s6tshy5mib" path="res://scenes/editor/fields/PositionField.tscn" id="18_lgw2h"]
-[ext_resource type="Script" path="res://scripts/editor/controllers/BossMovementController.cs" id="24_raqih"]
+[ext_resource type="Script" path="res://scripts/play/controllers/BossMovementController.cs" id="24_dicxy"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_om7nb"]
 bg_color = Color(0.0507813, 0.046875, 0.0546875, 1)
@@ -100,13 +100,15 @@ FieldDoubleObj = ExtResource("11_sil1u")
 FieldOptionsObj = ExtResource("12_lgdx1")
 FieldPositionObj = ExtResource("18_lgw2h")
 
-[node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayController", "ComponentsController", "SequenceController", "BulletPoolNode")]
+[node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayController", "ComponentsController", "SequenceController", "BossMovementController", "BulletPoolNode", "BossSprite")]
 script = ExtResource("4_cwq5m")
 PlayController = NodePath("../PlayController")
 ComponentsController = NodePath("../ComponentsController")
 SequenceController = NodePath("../SequenceController")
+BossMovementController = NodePath("../BossMovementController")
 BulletPoolNode = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport/BulletPool")
 BulletNodeObj = ExtResource("6_wfl5l")
+BossSprite = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport/BossSprite")
 
 [node name="CreateBoxController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "CreationContainer", "CreationContainerVBox")]
 script = ExtResource("12_kakms")
@@ -121,7 +123,7 @@ PlayerNode = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/PlayV
 Speed = 500.0
 
 [node name="BossMovementController" type="Node" parent="Controllers" node_paths=PackedStringArray("ComponentsController", "PlayController")]
-script = ExtResource("24_raqih")
+script = ExtResource("24_dicxy")
 ComponentsController = NodePath("../ComponentsController")
 PlayController = NodePath("../PlayController")
 

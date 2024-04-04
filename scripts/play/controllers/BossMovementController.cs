@@ -129,15 +129,17 @@ namespace Editor
 
             _xRange = Range.EmptyPointList(VIEWPORT_SIZE.X, 0);
             _yRange = Range.EmptyPointList(VIEWPORT_SIZE.Y, 0);
+            _xRange.Points = pointsX;
             for (int i = 0; i < pointsX.Count; i++)
             {
                 Vector2 point = pointsX[i];
-                // Vector2 worldPosition = componentWorldPositions[i];
-                // Vector2 worldToPoint = WorldToPoint(worldPosition);
-                // Vector2 xRangePoint = new Vector2(point.X, worldToPoint.X);
-                // Vector2 yRangePoint = new Vector2(point.X, worldToPoint.Y);
                 GD.Print(point);
             }
+        }
+
+        public float GetXValueAt(float time)
+        {
+            return (float)_xRange.GetValueAtNonInverted(time);
         }
 
         private Vector2 WorldToPoint(Vector2 worldPos)
