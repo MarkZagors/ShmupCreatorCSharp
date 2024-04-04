@@ -54,10 +54,10 @@ namespace Editor
 
             var sortedStartList = movementComponenetsStartList.OrderBy(tupl => tupl.Item1).ToList();
 
-            List<Vector2> points = new();
-            List<Vector2> componentWorldPositions = new();
-            points.Add(new Vector2(0.0f, 1.0f));
-            componentWorldPositions.Add(START_POS);
+            List<Vector2> pointsX = new();
+            // List<Vector2> componentWorldPositions = new();
+            pointsX.Add(new Vector2(0.0f, WorldToPoint(START_POS).X));
+            // componentWorldPositions.Add(START_POS);
             for (int i = 0; i < sortedStartList.Count; i++)
             {
                 (double, ComponentMovement) compoenentTimeKeyPairCurrent = sortedStartList[i];
@@ -85,53 +85,58 @@ namespace Editor
                 if (i == 0)
                 {
                     //add first separator point
-                    points.Add(new Vector2((float)startTime, 1.0f));
-                    componentWorldPositions.Add(componentPosition);
+                    // pointsX.Add(new Vector2((float)startTime, 1.0f));
+                    pointsX.Add(new Vector2((float)startTime, WorldToPoint(START_POS).X));
+                    // componentWorldPositions.Add(START_POS);
                 }
 
+                Vector2 lastXPointPos = pointsX.Last();
                 foreach (Vector2 point in range.Points)
                 {
                     Vector2 scaledPoint = new Vector2(
                         x: point.X * (float)componentTime + (float)startTime,
-                        y: point.Y
+                        y: (1.0f - point.Y) * (WorldToPoint(componentPosition).X - lastXPointPos.Y) + lastXPointPos.Y
                     );
                     if (isOverlapping && scaledPoint.X > nextStartTime)
                     {
                         double x = (double)((nextStartTime - startTime) / componentTime);
                         double yIntercept = range.GetYIntercept(x);
-                        points.Add(new Vector2((float)nextStartTime, (float)yIntercept));
-                        componentWorldPositions.Add(componentPosition);
+                        pointsX.Add(new Vector2(
+                            x: (float)nextStartTime,
+                            y: (1.0f - (float)yIntercept) * (WorldToPoint(componentPosition).X - lastXPointPos.Y) + lastXPointPos.Y
+                        ));
+                        // componentWorldPositions.Add(componentPosition);
                         break;
                     }
-                    points.Add(scaledPoint);
-                    componentWorldPositions.Add(componentPosition);
+                    pointsX.Add(scaledPoint);
+                    // componentWorldPositions.Add(componentPosition);
                 }
 
                 if (!isOverlapping && nextStartTime != null)
                 {
                     //add middle separator points
-                    points.Add(new Vector2((float)nextStartTime, range.Points.Last().Y));
-                    componentWorldPositions.Add(componentPosition);
+                    pointsX.Add(new Vector2((float)nextStartTime, pointsX.Last().Y));
+                    // componentWorldPositions.Add(componentPosition);
                 }
 
                 if (i == sortedStartList.Count - 1)
                 {
                     //add last point
-                    points.Add(new Vector2(float.PositiveInfinity, range.Points.Last().Y));
-                    componentWorldPositions.Add(componentPosition);
+                    pointsX.Add(new Vector2(float.PositiveInfinity, pointsX.Last().Y));
+                    // componentWorldPositions.Add(componentPosition);
                 }
             }
 
             _xRange = Range.EmptyPointList(VIEWPORT_SIZE.X, 0);
             _yRange = Range.EmptyPointList(VIEWPORT_SIZE.Y, 0);
-            for (int i = 0; i < points.Count; i++)
+            for (int i = 0; i < pointsX.Count; i++)
             {
-                Vector2 point = points[i];
-                Vector2 worldPosition = componentWorldPositions[i];
-                Vector2 worldToPoint = WorldToPoint(worldPosition);
-                Vector2 xRangePoint = new Vector2(point.X, worldToPoint.X);
-                Vector2 yRangePoint = new Vector2(point.X, worldToPoint.Y);
-                GD.Print(yRangePoint);
+                Vector2 point = pointsX[i];
+                // Vector2 worldPosition = componentWorldPositions[i];
+                // Vector2 worldToPoint = WorldToPoint(worldPosition);
+                // Vector2 xRangePoint = new Vector2(point.X, worldToPoint.X);
+                // Vector2 yRangePoint = new Vector2(point.X, worldToPoint.Y);
+                GD.Print(point);
             }
         }
 
