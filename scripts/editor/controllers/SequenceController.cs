@@ -294,6 +294,8 @@ namespace Editor
         {
             foreach (var component in _openedSequence.Components)
             {
+                //TODO: Fix tree item deletion and reallocation - deleted tree item when chaning sequences
+                if (!IsInstanceValid(component.TreeItem)) continue;
                 if (component is ComponentBundle bundle)
                 {
                     var bulletRef = bundle.GetRefBullletComponent();
