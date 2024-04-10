@@ -82,16 +82,20 @@ namespace Editor
 
             var sequenceList = GetSequenceList();
             sequenceList.Add(newSequence);
-
-            sequenceNode.GetNode<Button>("Button").Pressed += () => ClickSequence(newSequence);
-            sequenceNode.GetNode<Button>("Button").MouseEntered += () => OnSequenceHover();
-            sequenceNode.GetNode<Button>("Button").MouseExited += () => OnSequenceUnHover();
-
-            laneOne.AddChild(sequenceNode);
+            AddSequenceButtonInLane(newSequence, sequenceNode, laneOne);
             GD.Print($"Sequence added at time {Time:0.0}");
 
             UpdateUI();
             EmitSignal(SignalName.Update);
+        }
+
+        private void AddSequenceButtonInLane(Sequence sequence, Control sequenceNode, Control lane)
+        {
+            sequenceNode.GetNode<Button>("Button").Pressed += () => ClickSequence(sequence);
+            sequenceNode.GetNode<Button>("Button").MouseEntered += () => OnSequenceHover();
+            sequenceNode.GetNode<Button>("Button").MouseExited += () => OnSequenceUnHover();
+
+            lane.AddChild(sequenceNode);
         }
 
         private bool CheckIfSequenceOverlap()
@@ -276,10 +280,18 @@ namespace Editor
         {
             GD.Print(phase.ID);
             UpdateSelectedPhase(phase.ID);
+
+            var laneOne = LanesNode.GetChild<Control>(0);
+            foreach (var child in laneOne.GetChildren()) child.QueueFree();
+
             foreach (Sequence sequence in GetSequenceList())
             {
-                GD.Print(sequence);
+                var sequenceNode = SequenceIconObj.Instantiate<Control>();
+                sequence.Node = sequenceNode;
+                AddSequenceButtonInLane(sequence, sequenceNode, laneOne);
             }
+
+            UpdateUI();
         }
 
         private void UpdateSelectedPhase(int index)
