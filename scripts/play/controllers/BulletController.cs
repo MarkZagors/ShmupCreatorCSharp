@@ -17,7 +17,6 @@ namespace Editor
         [Export] public Sprite2D BossSprite { get; private set; }
         [Export] public int BulletPoolSize { get; private set; } = 100;
         private readonly List<Spawner> _spawnerList = new();
-        private List<Sequence> _sequenceList;
         private Vector2 _bossPosition = new(400, 200);
         private BulletPool _bulletPool;
         private Rect _windowRect = new(-100, -100, 968, 1224);
@@ -30,8 +29,6 @@ namespace Editor
                 poolSize: 4096,
                 expansionCount: 5
             );
-
-            _sequenceList = PlayController.SequenceList;
 
             PlayController.Update += Update;
             ComponentsController.Update += Update;
@@ -177,7 +174,7 @@ namespace Editor
         {
             _spawnerList.Clear();
 
-            foreach (Sequence sequence in _sequenceList)
+            foreach (Sequence sequence in PlayController.GetSequenceList())
             {
                 foreach (IComponent component in sequence.Components)
                 {

@@ -22,9 +22,10 @@ namespace Editor
         [Export] public Control PhasesContainer { get; private set; }
         public bool Playing { get; private set; } = false;
         public double Time { get; private set; } = 0.0;
-        public List<Sequence> SequenceList { get; private set; } = new();
         public List<Phase> PhasesList { get; private set; } = new();
         public double LanesWidth { get; private set; } = 5.0;
+        private Phase _selectedPhase = null;
+        private int selectedPhaseIndex = -1;
         private bool _mouseOverContainerScroll = false;
         private bool _mouseOverSequence = false;
 
@@ -79,7 +80,8 @@ namespace Editor
                 Components = new List<IComponent>(),
             };
 
-            SequenceList.Add(newSequence);
+            var sequenceList = GetSequenceList();
+            sequenceList.Add(newSequence);
 
             sequenceNode.GetNode<Button>("Button").Pressed += () => ClickSequence(newSequence);
             sequenceNode.GetNode<Button>("Button").MouseEntered += () => OnSequenceHover();
@@ -94,7 +96,7 @@ namespace Editor
 
         private bool CheckIfSequenceOverlap()
         {
-            foreach (Sequence sequence in SequenceList)
+            foreach (Sequence sequence in GetSequenceList())
             {
                 if (Math.Abs(sequence.Time - Time) < 0.1)
                 {
@@ -224,6 +226,8 @@ namespace Editor
                 health: 100,
                 sequenceList: new List<Sequence>()
             ));
+            selectedPhaseIndex = 0;
+            UpdateSelectedPhase(0);
         }
 
         private void ShowPhaseButtons()
@@ -241,6 +245,7 @@ namespace Editor
                 Control phasesButton = PhasesButtonObj.Instantiate<Control>();
                 Button phasesSelectButton = phasesButton.GetNode<Button>("SelectButton");
                 phasesSelectButton.Text = $"Phase {phase.ID}: {phase.Name}";
+                phasesSelectButton.Pressed += () => OnPhasesSelectButtonPressed(phase);
                 phasesVBox.AddChild(phasesButton);
             }
 
@@ -261,6 +266,32 @@ namespace Editor
             ShowPhaseButtons();
         }
 
+        private void OnPhasesSelectButtonPressed(Phase phase)
+        {
+            PhasesContainer.Visible = false;
+            ChangePhase(phase);
+        }
+
+        private void ChangePhase(Phase phase)
+        {
+            GD.Print(phase.ID);
+            UpdateSelectedPhase(phase.ID);
+            foreach (Sequence sequence in GetSequenceList())
+            {
+                GD.Print(sequence);
+            }
+        }
+
+        private void UpdateSelectedPhase(int index)
+        {
+            _selectedPhase = PhasesList[index];
+        }
+
+        public List<Sequence> GetSequenceList()
+        {
+            return _selectedPhase.SequenceList;
+        }
+
         //=================
         //UPDATING UI
         //=================
@@ -277,7 +308,7 @@ namespace Editor
 
         private void UpdateSequenceUI()
         {
-            foreach (Sequence sequence in SequenceList)
+            foreach (Sequence sequence in GetSequenceList())
             {
                 double anchor = 0.5 + (sequence.Time - Time) * 0.5 / LanesWidth;
 

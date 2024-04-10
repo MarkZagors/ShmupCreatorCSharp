@@ -41,7 +41,7 @@ namespace Editor
         public void UpdateTimeline()
         {
             List<(double, ComponentMovement)> movementComponenetsStartList = new();
-            foreach (Sequence sequence in PlayController.SequenceList)
+            foreach (Sequence sequence in PlayController.GetSequenceList())
             {
                 foreach (IComponent component in sequence.Components)
                 {
