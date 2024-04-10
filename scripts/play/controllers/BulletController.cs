@@ -31,6 +31,7 @@ namespace Editor
             );
 
             PlayController.Update += Update;
+            PlayController.PhaseChange += RestructureBulletList;
             ComponentsController.Update += Update;
             SequenceController.Update += Update;
 

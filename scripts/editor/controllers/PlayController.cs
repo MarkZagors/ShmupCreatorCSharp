@@ -8,6 +8,7 @@ namespace Editor
     public partial class PlayController : Node
     {
         [Signal] public delegate void UpdateEventHandler();
+        [Signal] public delegate void PhaseChangeEventHandler();
         [Export] public double ScrollTick { get; private set; } = 0.25;
         [Export] public SequenceController SequenceController { get; private set; }
         [Export] public Label TimelineTimeLabel { get; private set; }
@@ -291,6 +292,9 @@ namespace Editor
                 AddSequenceButtonInLane(sequence, sequenceNode, laneOne);
             }
 
+            Time = 0.0;
+
+            EmitSignal(SignalName.PhaseChange); //RESTRUCTURE BULLET LIST
             UpdateUI();
         }
 
