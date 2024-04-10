@@ -220,6 +220,7 @@ namespace Editor
         {
             PhasesList.Add(new Phase(
                 name: "New Phase",
+                id: 0,
                 health: 100,
                 sequenceList: new List<Sequence>()
             ));
@@ -238,10 +239,27 @@ namespace Editor
             foreach (Phase phase in PhasesList)
             {
                 Control phasesButton = PhasesButtonObj.Instantiate<Control>();
+                Button phasesSelectButton = phasesButton.GetNode<Button>("SelectButton");
+                phasesSelectButton.Text = $"Phase {phase.ID}: {phase.Name}";
                 phasesVBox.AddChild(phasesButton);
             }
+
+            Button addButton = new Button();
+            addButton.Text = "+";
+            addButton.Pressed += OnPhasesAddButtonPressed;
+            phasesVBox.AddChild(addButton);
         }
 
+        private void OnPhasesAddButtonPressed()
+        {
+            PhasesList.Add(new Phase(
+                name: "New Phase",
+                id: PhasesList.Count,
+                health: 100,
+                sequenceList: new List<Sequence>()
+            ));
+            ShowPhaseButtons();
+        }
 
         //=================
         //UPDATING UI
