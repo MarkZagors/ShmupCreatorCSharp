@@ -13,20 +13,24 @@ namespace Editor
         [Export] public Label TimelineTimeLabel { get; private set; }
         [Export] public VBoxContainer LanesNode { get; private set; }
         [Export] public PackedScene SequenceIconObj { get; private set; }
+        [Export] public PackedScene PhasesButtonObj { get; private set; }
         [Export] public Control ComponentBodyContainer { get; private set; }
         [Export] public Control StartingLanesBorderNode { get; private set; }
         [Export] public Control LanesMainControllerContainer { get; private set; }
         [Export] public Control LanesClickZone { get; private set; }
         [Export] public Control LaneClickLine { get; private set; }
+        [Export] public Control PhasesContainer { get; private set; }
         public bool Playing { get; private set; } = false;
         public double Time { get; private set; } = 0.0;
         public List<Sequence> SequenceList { get; private set; } = new();
+        public List<Phase> PhasesList { get; private set; } = new();
         public double LanesWidth { get; private set; } = 5.0;
         private bool _mouseOverContainerScroll = false;
         private bool _mouseOverSequence = false;
 
         public override void _Ready()
         {
+            SetupPhases();
             UpdateUI();
         }
 
@@ -201,6 +205,43 @@ namespace Editor
             }
             EmitSignal(SignalName.Update);
         }
+        //=================
+        //PHASES
+        //=================
+        public void OnPhasesButtonClick()
+        {
+            if (PhasesContainer.Visible)
+                PhasesContainer.Visible = false;
+            else
+                ShowPhaseButtons();
+        }
+
+        private void SetupPhases()
+        {
+            PhasesList.Add(new Phase(
+                name: "New Phase",
+                health: 100,
+                sequenceList: new List<Sequence>()
+            ));
+        }
+
+        private void ShowPhaseButtons()
+        {
+            PhasesContainer.Visible = true;
+            VBoxContainer phasesVBox = PhasesContainer.GetNode<VBoxContainer>("ScrollContainer/VBoxContainer");
+
+            foreach (var child in phasesVBox.GetChildren())
+            {
+                child.QueueFree();
+            }
+
+            foreach (Phase phase in PhasesList)
+            {
+                Control phasesButton = PhasesButtonObj.Instantiate<Control>();
+                phasesVBox.AddChild(phasesButton);
+            }
+        }
+
 
         //=================
         //UPDATING UI
