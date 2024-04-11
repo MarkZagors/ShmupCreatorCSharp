@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=33 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
@@ -25,6 +25,7 @@
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayerController.cs" id="16_l3vls"]
 [ext_resource type="PackedScene" uid="uid://dt7s6tshy5mib" path="res://scenes/editor/fields/PositionField.tscn" id="18_lgw2h"]
 [ext_resource type="Script" path="res://scripts/play/controllers/BossMovementController.cs" id="24_dicxy"]
+[ext_resource type="Script" path="res://scripts/editor/controllers/SettingsController.cs" id="26_s511t"]
 [ext_resource type="PackedScene" uid="uid://dt1chil803ujs" path="res://scenes/editor/PhaseButton.tscn" id="26_t5jxv"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p7kd5"]
@@ -135,6 +136,10 @@ Speed = 500.0
 script = ExtResource("24_dicxy")
 ComponentsController = NodePath("../ComponentsController")
 PlayController = NodePath("../PlayController")
+
+[node name="SettingsController" type="Node" parent="Controllers" node_paths=PackedStringArray("SettingsContainerNode")]
+script = ExtResource("26_s511t")
+SettingsContainerNode = NodePath("../../TopContainer/MidContainer/SettingsContainer")
 
 [node name="BotContainer" type="Control" parent="."]
 layout_mode = 1
@@ -335,6 +340,12 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="SettingsButton" type="Button" parent="TopContainer/LeftContainer/SequenceTopContainer/HBox"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 0.0
+text = "Settings"
+
 [node name="TemplatesButton" type="Button" parent="TopContainer/LeftContainer/SequenceTopContainer/HBox"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -496,7 +507,7 @@ stretch = true
 [node name="PlayViewport" type="SubViewport" parent="TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer"]
 disable_3d = true
 handle_input_locally = false
-size = Vector2i(350, 467)
+size = Vector2i(2, 2)
 size_2d_override = Vector2i(768, 1024)
 size_2d_override_stretch = true
 render_target_update_mode = 4
@@ -614,6 +625,186 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="SettingsContainer" type="Control" parent="TopContainer/MidContainer"]
+visible = false
+layout_mode = 1
+anchor_left = 0.0683961
+anchor_top = 0.0491453
+anchor_right = 0.950471
+anchor_bottom = 0.950855
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="BG" type="ColorRect" parent="TopContainer/MidContainer/SettingsContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0742188, 0.0703125, 0.078125, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TopContainer/MidContainer/SettingsContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 12.0
+offset_right = -0.000213623
+offset_bottom = -9.15527e-05
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LevelNameField" type="Control" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer/LevelNameField"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 8.0
+grow_vertical = 2
+text = "Level name"
+vertical_alignment = 1
+
+[node name="TextEdit" type="TextEdit" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer/LevelNameField"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="LevelAuthorField" type="Control" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer/LevelAuthorField"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 8.0
+grow_vertical = 2
+text = "Level author"
+vertical_alignment = 1
+
+[node name="TextEdit" type="TextEdit" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer/LevelAuthorField"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="SongNameField" type="Control" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer/SongNameField"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 8.0
+grow_vertical = 2
+text = "Song name"
+vertical_alignment = 1
+
+[node name="TextEdit" type="TextEdit" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer/SongNameField"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="SongAuthorField" type="Control" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer/SongAuthorField"]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = 8.0
+grow_vertical = 2
+text = "Song author"
+vertical_alignment = 1
+
+[node name="TextEdit" type="TextEdit" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer/SongAuthorField"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="SaveButton" type="Button" parent="TopContainer/MidContainer/SettingsContainer"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.000183105
+offset_top = -38.0001
+offset_right = -3.05176e-05
+offset_bottom = -6.00009
+grow_horizontal = 2
+grow_vertical = 0
+text = "Save and exit"
+
+[node name="SaveAndExitButton" type="Button" parent="TopContainer/MidContainer/SettingsContainer"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.000183105
+offset_top = -76.0001
+offset_right = -3.05176e-05
+offset_bottom = -44.0001
+grow_horizontal = 2
+grow_vertical = 0
+text = "Save"
+
+[node name="TestButton" type="Button" parent="TopContainer/MidContainer/SettingsContainer"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.000183105
+offset_top = -114.0
+offset_right = -3.05176e-05
+offset_bottom = -82.0001
+grow_horizontal = 2
+grow_vertical = 0
+text = "Test"
+
+[node name="LevelIDLabel" type="Label" parent="TopContainer/MidContainer/SettingsContainer"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 0.000183105
+offset_top = -145.0
+offset_right = 0.000183105
+offset_bottom = -119.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(0.290196, 0.278431, 0.290196, 1)
+text = "Level id: 4564-656-fgd-465"
+
 [node name="RightContainer" type="Control" parent="TopContainer"]
 layout_mode = 1
 anchor_left = 0.666667
@@ -632,7 +823,7 @@ offset_right = -0.000366211
 offset_bottom = 6.10352e-05
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0.113281, 0.109375, 0.132813, 1)
+color = Color(0.113725, 0.109804, 0.133333, 1)
 metadata/_edit_lock_ = true
 
 [node name="ComponentContainer" type="Control" parent="TopContainer/RightContainer"]
@@ -710,6 +901,7 @@ metadata/_edit_lock_ = true
 [connection signal="pressed" from="BotContainer/TimelineTab/TimelineDetails/PhaseButton" to="Controllers/PlayController" method="OnPhasesButtonClick"]
 [connection signal="mouse_entered" from="BotContainer/ResizeBar" to="Controllers/ResizeController" method="OnBottomContainerMouseEntered"]
 [connection signal="mouse_exited" from="BotContainer/ResizeBar" to="Controllers/ResizeController" method="OnBottomContainerMouseExited"]
+[connection signal="pressed" from="TopContainer/LeftContainer/SequenceTopContainer/HBox/SettingsButton" to="Controllers/SettingsController" method="OnSettingsButtonClicked"]
 [connection signal="pressed" from="TopContainer/LeftContainer/SequenceTopContainer/HBox/TemplatesButton" to="Controllers/SequenceController" method="OpenTemplatesTab"]
 [connection signal="pressed" from="TopContainer/LeftContainer/SequenceTopContainer/HBox/SequenceButton" to="Controllers/SequenceController" method="OpenSequenceTab"]
 [connection signal="item_mouse_selected" from="TopContainer/LeftContainer/SequenceMainContainer/TemplatesTab/TemplatesTree" to="Controllers/TemplatesController" method="OnItemMouseSelected"]

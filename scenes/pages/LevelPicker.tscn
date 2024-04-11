@@ -1,0 +1,127 @@
+[gd_scene load_steps=3 format=3 uid="uid://d18em0ev18xks"]
+
+[ext_resource type="Script" path="res://scripts/server/LevelPickController.cs" id="1_vfawr"]
+[ext_resource type="Script" path="res://scripts/server/SavingManager.cs" id="1_vqxmc"]
+
+[node name="LevelPicker" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Controllers" type="Node" parent="."]
+
+[node name="LevelPickController" type="Node" parent="Controllers"]
+script = ExtResource("1_vfawr")
+
+[node name="SavingManger" type="Node" parent="Controllers"]
+script = ExtResource("1_vqxmc")
+
+[node name="ServerConnector" type="Node" parent="Controllers"]
+
+[node name="HTTPRequest" type="HTTPRequest" parent="Controllers/ServerConnector"]
+
+[node name="RightContainer" type="Control" parent="."]
+layout_mode = 1
+anchor_left = 0.5
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="BG" type="ColorRect" parent="RightContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.113725, 0.109804, 0.133333, 1)
+
+[node name="ScrollContainer" type="ScrollContainer" parent="RightContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 10.0
+offset_top = 11.0
+offset_right = -8.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="RightContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="LeftContainer" type="Control" parent="."]
+layout_mode = 1
+anchor_right = 0.5
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+metadata/_edit_use_anchors_ = true
+
+[node name="BG" type="ColorRect" parent="LeftContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0980392, 0.0980392, 0.117647, 1)
+
+[node name="VBoxContainer" type="VBoxContainer" parent="LeftContainer"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LevelNameLabel" type="Label" parent="LeftContainer/VBoxContainer"]
+layout_mode = 2
+text = "Level name"
+
+[node name="LevelAuthorLabel" type="Label" parent="LeftContainer/VBoxContainer"]
+layout_mode = 2
+text = "Level name"
+
+[node name="SongNameLabel" type="Label" parent="LeftContainer/VBoxContainer"]
+layout_mode = 2
+text = "Level name"
+
+[node name="SongAuthorLabel" type="Label" parent="LeftContainer/VBoxContainer"]
+layout_mode = 2
+text = "Level name"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="LeftContainer"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -71.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="PlayButton" type="Button" parent="LeftContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+text = "Play"
+
+[node name="EditButton" type="Button" parent="LeftContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Edit"
+
+[node name="CreateNewButton" type="Button" parent="LeftContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Create new"
+
+[connection signal="pressed" from="LeftContainer/HBoxContainer/CreateNewButton" to="Controllers/LevelPickController" method="OnCreateNewButtonClick"]
