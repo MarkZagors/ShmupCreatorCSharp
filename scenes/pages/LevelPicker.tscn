@@ -1,5 +1,6 @@
-[gd_scene load_steps=3 format=3 uid="uid://d18em0ev18xks"]
+[gd_scene load_steps=4 format=3 uid="uid://d18em0ev18xks"]
 
+[ext_resource type="PackedScene" uid="uid://dtphm1c660eg0" path="res://scenes/levelPicker/LevelNode.tscn" id="1_bd8ix"]
 [ext_resource type="Script" path="res://scripts/server/LevelPickController.cs" id="1_vfawr"]
 [ext_resource type="Script" path="res://scripts/server/SavingManager.cs" id="1_vqxmc"]
 
@@ -13,8 +14,11 @@ grow_vertical = 2
 
 [node name="Controllers" type="Node" parent="."]
 
-[node name="LevelPickController" type="Node" parent="Controllers"]
+[node name="LevelPickController" type="Node" parent="Controllers" node_paths=PackedStringArray("LevelsVbox", "DescriptionVbox")]
 script = ExtResource("1_vfawr")
+LevelNodeObj = ExtResource("1_bd8ix")
+LevelsVbox = NodePath("../../RightContainer/ScrollContainer/VBoxContainer")
+DescriptionVbox = NodePath("../../LeftContainer/VBoxContainer")
 
 [node name="SavingManger" type="Node" parent="Controllers"]
 script = ExtResource("1_vqxmc")
@@ -84,19 +88,16 @@ grow_vertical = 2
 
 [node name="LevelNameLabel" type="Label" parent="LeftContainer/VBoxContainer"]
 layout_mode = 2
-text = "Level name"
+text = "Select a level"
 
 [node name="LevelAuthorLabel" type="Label" parent="LeftContainer/VBoxContainer"]
 layout_mode = 2
-text = "Level name"
 
 [node name="SongNameLabel" type="Label" parent="LeftContainer/VBoxContainer"]
 layout_mode = 2
-text = "Level name"
 
 [node name="SongAuthorLabel" type="Label" parent="LeftContainer/VBoxContainer"]
 layout_mode = 2
-text = "Level name"
 
 [node name="HBoxContainer" type="HBoxContainer" parent="LeftContainer"]
 layout_mode = 1
