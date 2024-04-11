@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=34 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
@@ -27,6 +27,7 @@
 [ext_resource type="Script" path="res://scripts/play/controllers/BossMovementController.cs" id="24_dicxy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/SettingsController.cs" id="26_s511t"]
 [ext_resource type="PackedScene" uid="uid://dt1chil803ujs" path="res://scenes/editor/PhaseButton.tscn" id="26_t5jxv"]
+[ext_resource type="Script" path="res://scripts/server/SavingManager.cs" id="27_vlr0c"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p7kd5"]
 bg_color = Color(0.152344, 0.152344, 0.183594, 1)
@@ -64,9 +65,10 @@ BottomContainerResizeBar = NodePath("../../BotContainer/ResizeBar")
 LeftContainerResizeBar = NodePath("../../TopContainer/LeftContainer/ResizeBar")
 RightContainerResizeBar = NodePath("../../TopContainer/RightContainer/ResizeBar")
 
-[node name="PlayController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "TimelineTimeLabel", "LanesNode", "ComponentBodyContainer", "StartingLanesBorderNode", "LanesMainControllerContainer", "LanesClickZone", "LaneClickLine", "PhasesContainer")]
+[node name="PlayController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "SavingManager", "TimelineTimeLabel", "LanesNode", "ComponentBodyContainer", "StartingLanesBorderNode", "LanesMainControllerContainer", "LanesClickZone", "LaneClickLine", "PhasesContainer")]
 script = ExtResource("2_hudip")
 SequenceController = NodePath("../SequenceController")
+SavingManager = NodePath("../SavingManger")
 TimelineTimeLabel = NodePath("../../BotContainer/TimelineTab/TimelineDetails/TimeLabel")
 LanesNode = NodePath("../../BotContainer/TimelineTab/MainContainer/LanesVBox")
 SequenceIconObj = ExtResource("4_t8vuy")
@@ -137,9 +139,13 @@ script = ExtResource("24_dicxy")
 ComponentsController = NodePath("../ComponentsController")
 PlayController = NodePath("../PlayController")
 
-[node name="SettingsController" type="Node" parent="Controllers" node_paths=PackedStringArray("SettingsContainerNode")]
+[node name="SettingsController" type="Node" parent="Controllers" node_paths=PackedStringArray("SettingsContainerNode", "SavingManager")]
 script = ExtResource("26_s511t")
 SettingsContainerNode = NodePath("../../TopContainer/MidContainer/SettingsContainer")
+SavingManager = NodePath("../SavingManger")
+
+[node name="SavingManger" type="Node" parent="Controllers"]
+script = ExtResource("27_vlr0c")
 
 [node name="BotContainer" type="Control" parent="."]
 layout_mode = 1
@@ -507,7 +513,7 @@ stretch = true
 [node name="PlayViewport" type="SubViewport" parent="TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer"]
 disable_3d = true
 handle_input_locally = false
-size = Vector2i(2, 2)
+size = Vector2i(350, 467)
 size_2d_override = Vector2i(768, 1024)
 size_2d_override_stretch = true
 render_target_update_mode = 4

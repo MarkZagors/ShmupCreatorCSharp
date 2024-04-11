@@ -1,5 +1,6 @@
 using ExtensionMethods;
 using Godot;
+using Godot.Collections;
 using System;
 using System.Collections.Generic;
 
@@ -11,6 +12,7 @@ namespace Editor
         [Signal] public delegate void PhaseChangeEventHandler();
         [Export] public double ScrollTick { get; private set; } = 0.25;
         [Export] public SequenceController SequenceController { get; private set; }
+        [Export] public SavingManager SavingManager { get; private set; }
         [Export] public Label TimelineTimeLabel { get; private set; }
         [Export] public VBoxContainer LanesNode { get; private set; }
         [Export] public PackedScene SequenceIconObj { get; private set; }
@@ -32,6 +34,7 @@ namespace Editor
 
         public override void _Ready()
         {
+            LoadLevel();
             SetupPhases();
             UpdateUI();
         }
@@ -334,6 +337,13 @@ namespace Editor
             StartingLanesBorderNode.AnchorRight = (float)(0.5 - Time * 0.5 / LanesWidth);
             LanesClickZone.AnchorLeft = StartingLanesBorderNode.AnchorRight;
         }
+
+        private void LoadLevel()
+        {
+            // Dictionary data = SavingManager.GetLevelIndex(TransferLayer.LevelID);
+            // GD.Print(data);
+        }
     }
+
 }
 

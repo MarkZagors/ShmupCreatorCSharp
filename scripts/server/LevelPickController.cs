@@ -7,8 +7,10 @@ namespace Editor
     public partial class LevelPickController : Node
     {
         [Export] public PackedScene LevelNodeObj { get; private set; }
+        [Export] public PackedScene EditorScene { get; private set; }
         [Export] public VBoxContainer LevelsVbox { get; private set; }
         [Export] public VBoxContainer DescriptionVbox { get; private set; }
+        [Export] public SavingManager SavingManager { get; private set; }
         private string _selectedLevelID = null;
 
         public override void _Ready()
@@ -18,34 +20,13 @@ namespace Editor
             {
                 dir.MakeDir("levels");
             }
+
+            UpdateLocalLevelsList();
         }
 
         public void OnCreateNewButtonClick()
         {
-            DirAccess levelsDirectory = DirAccess.Open("user://levels");
-            Guid newLevelID = Guid.NewGuid();
-            levelsDirectory.MakeDir(newLevelID.ToString());
-
-            FileAccess indexFile = FileAccess.Open($"user://levels/{newLevelID}/index.json", FileAccess.ModeFlags.Write);
-            indexFile.StoreString(
-$@"{{
-    ""id"": ""{newLevelID}"",
-    ""levelName"": ""New Level"",
-    ""levelAuthor"": ""Unknown"",
-    ""songName"": ""Unknown song"",
-    ""songAuthor"": ""Unknown Artist"",
-}}"
-            );
-            indexFile.Close();
-
-            FileAccess phasesFile = FileAccess.Open($"user://levels/{newLevelID}/phases.json", FileAccess.ModeFlags.Write);
-            phasesFile.StoreString(
-$@"{{
-    ""phases"": [],
-}}"
-            );
-            phasesFile.Close();
-
+            SavingManager.CreateNewLevel();
             UpdateLocalLevelsList();
         }
 
@@ -58,6 +39,13 @@ $@"{{
             DescriptionVbox.GetNode<Label>("SongAuthorLabel").Text = songAuthor;
         }
 
+        public void OnEditButtonClick()
+        {
+            if (_selectedLevelID == null) return;
+            TransferLayer.LevelID = _selectedLevelID;
+            GetTree().ChangeSceneToPacked(EditorScene);
+        }
+
         private void UpdateLocalLevelsList()
         {
             DirAccess levelsDirectory = DirAccess.Open("user://levels");
@@ -68,8 +56,7 @@ $@"{{
             foreach (string levelID in levelsDirectory.GetDirectories())
             {
                 Control levelNode = LevelNodeObj.Instantiate<Control>();
-                FileAccess indexFile = FileAccess.Open($"user://levels/{levelID}/index.json", FileAccess.ModeFlags.Read);
-                Dictionary data = (Dictionary)Json.ParseString(indexFile.GetAsText());
+                Dictionary data = SavingManager.GetLevelIndex(levelID);
                 string levelName = (string)data["levelName"];
                 string levelAuthor = (string)data["levelAuthor"];
                 string songName = (string)data["songName"];

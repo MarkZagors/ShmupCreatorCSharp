@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://d18em0ev18xks"]
+[gd_scene load_steps=5 format=3 uid="uid://d18em0ev18xks"]
 
 [ext_resource type="PackedScene" uid="uid://dtphm1c660eg0" path="res://scenes/levelPicker/LevelNode.tscn" id="1_bd8ix"]
 [ext_resource type="Script" path="res://scripts/server/LevelPickController.cs" id="1_vfawr"]
 [ext_resource type="Script" path="res://scripts/server/SavingManager.cs" id="1_vqxmc"]
+[ext_resource type="PackedScene" uid="uid://bvgorsw0k7n0h" path="res://scenes/pages/Editor.tscn" id="3_wl6po"]
 
 [node name="LevelPicker" type="Control"]
 layout_mode = 3
@@ -14,11 +15,13 @@ grow_vertical = 2
 
 [node name="Controllers" type="Node" parent="."]
 
-[node name="LevelPickController" type="Node" parent="Controllers" node_paths=PackedStringArray("LevelsVbox", "DescriptionVbox")]
+[node name="LevelPickController" type="Node" parent="Controllers" node_paths=PackedStringArray("LevelsVbox", "DescriptionVbox", "SavingManager")]
 script = ExtResource("1_vfawr")
 LevelNodeObj = ExtResource("1_bd8ix")
+EditorScene = ExtResource("3_wl6po")
 LevelsVbox = NodePath("../../RightContainer/ScrollContainer/VBoxContainer")
 DescriptionVbox = NodePath("../../LeftContainer/VBoxContainer")
+SavingManager = NodePath("../SavingManger")
 
 [node name="SavingManger" type="Node" parent="Controllers"]
 script = ExtResource("1_vqxmc")
@@ -125,4 +128,5 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Create new"
 
+[connection signal="pressed" from="LeftContainer/HBoxContainer/EditButton" to="Controllers/LevelPickController" method="OnEditButtonClick"]
 [connection signal="pressed" from="LeftContainer/HBoxContainer/CreateNewButton" to="Controllers/LevelPickController" method="OnCreateNewButtonClick"]
