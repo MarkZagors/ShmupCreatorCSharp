@@ -10,13 +10,35 @@ public partial class SettingsController : Node
 
     public override void _Ready()
     {
+        SavingManager.OnSave += SaveLevel;
         LoadLevel();
     }
 
     private void LoadLevel()
     {
-        Dictionary data = SavingManager.GetLevelIndex(TransferLayer.LevelID);
+        Dictionary data = SavingManager.LoadLevelIndex(TransferLayer.LevelID);
         GD.Print(data);
+
+        string levelName = (string)data["levelName"];
+        string levelAuthor = (string)data["levelAuthor"];
+        string songName = (string)data["songName"];
+        string songAuthor = (string)data["songAuthor"];
+
+        SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/LevelNameField/TextEdit").Text = levelName;
+        SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/LevelAuthorField/TextEdit").Text = levelAuthor;
+        SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/SongNameField/TextEdit").Text = songName;
+        SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/SongAuthorField/TextEdit").Text = songAuthor;
+    }
+
+    private void SaveLevel()
+    {
+        SavingManager.SaveLevelIndex(
+            levelID: TransferLayer.LevelID,
+            levelName: SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/LevelNameField/TextEdit").Text,
+            levelAuthor: SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/LevelAuthorField/TextEdit").Text,
+            songName: SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/SongNameField/TextEdit").Text,
+            songAuthor: SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/SongAuthorField/TextEdit").Text
+        );
     }
 
     public void OnSettingsButtonClicked()

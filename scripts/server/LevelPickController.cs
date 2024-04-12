@@ -56,7 +56,7 @@ namespace Editor
             foreach (string levelID in levelsDirectory.GetDirectories())
             {
                 Control levelNode = LevelNodeObj.Instantiate<Control>();
-                Dictionary data = SavingManager.GetLevelIndex(levelID);
+                Dictionary data = SavingManager.LoadLevelIndex(levelID);
                 string levelName = (string)data["levelName"];
                 string levelAuthor = (string)data["levelAuthor"];
                 string songName = (string)data["songName"];

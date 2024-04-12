@@ -651,7 +651,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0742188, 0.0703125, 0.078125, 1)
 
-[node name="VBoxContainer" type="VBoxContainer" parent="TopContainer/MidContainer/SettingsContainer"]
+[node name="FieldsVBox" type="VBoxContainer" parent="TopContainer/MidContainer/SettingsContainer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -662,11 +662,11 @@ offset_bottom = -9.15527e-05
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="LevelNameField" type="Control" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer"]
+[node name="LevelNameField" type="Control" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer/LevelNameField"]
+[node name="Label" type="Label" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox/LevelNameField"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.5
@@ -676,7 +676,7 @@ grow_vertical = 2
 text = "Level name"
 vertical_alignment = 1
 
-[node name="TextEdit" type="TextEdit" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer/LevelNameField"]
+[node name="TextEdit" type="TextEdit" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox/LevelNameField"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -685,11 +685,11 @@ anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="LevelAuthorField" type="Control" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer"]
+[node name="LevelAuthorField" type="Control" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer/LevelAuthorField"]
+[node name="Label" type="Label" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox/LevelAuthorField"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.5
@@ -699,7 +699,7 @@ grow_vertical = 2
 text = "Level author"
 vertical_alignment = 1
 
-[node name="TextEdit" type="TextEdit" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer/LevelAuthorField"]
+[node name="TextEdit" type="TextEdit" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox/LevelAuthorField"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -708,11 +708,11 @@ anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="SongNameField" type="Control" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer"]
+[node name="SongNameField" type="Control" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer/SongNameField"]
+[node name="Label" type="Label" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox/SongNameField"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.5
@@ -722,7 +722,7 @@ grow_vertical = 2
 text = "Song name"
 vertical_alignment = 1
 
-[node name="TextEdit" type="TextEdit" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer/SongNameField"]
+[node name="TextEdit" type="TextEdit" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox/SongNameField"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -731,11 +731,11 @@ anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="SongAuthorField" type="Control" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer"]
+[node name="SongAuthorField" type="Control" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox"]
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
-[node name="Label" type="Label" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer/SongAuthorField"]
+[node name="Label" type="Label" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox/SongAuthorField"]
 layout_mode = 1
 anchors_preset = -1
 anchor_right = 0.5
@@ -745,7 +745,7 @@ grow_vertical = 2
 text = "Song author"
 vertical_alignment = 1
 
-[node name="TextEdit" type="TextEdit" parent="TopContainer/MidContainer/SettingsContainer/VBoxContainer/SongAuthorField"]
+[node name="TextEdit" type="TextEdit" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox/SongAuthorField"]
 layout_mode = 1
 anchors_preset = -1
 anchor_left = 0.5
@@ -754,7 +754,7 @@ anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 2
 
-[node name="SaveButton" type="Button" parent="TopContainer/MidContainer/SettingsContainer"]
+[node name="SaveAndExitButton" type="Button" parent="TopContainer/MidContainer/SettingsContainer"]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -768,7 +768,7 @@ grow_horizontal = 2
 grow_vertical = 0
 text = "Save and exit"
 
-[node name="SaveAndExitButton" type="Button" parent="TopContainer/MidContainer/SettingsContainer"]
+[node name="SaveButton" type="Button" parent="TopContainer/MidContainer/SettingsContainer"]
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -918,5 +918,7 @@ metadata/_edit_lock_ = true
 [connection signal="mouse_entered" from="TopContainer/MidContainer" to="Controllers/TemplatesController" method="OnMidContainerMouseEntered"]
 [connection signal="mouse_exited" from="TopContainer/MidContainer" to="Controllers/TemplatesController" method="OnMidContainerMouseExited"]
 [connection signal="pressed" from="TopContainer/MidContainer/CreationContainer/CreateComponentTab/CloseButton" to="Controllers/CreateBoxController" method="OnClickCloseNewComponent"]
+[connection signal="pressed" from="TopContainer/MidContainer/SettingsContainer/SaveAndExitButton" to="Controllers/SavingManger" method="OnSaveAndExitClicked"]
+[connection signal="pressed" from="TopContainer/MidContainer/SettingsContainer/SaveButton" to="Controllers/SavingManger" method="OnSavingButtonClicked"]
 [connection signal="mouse_entered" from="TopContainer/RightContainer/ResizeBar" to="Controllers/ResizeController" method="OnRightContainerMouseEntered"]
 [connection signal="mouse_exited" from="TopContainer/RightContainer/ResizeBar" to="Controllers/ResizeController" method="OnRightContainerMouseExited"]
