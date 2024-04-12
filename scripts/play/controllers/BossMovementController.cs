@@ -55,6 +55,23 @@ namespace Editor
 
             var sortedStartList = movementComponenetsStartList.OrderBy(tupl => tupl.Item1).ToList();
 
+            if (sortedStartList.Count == 0)
+            {
+                _xRange = Range.EmptyPointList(VIEWPORT_SIZE.X, 0);
+                _yRange = Range.EmptyPointList(VIEWPORT_SIZE.Y, 0);
+
+                List<Vector2> pointsXWhenClear = new();
+                List<Vector2> pointsYWhenClear = new();
+                pointsXWhenClear.Add(new Vector2(0.0f, WorldToPoint(START_POS).X));
+                pointsYWhenClear.Add(new Vector2(0.0f, WorldToPoint(START_POS).Y));
+                pointsXWhenClear.Add(new Vector2(float.PositiveInfinity, WorldToPoint(START_POS).X));
+                pointsYWhenClear.Add(new Vector2(float.PositiveInfinity, WorldToPoint(START_POS).Y));
+
+                _xRange.Points = pointsXWhenClear;
+                _yRange.Points = pointsYWhenClear;
+                return;
+            }
+
             List<Vector2> pointsX = new();
             List<Vector2> pointsY = new();
             pointsX.Add(new Vector2(0.0f, WorldToPoint(START_POS).X));
