@@ -109,7 +109,6 @@ namespace Editor
                     component = new ComponentBullet
                     (
                         name: name,
-                        treeItem: componentTreeItem,
                         icon: IconBullet
                     );
                     break;
@@ -118,7 +117,6 @@ namespace Editor
                     component = new ComponentBundle
                     (
                         name: name,
-                        treeItem: componentTreeItem,
                         icon: IconBundle
                     );
                     break;
@@ -127,7 +125,6 @@ namespace Editor
                     component = new ComponentSpawner
                     (
                         name: name,
-                        treeItem: componentTreeItem,
                         sequence: _openedSequence,
                         icon: IconSpawner
                     );
@@ -137,7 +134,6 @@ namespace Editor
                     component = new ComponentTimer
                     (
                         name: name,
-                        treeItem: componentTreeItem,
                         icon: IconTimer
                     );
                     break;
@@ -147,7 +143,6 @@ namespace Editor
                     (
                         name: name,
                         sequence: _openedSequence,
-                        treeItem: componentTreeItem,
                         icon: IconTimer
                     );
                     break;
@@ -295,31 +290,31 @@ namespace Editor
             foreach (var component in _openedSequence.Components)
             {
                 //TODO: Fix tree item deletion and reallocation - deleted tree item when chaning sequences
-                if (!IsInstanceValid(component.TreeItem)) continue;
-                if (component is ComponentBundle bundle)
-                {
-                    var bulletRef = bundle.GetRefBullletComponent();
-                    if (bulletRef == null)
-                    {
-                        component.TreeItem.SetIcon(1, IconWarning);
-                    }
-                    else
-                    {
-                        component.TreeItem.SetIcon(1, null);
-                    }
-                }
+                // if (!IsInstanceValid(component.TreeItem)) continue;
+                // if (component is ComponentBundle bundle)
+                // {
+                //     var bulletRef = bundle.GetRefBullletComponent();
+                //     if (bulletRef == null)
+                //     {
+                //         component.TreeItem.SetIcon(1, IconWarning);
+                //     }
+                //     else
+                //     {
+                //         component.TreeItem.SetIcon(1, null);
+                //     }
+                // }
 
-                if (component is ComponentSpawner spawner)
-                {
-                    if (spawner.Valid == false)
-                    {
-                        component.TreeItem.SetIcon(1, IconWarning);
-                    }
-                    else
-                    {
-                        component.TreeItem.SetIcon(1, null);
-                    }
-                }
+                // if (component is ComponentSpawner spawner)
+                // {
+                //     if (spawner.Valid == false)
+                //     {
+                //         component.TreeItem.SetIcon(1, IconWarning);
+                //     }
+                //     else
+                //     {
+                //         component.TreeItem.SetIcon(1, null);
+                //     }
+                // }
             }
         }
     }

@@ -7,15 +7,13 @@ namespace Editor
     public class ComponentTimer : BaseComponent, IComponent
     {
         public string Name { get; set; }
-        public TreeItem TreeItem { get; set; }
         public List<IModifier> Modifiers { get; set; }
         public ComponentType Type { get; set; } = ComponentType.TIMER;
         public Texture2D Icon { get; set; }
 
-        public ComponentTimer(string name, TreeItem treeItem, Texture2D icon)
+        public ComponentTimer(string name, Texture2D icon)
         {
             Name = name;
-            TreeItem = treeItem;
             Icon = icon;
             Modifiers = new List<IModifier>
             {

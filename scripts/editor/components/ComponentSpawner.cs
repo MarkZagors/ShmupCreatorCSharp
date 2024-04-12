@@ -7,17 +7,15 @@ namespace Editor
     public class ComponentSpawner : BaseComponent, IComponent
     {
         public string Name { get; set; }
-        public TreeItem TreeItem { get; set; }
         public List<IModifier> Modifiers { get; set; }
         public ComponentType Type { get; set; } = ComponentType.SPAWNER;
         public bool Valid { get; set; } = false;
         public Sequence Sequence { get; set; } = null;
         public Texture2D Icon { get; set; }
 
-        public ComponentSpawner(string name, TreeItem treeItem, Sequence sequence, Texture2D icon)
+        public ComponentSpawner(string name, Sequence sequence, Texture2D icon)
         {
             Name = name;
-            TreeItem = treeItem;
             Sequence = sequence;
             Icon = icon;
             Modifiers = new List<IModifier>
