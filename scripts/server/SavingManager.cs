@@ -99,13 +99,13 @@ $@"{{
                 }
 
                 phasesFile.StoreString("]"); //end of sequences
-                phasesFile.StoreString(" }");
+                phasesFile.StoreString(" },");
             }
             phasesFile.StoreString("]}");
             phasesFile.Close();
         }
 
-        public void StoreModifiers(FileAccess phasesFile, IComponent component)
+        private void StoreModifiers(FileAccess phasesFile, IComponent component)
         {
             foreach (IModifier modifier in component.Modifiers)
             {
