@@ -27,6 +27,7 @@ public partial class SettingsController : Node
         SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/LevelAuthorField/TextEdit").Text = levelAuthor;
         SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/SongNameField/TextEdit").Text = songName;
         SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/SongAuthorField/TextEdit").Text = songAuthor;
+        SettingsContainerNode.GetNode<Label>("LevelIDLabel").Text = $"Level ID: {TransferLayer.LevelID}";
     }
 
     private void SaveLevel()
