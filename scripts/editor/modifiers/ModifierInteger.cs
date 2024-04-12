@@ -3,6 +3,7 @@ namespace Editor
     public class ModifierInteger : IModifier
     {
         required public ModifierID ID { get; set; }
+        public ModifierType Type { get; set; } = ModifierType.INTEGER;
         public bool Active { get; set; } = false;
         public int Value { get; set; } = 0;
         public int MaxValue { get; set; } = 5000;
