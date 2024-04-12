@@ -10,6 +10,7 @@ namespace Editor
     {
         [Signal] public delegate void UpdateEventHandler();
         [Signal] public delegate void PhaseChangeEventHandler();
+        [Signal] public delegate void UpdateTimelineEventHandler();
         [Export] public double ScrollTick { get; private set; } = 0.25;
         [Export] public SequenceController SequenceController { get; private set; }
         [Export] public SavingManager SavingManager { get; private set; }
@@ -300,6 +301,7 @@ namespace Editor
             Time = 0.0;
 
             EmitSignal(SignalName.PhaseChange); //RESTRUCTURE BULLET LIST
+            EmitSignal(SignalName.UpdateTimeline);
             UpdateUI();
         }
 

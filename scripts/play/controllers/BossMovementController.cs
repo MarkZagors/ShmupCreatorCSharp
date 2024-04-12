@@ -17,6 +17,7 @@ namespace Editor
         public override void _Ready()
         {
             ComponentsController.MoveTimelineUpdate += UpdateTimeline;
+            PlayController.UpdateTimeline += UpdateTimeline;
             Vector2 startingWorldToPoint = WorldToPoint(START_POS);
             _xRange = new Range
             {
