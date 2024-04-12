@@ -37,6 +37,8 @@ namespace Editor
             LoadLevel();
             SetupPhases();
             UpdateUI();
+
+            SavingManager.OnSave += SaveLevel;
         }
 
         public override void _Process(double delta)
@@ -342,6 +344,16 @@ namespace Editor
         {
             // Dictionary data = SavingManager.GetLevelIndex(TransferLayer.LevelID);
             // GD.Print(data);
+        }
+
+        private void SaveLevel()
+        {
+            SavingManager.SaveLevelPhases(PhasesList, TransferLayer.LevelID);
+
+            FileAccess phasesFile = FileAccess.Open($"user://levels/{TransferLayer.LevelID}/phases.json", FileAccess.ModeFlags.Read);
+            Dictionary data = (Dictionary)Json.ParseString(phasesFile.GetAsText());
+            phasesFile.Close();
+            GD.Print(data);
         }
     }
 

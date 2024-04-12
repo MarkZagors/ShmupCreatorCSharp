@@ -1,6 +1,7 @@
 using Godot;
 using Godot.Collections;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace Editor
@@ -62,10 +63,45 @@ $@"{{
             indexFile.Close();
         }
 
+        public void SaveLevelPhases(List<Phase> phases, string levelID)
+        {
+            FileAccess phasesFile = FileAccess.Open($"user://levels/{levelID}/phases.json", FileAccess.ModeFlags.Write);
+            phasesFile.StoreString(@"{""phases"": [");
+            foreach (Phase phase in phases)
+            {
+                phasesFile.StoreString("{ ");
+                // Store Phase information
+                phasesFile.StoreString($@"""name"":""{phase.Name}"",");
+                phasesFile.StoreString($@"""id"":{phase.ID},");
+                phasesFile.StoreString($@"""health"":{phase.Health},");
+                phasesFile.StoreString($@"""sequences"": [");
+                //Store Sequence information
+                foreach (Sequence sequence in phase.SequenceList)
+                {
+                    phasesFile.StoreString($@"""time"":{sequence.Time}");
+                    //Sequence.Node is created and assigned when loading in PlayController
+                    phasesFile.StoreString($@"""components"": [");
+                    //Store ComponentInformation
+                    foreach (IComponent component in sequence.Components)
+                    {
+                        phasesFile.StoreString($@"""name"":{component.Name}");
+                    }
+
+                    phasesFile.StoreString("]"); //end of components
+                }
+
+                phasesFile.StoreString("]"); //end of sequences
+                phasesFile.StoreString(" }");
+            }
+            phasesFile.StoreString("]}");
+            phasesFile.Close();
+        }
+
         public Dictionary LoadLevelIndex(string levelID)
         {
             FileAccess indexFile = FileAccess.Open($"user://levels/{levelID}/index.json", FileAccess.ModeFlags.Read);
             Dictionary data = (Dictionary)Json.ParseString(indexFile.GetAsText());
+            indexFile.Close();
             return data;
         }
 

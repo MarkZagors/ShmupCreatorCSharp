@@ -17,7 +17,6 @@ public partial class SettingsController : Node
     private void LoadLevel()
     {
         Dictionary data = SavingManager.LoadLevelIndex(TransferLayer.LevelID);
-        GD.Print(data);
 
         string levelName = (string)data["levelName"];
         string levelAuthor = (string)data["levelAuthor"];
