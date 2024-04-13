@@ -190,7 +190,12 @@ $@"{{
                 List<Sequence> sequences = new();
                 foreach (Dictionary sequencesJson in (Godot.Collections.Array)phasesJson["sequences"])
                 {
-                    GD.Print(sequencesJson);
+                    List<IComponent> components = new();
+                    foreach (Dictionary componentsJson in (Godot.Collections.Array)sequencesJson["components"])
+                    {
+                        bool _ = Enum.TryParse((string)componentsJson["type"], out ComponentType componentType);
+                        GD.Print(componentType);
+                    }
 
                     sequences.Add(new Sequence
                     {
