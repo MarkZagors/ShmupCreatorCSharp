@@ -165,5 +165,49 @@ $@"{{
             return data;
         }
 
+        public List<Phase> LoadLevelPhases(string levelID)
+        {
+            FileAccess phasesFile = FileAccess.Open($"user://levels/{levelID}/phases.json", FileAccess.ModeFlags.Read);
+            Dictionary data = (Dictionary)Json.ParseString(phasesFile.GetAsText());
+            phasesFile.Close();
+
+            if (((Godot.Collections.Array)data["phases"]).Count == 0)
+            {
+                //New level handling
+                return new List<Phase> {
+                    new Phase(
+                        name: "New Phase",
+                        id: 0,
+                        health: 100,
+                        sequenceList: new List<Sequence>()
+                    )
+                };
+            }
+
+            List<Phase> phases = new();
+            foreach (Dictionary phasesJson in (Godot.Collections.Array)data["phases"])
+            {
+                List<Sequence> sequences = new();
+                foreach (Dictionary sequencesJson in (Godot.Collections.Array)phasesJson["sequences"])
+                {
+                    GD.Print(sequencesJson);
+
+                    sequences.Add(new Sequence
+                    {
+                        Time = (double)sequencesJson["time"],
+                        Components = new List<IComponent>()
+                    });
+                }
+
+                phases.Add(new Phase(
+                    name: (string)phasesJson["name"],
+                    id: (int)phasesJson["id"],
+                    health: (int)phasesJson["health"],
+                    sequenceList: sequences
+                ));
+            }
+
+            return phases;
+        }
     }
 }

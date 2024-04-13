@@ -3,6 +3,7 @@ using Godot;
 using Godot.Collections;
 using System;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 
 namespace Editor
 {
@@ -36,7 +37,6 @@ namespace Editor
         public override void _Ready()
         {
             LoadLevel();
-            SetupPhases();
             UpdateUI();
 
             SavingManager.OnSave += SaveLevel;
@@ -342,20 +342,22 @@ namespace Editor
             LanesClickZone.AnchorLeft = StartingLanesBorderNode.AnchorRight;
         }
 
+        //=================
+        //LOADING SAVING
+        //=================
         private void LoadLevel()
         {
-            // Dictionary data = SavingManager.GetLevelIndex(TransferLayer.LevelID);
-            // GD.Print(data);
+            List<Phase> loadedPhases = SavingManager.LoadLevelPhases(TransferLayer.LevelID);
+            PhasesList = loadedPhases;
+
+            selectedPhaseIndex = 0;
+            UpdateSelectedPhase(0);
+            ChangePhase(_selectedPhase);
         }
 
         private void SaveLevel()
         {
             SavingManager.SaveLevelPhases(PhasesList, TransferLayer.LevelID);
-
-            FileAccess phasesFile = FileAccess.Open($"user://levels/{TransferLayer.LevelID}/phases.json", FileAccess.ModeFlags.Read);
-            Dictionary data = (Dictionary)Json.ParseString(phasesFile.GetAsText());
-            phasesFile.Close();
-            GD.Print(data);
         }
     }
 
