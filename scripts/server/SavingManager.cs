@@ -191,17 +191,24 @@ $@"{{
                 foreach (Dictionary sequencesJson in (Godot.Collections.Array)phasesJson["sequences"])
                 {
                     List<IComponent> components = new();
-                    foreach (Dictionary componentsJson in (Godot.Collections.Array)sequencesJson["components"])
-                    {
-                        bool _ = Enum.TryParse((string)componentsJson["type"], out ComponentType componentType);
-                        GD.Print(componentType);
-                    }
-
-                    sequences.Add(new Sequence
+                    Sequence sequence = new Sequence
                     {
                         Time = (double)sequencesJson["time"],
                         Components = new List<IComponent>()
-                    });
+                    };
+
+                    foreach (Dictionary componentsJson in (Godot.Collections.Array)sequencesJson["components"])
+                    {
+                        bool _ = Enum.TryParse((string)componentsJson["type"], out ComponentType componentType);
+                        IComponent component = ComponentFactory.CreateComponent(
+                            componentType: componentType,
+                            name: (string)componentsJson["name"],
+                            sequence: sequence
+                        );
+                        sequence.Components.Add(component);
+                    }
+
+                    sequences.Add(sequence);
                 }
 
                 phases.Add(new Phase(

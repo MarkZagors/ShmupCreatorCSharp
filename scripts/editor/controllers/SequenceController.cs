@@ -99,54 +99,12 @@ namespace Editor
         {
             TreeItem root = SequenceTree.GetRoot();
             TreeItem componentTreeItem = root.CreateChild();
-            IComponent component = null;
-            string name = "NOT ADDED";
-
-            switch (componentType)
-            {
-                case ComponentType.BULLET:
-                    name = WrapComponentName("Bullet", _openedSequence.Components);
-                    component = new ComponentBullet
-                    (
-                        name: name
-                    );
-                    break;
-                case ComponentType.BUNDLE:
-                    name = WrapComponentName("Bundle", _openedSequence.Components);
-                    component = new ComponentBundle
-                    (
-                        name: name
-                    );
-                    break;
-                case ComponentType.SPAWNER:
-                    name = WrapComponentName("Spawner", _openedSequence.Components);
-                    component = new ComponentSpawner
-                    (
-                        name: name,
-                        sequence: _openedSequence
-                    );
-                    break;
-                case ComponentType.TIMER:
-                    name = WrapComponentName("Timer", _openedSequence.Components);
-                    component = new ComponentTimer
-                    (
-                        name: name
-                    );
-                    break;
-                case ComponentType.MOVEMENT:
-                    name = WrapComponentName("Movement", _openedSequence.Components);
-                    component = new ComponentMovement
-                    (
-                        name: name,
-                        sequence: _openedSequence
-                    );
-                    break;
-                default:
-                    GD.PushError($"Component type not implemented in Create Component!: {componentType}");
-                    break;
-            }
-
-            componentTreeItem.SetText(0, name);
+            IComponent component = ComponentFactory.CreateComponent(
+                componentType: componentType,
+                name: WrapComponentName(ComponentNamer.Get(componentType), _openedSequence.Components),
+                sequence: _openedSequence
+            );
+            componentTreeItem.SetText(0, component.Name);
             componentTreeItem.SetCellMode(1, TreeItem.TreeCellMode.Icon);
             componentTreeItem.SetIcon(0, component.Icon);
             componentTreeItem.SetSelectable(1, false);
