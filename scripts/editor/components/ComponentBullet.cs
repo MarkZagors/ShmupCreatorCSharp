@@ -11,10 +11,9 @@ namespace Editor
         public ComponentType Type { get; set; } = ComponentType.BULLET;
         public Texture2D Icon { get; set; }
 
-        public ComponentBullet(string name, Texture2D icon)
+        public ComponentBullet(string name)
         {
             Name = name;
-            Icon = icon;
             Modifiers = new List<IModifier>
             {
                 //Modifiers here

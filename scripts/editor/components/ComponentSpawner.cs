@@ -13,11 +13,10 @@ namespace Editor
         public Sequence Sequence { get; set; } = null;
         public Texture2D Icon { get; set; }
 
-        public ComponentSpawner(string name, Sequence sequence, Texture2D icon)
+        public ComponentSpawner(string name, Sequence sequence)
         {
             Name = name;
             Sequence = sequence;
-            Icon = icon;
             Modifiers = new List<IModifier>
             {
                 new ModifierRef {

@@ -11,10 +11,9 @@ namespace Editor
         public ComponentType Type { get; set; } = ComponentType.BUNDLE;
         public Texture2D Icon { get; set; }
 
-        public ComponentBundle(string name, Texture2D icon)
+        public ComponentBundle(string name)
         {
             Name = name;
-            Icon = icon;
             Modifiers = new List<IModifier> {
                 new ModifierRef {
                     ID = ModifierID.BUNDLE_REF_BULLET,

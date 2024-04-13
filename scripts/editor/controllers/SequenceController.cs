@@ -108,16 +108,14 @@ namespace Editor
                     name = WrapComponentName("Bullet", _openedSequence.Components);
                     component = new ComponentBullet
                     (
-                        name: name,
-                        icon: IconBullet
+                        name: name
                     );
                     break;
                 case ComponentType.BUNDLE:
                     name = WrapComponentName("Bundle", _openedSequence.Components);
                     component = new ComponentBundle
                     (
-                        name: name,
-                        icon: IconBundle
+                        name: name
                     );
                     break;
                 case ComponentType.SPAWNER:
@@ -125,16 +123,14 @@ namespace Editor
                     component = new ComponentSpawner
                     (
                         name: name,
-                        sequence: _openedSequence,
-                        icon: IconSpawner
+                        sequence: _openedSequence
                     );
                     break;
                 case ComponentType.TIMER:
                     name = WrapComponentName("Timer", _openedSequence.Components);
                     component = new ComponentTimer
                     (
-                        name: name,
-                        icon: IconTimer
+                        name: name
                     );
                     break;
                 case ComponentType.MOVEMENT:
@@ -142,8 +138,7 @@ namespace Editor
                     component = new ComponentMovement
                     (
                         name: name,
-                        sequence: _openedSequence,
-                        icon: IconTimer
+                        sequence: _openedSequence
                     );
                     break;
                 default:
