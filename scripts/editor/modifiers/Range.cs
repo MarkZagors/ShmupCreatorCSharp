@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Godot;
 
 namespace Editor
@@ -48,6 +49,16 @@ namespace Editor
                     new Vector2(1.0f, 0.0f),
                     new Vector2(1.0f, 0.0f),
                 }
+            };
+        }
+
+        public static Range ManualRange(double max, double min, List<Vector2> points)
+        {
+            return new Range
+            {
+                Max = new RefDouble(max),
+                Min = new RefDouble(min),
+                Points = points
             };
         }
 

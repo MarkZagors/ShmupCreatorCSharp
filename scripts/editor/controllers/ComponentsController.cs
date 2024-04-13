@@ -141,52 +141,58 @@ namespace Editor
 
         private void CheckValidSpawnerConnection()
         {
-            var spawnRef = (ModifierRef)OpenedComponent.GetModifier(ModifierID.SPAWNER_REF_BUNDLE);
-            var bundleRef = (ModifierRef)OpenedComponent.GetModifier(ModifierID.BUNDLE_REF_BULLET);
-            if (spawnRef != null && spawnRef.Ref != null)
-            {
-                var bundleRefNested = (ModifierRef)spawnRef.Ref.GetModifier(ModifierID.BUNDLE_REF_BULLET);
-                if (bundleRefNested != null && bundleRefNested.Ref != null)
-                {
-                    ((ComponentSpawner)OpenedComponent).Valid = true;
-                    EmitSignal(SignalName.OnValidRestructure);
-                }
-                return;
-            }
-
-            if (bundleRef != null)
-            {
-                CheckValidSpawnerConnectionFromBundleRef(bundleRef);
-                return;
-            }
-
-            if (
-                OpenedComponent.Type == ComponentType.TIMER
-            )
-            {
-                //Catch all for different types of valid restructure, add more in the future, if restructure not triggering
-                EmitSignal(SignalName.OnValidRestructure);
-                return;
-            }
+            SpawnerVerifier.Verify(_openedSequence.Components);
+            EmitSignal(SignalName.OnValidRestructure);
         }
 
-        private void CheckValidSpawnerConnectionFromBundleRef(ModifierRef bundleRef)
-        {
-            foreach (IComponent component in _openedSequence.Components)
-            {
-                var spawnRefInSequence = (ModifierRef)component.GetModifier(ModifierID.SPAWNER_REF_BUNDLE);
-                if (spawnRefInSequence != null && spawnRefInSequence.Ref != null)
-                {
-                    //If there is a spawner in the opened sequence, check if its ref is the same as the modified components
-                    var bundleRefInSpawner = (ModifierRef)spawnRefInSequence.Ref.GetModifier(ModifierID.BUNDLE_REF_BULLET);
-                    if (bundleRefInSpawner.Ref == bundleRef.Ref)
-                    {
-                        ((ComponentSpawner)component).Valid = true;
-                        EmitSignal(SignalName.OnValidRestructure);
-                    }
-                }
-            }
-        }
+        // private void CheckValidSpawnerConnection()
+        // {
+        //     var spawnRef = (ModifierRef)OpenedComponent.GetModifier(ModifierID.SPAWNER_REF_BUNDLE);
+        //     var bundleRef = (ModifierRef)OpenedComponent.GetModifier(ModifierID.BUNDLE_REF_BULLET);
+        //     if (spawnRef != null && spawnRef.Ref != null)
+        //     {
+        //         var bundleRefNested = (ModifierRef)spawnRef.Ref.GetModifier(ModifierID.BUNDLE_REF_BULLET);
+        //         if (bundleRefNested != null && bundleRefNested.Ref != null)
+        //         {
+        //             ((ComponentSpawner)OpenedComponent).Valid = true;
+        //             EmitSignal(SignalName.OnValidRestructure);
+        //         }
+        //         return;
+        //     }
+
+        //     if (bundleRef != null)
+        //     {
+        //         CheckValidSpawnerConnectionFromBundleRef(bundleRef);
+        //         return;
+        //     }
+
+        //     if (
+        //         OpenedComponent.Type == ComponentType.TIMER
+        //     )
+        //     {
+        //         //Catch all for different types of valid restructure, add more in the future, if restructure not triggering
+        //         EmitSignal(SignalName.OnValidRestructure);
+        //         return;
+        //     }
+        // }
+
+        // private void CheckValidSpawnerConnectionFromBundleRef(ModifierRef bundleRef)
+        // {
+        //     foreach (IComponent component in _openedSequence.Components)
+        //     {
+        //         var spawnRefInSequence = (ModifierRef)component.GetModifier(ModifierID.SPAWNER_REF_BUNDLE);
+        //         if (spawnRefInSequence != null && spawnRefInSequence.Ref != null)
+        //         {
+        //             //If there is a spawner in the opened sequence, check if its ref is the same as the modified components
+        //             var bundleRefInSpawner = (ModifierRef)spawnRefInSequence.Ref.GetModifier(ModifierID.BUNDLE_REF_BULLET);
+        //             if (bundleRefInSpawner.Ref == bundleRef.Ref)
+        //             {
+        //                 ((ComponentSpawner)component).Valid = true;
+        //                 EmitSignal(SignalName.OnValidRestructure);
+        //             }
+        //         }
+        //     }
+        // }
 
         private void ClearComponentsVBox()
         {

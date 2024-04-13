@@ -21,7 +21,7 @@ namespace Editor
         private BulletPool _bulletPool;
         private Rect _windowRect = new(-100, -100, 968, 1224);
 
-        public override void _Ready()
+        public override void _EnterTree()
         {
             _bulletPool = new BulletPool(
                 poolGroupNode: BulletPoolNode,
@@ -29,9 +29,12 @@ namespace Editor
                 poolSize: 4096,
                 expansionCount: 5
             );
-
-            PlayController.Update += Update;
             PlayController.PhaseChange += RestructureBulletList;
+        }
+
+        public override void _Ready()
+        {
+            PlayController.Update += Update;
             ComponentsController.Update += Update;
             SequenceController.Update += Update;
 
@@ -173,6 +176,7 @@ namespace Editor
 
         private void RestructureBulletList()
         {
+            GD.Print("restructure");
             _spawnerList.Clear();
 
             foreach (Sequence sequence in PlayController.GetSequenceList())

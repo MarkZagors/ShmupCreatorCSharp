@@ -2,6 +2,7 @@ using Godot;
 using Godot.Collections;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Editor
 {
@@ -204,11 +205,12 @@ $@"{{
                             name: (string)componentsJson["name"],
                             sequence: sequence
                         );
-                        LoadModifier(componentsJson, component);
+                        LoadModifiers(componentsJson, component);
 
                         sequence.Components.Add(component);
                     }
-
+                    ConnectComponentRefs(sequence.Components);
+                    SpawnerVerifier.Verify(sequence.Components);
                     sequences.Add(sequence);
                 }
 
@@ -223,7 +225,7 @@ $@"{{
             return phases;
         }
 
-        private void LoadModifier(Dictionary componentsJson, IComponent loadedComponent)
+        private void LoadModifiers(Dictionary componentsJson, IComponent loadedComponent)
         {
             foreach (Dictionary modifiersJson in (Godot.Collections.Array)componentsJson["modifiers"])
             {
@@ -256,28 +258,62 @@ $@"{{
                         modifierPosition.Active = true;
                         break;
                     case ModifierType.RANGE:
-                        // ModifierRange modifierRange = (ModifierRange)modifier;
-                        // phasesFile.StoreString($@"""max"":""{modifierRange.Range.Max.Value}"",");
-                        // phasesFile.StoreString($@"""min"":""{modifierRange.Range.Min.Value}"",");
-                        // phasesFile.StoreString($@"""points"": [");
-                        // foreach (Vector2 point in modifierRange.Range.Points)
-                        // {
-                        //     phasesFile.StoreString($@"""{point}"",");
-                        // }
-                        // phasesFile.StoreString("]"); //end of points
+                        ModifierRange modifierRange = (ModifierRange)loadedComponent.GetModifier(modifierID);
+                        double valueMaxRange = (double)modifiersJson["max"];
+                        double valueMinRange = (double)modifiersJson["min"];
+                        List<Vector2> points = new();
+                        foreach (var pointVariant in (Godot.Collections.Array)modifiersJson["points"])
+                        {
+                            Vector2 vectorPoint = (Vector2)GD.StrToVar("Vector2" + (string)pointVariant);
+                            points.Add(vectorPoint);
+                        }
+                        modifierRange.Range = Range.ManualRange(
+                            max: valueMaxRange,
+                            min: valueMinRange,
+                            points: points
+                        );
+                        modifierRange.Active = true;
                         break;
                     case ModifierType.REFERENCE:
-                        // ModifierRef modifierRef = (ModifierRef)modifier;
-                        // if (modifierRef.Ref != null)
-                        //     phasesFile.StoreString($@"""componentRefName"":""{modifierRef.Ref.Name}"",");
-                        // else
-                        //     phasesFile.StoreString($@"""componentRefName"":""<NULL>"",");
+                        ModifierRef modifierRef = (ModifierRef)loadedComponent.GetModifier(modifierID);
+                        string componentRefName = (string)modifiersJson["componentRefName"];
+                        modifierRef.LoadedRefName = componentRefName;
+                        modifierRef.Active = true;
                         break;
                     default:
                         GD.PrintErr($"Modifier type not supported LOADING in SavingManager: {modifierType}");
                         break;
                 }
             }
+        }
+
+        private void ConnectComponentRefs(List<IComponent> components)
+        {
+            foreach (IComponent component in components)
+            {
+                foreach (IModifier modifier in component.Modifiers)
+                {
+                    if (modifier.Active && modifier.Type == ModifierType.REFERENCE)
+                    {
+                        ModifierRef modifierRef = (ModifierRef)modifier;
+                        if (modifierRef.LoadedRefName != "<NULL>")
+                        {
+                            modifierRef.Ref = GetComponentByName(components, modifierRef.LoadedRefName);
+                        }
+                    }
+                }
+            }
+        }
+
+        private IComponent GetComponentByName(List<IComponent> components, string searchName)
+        {
+            foreach (IComponent component in components)
+            {
+                if (component.Name == searchName)
+                    return component;
+            }
+            GD.PrintErr("Component Not found in Saving Manger Loading GetComponentByName");
+            return null;
         }
     }
 }

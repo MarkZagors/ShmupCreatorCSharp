@@ -9,5 +9,6 @@ namespace Editor
         required public List<ComponentType> AllowedComponentTypes { get; set; }
         public bool Active { get; set; } = false;
         public IComponent Ref { get; set; } = null;
+        public string LoadedRefName { get; set; } = null;
     }
 }
