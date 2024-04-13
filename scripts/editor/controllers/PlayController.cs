@@ -285,7 +285,6 @@ namespace Editor
 
         private void ChangePhase(Phase phase)
         {
-            GD.Print(phase.ID);
             UpdateSelectedPhase(phase.ID);
 
             var laneOne = LanesNode.GetChild<Control>(0);

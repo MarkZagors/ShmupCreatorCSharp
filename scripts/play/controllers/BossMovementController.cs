@@ -1,3 +1,4 @@
+using ExtensionMethods;
 using Godot;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,10 @@ namespace Editor
         private readonly Vector2 VIEWPORT_SIZE = new Vector2(768, 1024); //CHANGE THIS WHEN CHANGING VIEWPORT SIZE
         private readonly Vector2 START_POS = new Vector2(400, 200); //CHANGE THIS WHEN CHANGING VIEWPORT SIZE
 
-        public override void _Ready()
+        //THIS USES ENTER TREE -----
+        //THIS MIGHT CAUSE SOME CONNECTION OR ON READY ERRORS
+        public override void _EnterTree()
         {
-            ComponentsController.MoveTimelineUpdate += UpdateTimeline;
-            PlayController.UpdateTimeline += UpdateTimeline;
             Vector2 startingWorldToPoint = WorldToPoint(START_POS);
             _xRange = new Range
             {
@@ -37,10 +38,18 @@ namespace Editor
                     new Vector2(float.PositiveInfinity, startingWorldToPoint.Y)
                 }
             };
+
+            PlayController.UpdateTimeline += UpdateTimeline;
+        }
+
+        public override void _Ready()
+        {
+            ComponentsController.MoveTimelineUpdate += UpdateTimeline;
         }
 
         public void UpdateTimeline()
         {
+            GD.Print("Update timeline");
             List<(double, ComponentMovement)> movementComponenetsStartList = new();
             foreach (Sequence sequence in PlayController.GetSequenceList())
             {

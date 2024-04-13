@@ -150,7 +150,7 @@ $@"{{
                             phasesFile.StoreString($@"""componentRefName"":""<NULL>"",");
                         break;
                     default:
-                        GD.PrintErr($"Modifier type not supported in SavingManager: {modifier.Type}");
+                        GD.PrintErr($"Modifier type not supported SAVING in SavingManager: {modifier.Type}");
                         break;
                 }
                 phasesFile.StoreString(" },");
@@ -190,7 +190,6 @@ $@"{{
                 List<Sequence> sequences = new();
                 foreach (Dictionary sequencesJson in (Godot.Collections.Array)phasesJson["sequences"])
                 {
-                    List<IComponent> components = new();
                     Sequence sequence = new Sequence
                     {
                         Time = (double)sequencesJson["time"],
@@ -205,6 +204,8 @@ $@"{{
                             name: (string)componentsJson["name"],
                             sequence: sequence
                         );
+                        LoadModifier(componentsJson, component);
+
                         sequence.Components.Add(component);
                     }
 
@@ -220,6 +221,63 @@ $@"{{
             }
 
             return phases;
+        }
+
+        private void LoadModifier(Dictionary componentsJson, IComponent loadedComponent)
+        {
+            foreach (Dictionary modifiersJson in (Godot.Collections.Array)componentsJson["modifiers"])
+            {
+                bool errType = Enum.TryParse((string)modifiersJson["type"], out ModifierType modifierType);
+                bool errId = Enum.TryParse((string)modifiersJson["id"], out ModifierID modifierID);
+                switch (modifierType)
+                {
+                    case ModifierType.DOUBLE:
+                        ModifierDouble modifierDouble = (ModifierDouble)loadedComponent.GetModifier(modifierID);
+                        double valueDouble = (double)modifiersJson["value"];
+                        modifierDouble.Value = valueDouble;
+                        modifierDouble.Active = true;
+                        break;
+                    case ModifierType.INTEGER:
+                        ModifierInteger modifierInteger = (ModifierInteger)loadedComponent.GetModifier(modifierID);
+                        int valueInteger = (int)modifiersJson["value"];
+                        modifierInteger.Value = valueInteger;
+                        modifierInteger.Active = true;
+                        break;
+                    case ModifierType.OPTIONS:
+                        ModifierOptions modifierOptions = (ModifierOptions)loadedComponent.GetModifier(modifierID);
+                        bool errOption = Enum.TryParse((string)modifiersJson["value"], out Option option);
+                        modifierOptions.SelectedOption = option;
+                        modifierOptions.Active = true;
+                        break;
+                    case ModifierType.POSITION:
+                        ModifierPosition modifierPosition = (ModifierPosition)loadedComponent.GetModifier(modifierID);
+                        Vector2 valuePosition = (Vector2)GD.StrToVar("Vector2" + (string)modifiersJson["value"]);
+                        modifierPosition.Position = valuePosition;
+                        modifierPosition.Active = true;
+                        break;
+                    case ModifierType.RANGE:
+                        // ModifierRange modifierRange = (ModifierRange)modifier;
+                        // phasesFile.StoreString($@"""max"":""{modifierRange.Range.Max.Value}"",");
+                        // phasesFile.StoreString($@"""min"":""{modifierRange.Range.Min.Value}"",");
+                        // phasesFile.StoreString($@"""points"": [");
+                        // foreach (Vector2 point in modifierRange.Range.Points)
+                        // {
+                        //     phasesFile.StoreString($@"""{point}"",");
+                        // }
+                        // phasesFile.StoreString("]"); //end of points
+                        break;
+                    case ModifierType.REFERENCE:
+                        // ModifierRef modifierRef = (ModifierRef)modifier;
+                        // if (modifierRef.Ref != null)
+                        //     phasesFile.StoreString($@"""componentRefName"":""{modifierRef.Ref.Name}"",");
+                        // else
+                        //     phasesFile.StoreString($@"""componentRefName"":""<NULL>"",");
+                        break;
+                    default:
+                        GD.PrintErr($"Modifier type not supported LOADING in SavingManager: {modifierType}");
+                        break;
+                }
+            }
         }
     }
 }
