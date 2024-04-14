@@ -171,6 +171,10 @@ namespace Editor
         {
             float x = (float)_xRange.GetValueAtNonInverted(time);
             float y = (float)_yRange.GetValueAtNonInverted(time);
+            if (float.IsNaN(x))
+            {
+                return new Vector2(START_POS.X, START_POS.Y);
+            }
             return new Vector2(x, y);
         }
 
