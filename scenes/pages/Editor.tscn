@@ -65,7 +65,7 @@ BottomContainerResizeBar = NodePath("../../BotContainer/ResizeBar")
 LeftContainerResizeBar = NodePath("../../TopContainer/LeftContainer/ResizeBar")
 RightContainerResizeBar = NodePath("../../TopContainer/RightContainer/ResizeBar")
 
-[node name="PlayController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "SavingManager", "TimelineTimeLabel", "LanesNode", "ComponentBodyContainer", "StartingLanesBorderNode", "LanesMainControllerContainer", "LanesClickZone", "LaneClickLine", "PhasesContainer")]
+[node name="PlayController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "SavingManager", "TimelineTimeLabel", "LanesNode", "ComponentBodyContainer", "StartingLanesBorderNode", "LanesMainControllerContainer", "LanesClickZone", "LaneClickLine", "LoopSeparatorNode", "PhasesContainer")]
 script = ExtResource("2_hudip")
 SequenceController = NodePath("../SequenceController")
 SavingManager = NodePath("../SavingManger")
@@ -78,6 +78,7 @@ StartingLanesBorderNode = NodePath("../../BotContainer/TimelineTab/MainContainer
 LanesMainControllerContainer = NodePath("../../BotContainer/TimelineTab/MainContainer")
 LanesClickZone = NodePath("../../BotContainer/TimelineTab/MainContainer/LanesClickZone")
 LaneClickLine = NodePath("../../BotContainer/TimelineTab/MainContainer/LaneClickLine")
+LoopSeparatorNode = NodePath("../../BotContainer/TimelineTab/MainContainer/LoopSeparator")
 PhasesContainer = NodePath("../../TopContainer/MidContainer/PhasesContainer")
 
 [node name="SequenceController" type="Node" parent="Controllers" node_paths=PackedStringArray("ComponentsController", "CreateBoxController", "SequenceTree", "TemplatesTab", "SequenceTab", "SequenceRenameLineEdit")]
@@ -247,6 +248,44 @@ anchor_bottom = 1.0
 offset_left = -1.0
 offset_bottom = -0.000152588
 mouse_filter = 2
+
+[node name="LoopSeparator" type="ColorRect" parent="BotContainer/TimelineTab/MainContainer"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -1.0
+offset_top = 0.000152588
+mouse_filter = 2
+color = Color(1, 0, 0.345098, 1)
+
+[node name="SelectionRectConnection" type="ColorRect" parent="BotContainer/TimelineTab/MainContainer/LoopSeparator"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+offset_right = 5.0
+offset_bottom = 0.000152588
+grow_horizontal = 2
+grow_vertical = 2
+mouse_default_cursor_shape = 6
+color = Color(1, 0, 0.345098, 0)
+
+[node name="SelectionRectVisible" type="ColorRect" parent="BotContainer/TimelineTab/MainContainer/LoopSeparator"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -5.0
+offset_right = 5.0
+offset_bottom = 0.000152588
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0, 0.345098, 1)
 
 [node name="TimelineDetails" type="Control" parent="BotContainer/TimelineTab"]
 layout_mode = 1
@@ -906,6 +945,8 @@ mouse_default_cursor_shape = 10
 color = Color(0.21875, 0.738281, 0.996094, 1)
 metadata/_edit_lock_ = true
 
+[connection signal="mouse_entered" from="BotContainer/TimelineTab/MainContainer/LoopSeparator/SelectionRectConnection" to="Controllers/PlayController" method="OnLoopSeparatorHover"]
+[connection signal="mouse_exited" from="BotContainer/TimelineTab/MainContainer/LoopSeparator/SelectionRectConnection" to="Controllers/PlayController" method="OnLoopSeparatorUnhover"]
 [connection signal="pressed" from="BotContainer/TimelineTab/TimelineDetails/PhaseButton" to="Controllers/PlayController" method="OnPhasesButtonClick"]
 [connection signal="mouse_entered" from="BotContainer/ResizeBar" to="Controllers/ResizeController" method="OnBottomContainerMouseEntered"]
 [connection signal="mouse_exited" from="BotContainer/ResizeBar" to="Controllers/ResizeController" method="OnBottomContainerMouseExited"]

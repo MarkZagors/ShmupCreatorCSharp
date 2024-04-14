@@ -24,6 +24,7 @@ namespace Editor
         [Export] public Control LanesMainControllerContainer { get; private set; }
         [Export] public Control LanesClickZone { get; private set; }
         [Export] public Control LaneClickLine { get; private set; }
+        [Export] public Control LoopSeparatorNode { get; private set; }
         [Export] public Control PhasesContainer { get; private set; }
         public bool Playing { get; private set; } = false;
         public double Time { get; private set; } = 0.0;
@@ -33,6 +34,7 @@ namespace Editor
         private int selectedPhaseIndex = -1;
         private bool _mouseOverContainerScroll = false;
         private bool _mouseOverSequence = false;
+        private bool _mouseOverLoopNode = false;
 
         public override void _Ready()
         {
@@ -150,7 +152,7 @@ namespace Editor
 
         private void ProcessLaneHoverAndClick()
         {
-            if (IsMouseOverLanesConroller() && !_mouseOverSequence)
+            if (IsMouseOverLanesConroller() && !_mouseOverSequence && !_mouseOverLoopNode)
             {
                 Vector2 mousePos = GetMousePositionInLanesContext();
                 LaneClickLine.Visible = true;
@@ -181,6 +183,18 @@ namespace Editor
         private void OnSequenceUnHover()
         {
             _mouseOverSequence = false;
+        }
+
+        public void OnLoopSeparatorHover()
+        {
+            _mouseOverLoopNode = true;
+            LoopSeparatorNode.GetNode<ColorRect>("SelectionRectVisible").Visible = true;
+        }
+
+        public void OnLoopSeparatorUnhover()
+        {
+            _mouseOverLoopNode = false;
+            LoopSeparatorNode.GetNode<ColorRect>("SelectionRectVisible").Visible = false;
         }
 
         //=================
@@ -341,6 +355,10 @@ namespace Editor
             }
             StartingLanesBorderNode.AnchorRight = (float)(0.5 - Time * 0.5 / LanesWidth);
             LanesClickZone.AnchorLeft = StartingLanesBorderNode.AnchorRight;
+
+            double loopSeparatorAnchor = 0.5 + (_selectedPhase.LoopTime - Time) * 0.5 / LanesWidth;
+            LoopSeparatorNode.AnchorRight = (float)loopSeparatorAnchor;
+            LoopSeparatorNode.AnchorLeft = (float)loopSeparatorAnchor;
         }
 
         //=================
