@@ -235,6 +235,7 @@ namespace Editor
                 name: "New Phase",
                 id: 0,
                 health: 100,
+                loopTime: 1.0,
                 sequenceList: new List<Sequence>()
             ));
             selectedPhaseIndex = 0;
@@ -272,6 +273,7 @@ namespace Editor
                 name: "New Phase",
                 id: PhasesList.Count,
                 health: 100,
+                loopTime: 1.0,
                 sequenceList: new List<Sequence>()
             ));
             ShowPhaseButtons();

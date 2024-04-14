@@ -74,6 +74,7 @@ $@"{{
                 phasesFile.StoreString($@"""name"":""{phase.Name}"",");
                 phasesFile.StoreString($@"""id"":{phase.ID},");
                 phasesFile.StoreString($@"""health"":{phase.Health},");
+                phasesFile.StoreString($@"""loopTime"":{phase.LoopTime},");
                 phasesFile.StoreString($@"""sequences"": [");
                 //Store Sequence information
                 foreach (Sequence sequence in phase.SequenceList)
@@ -180,6 +181,7 @@ $@"{{
                         name: "New Phase",
                         id: 0,
                         health: 100,
+                        loopTime: 1.0,
                         sequenceList: new List<Sequence>()
                     )
                 };
@@ -217,6 +219,7 @@ $@"{{
                 phases.Add(new Phase(
                     name: (string)phasesJson["name"],
                     id: (int)phasesJson["id"],
+                    loopTime: (double)phasesJson["loopTime"],
                     health: (int)phasesJson["health"],
                     sequenceList: sequences
                 ));
