@@ -35,6 +35,7 @@ namespace Editor
         private bool _mouseOverContainerScroll = false;
         private bool _mouseOverSequence = false;
         private bool _mouseOverLoopNode = false;
+        private bool _loopNodeDragging = false;
 
         public override void _Ready()
         {
@@ -52,6 +53,7 @@ namespace Editor
             }
 
             ProcessLaneHoverAndClick();
+            ProcessLoopHoverDragging();
 
             if (!IsMouseOverBodyContainer())
             {
@@ -172,6 +174,28 @@ namespace Editor
             else
             {
                 LaneClickLine.Visible = false;
+            }
+        }
+
+        private void ProcessLoopHoverDragging()
+        {
+            if (_mouseOverLoopNode && Input.IsActionJustPressed("mouse_click"))
+            {
+                _loopNodeDragging = true;
+            }
+
+            if (Input.IsActionJustReleased("mouse_click"))
+            {
+                _loopNodeDragging = false;
+            }
+
+            if (_loopNodeDragging)
+            {
+                Vector2 mousePos = GetMousePositionInLanesContext();
+                double timePos = ((mousePos.X - 0.5) * 2 * LanesWidth) + Time;
+                if (timePos < 0.0f) timePos = 0.0;
+                _selectedPhase.LoopTime = (double)timePos;
+                UpdateUI();
             }
         }
 
