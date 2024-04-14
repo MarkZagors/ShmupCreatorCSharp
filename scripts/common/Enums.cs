@@ -5,4 +5,10 @@ namespace Editor
         FORWARD,
         BACKWARD
     }
+
+    public enum PageType
+    {
+        EDITOR,
+        PLAY
+    }
 }

@@ -8,6 +8,7 @@ namespace Editor
 {
     public partial class BulletController : Node
     {
+        [Export] public PageType PageType { get; private set; } = PageType.EDITOR;
         [Export] public PlayController PlayController { get; private set; }
         [Export] public ComponentsController ComponentsController { get; private set; }
         [Export] public SequenceController SequenceController { get; private set; }
@@ -21,6 +22,8 @@ namespace Editor
         private BulletPool _bulletPool;
         private Rect _windowRect = new(-100, -100, 968, 1224);
 
+        //THIS USES ENTER TREE -----
+        //THIS MIGHT CAUSE SOME CONNECTION OR ON READY ERRORS
         public override void _EnterTree()
         {
             _bulletPool = new BulletPool(
@@ -29,16 +32,22 @@ namespace Editor
                 poolSize: 4096,
                 expansionCount: 5
             );
-            PlayController.PhaseChange += RestructureBulletList;
+            if (PageType == PageType.EDITOR)
+            {
+                PlayController.PhaseChange += RestructureBulletList;
+            }
         }
 
         public override void _Ready()
         {
-            PlayController.Update += Update;
-            ComponentsController.Update += Update;
-            SequenceController.Update += Update;
+            if (PageType == PageType.EDITOR)
+            {
+                PlayController.Update += Update;
+                ComponentsController.Update += Update;
+                SequenceController.Update += Update;
 
-            ComponentsController.OnValidRestructure += RestructureBulletList;
+                ComponentsController.OnValidRestructure += RestructureBulletList;
+            }
         }
 
         private void Update()

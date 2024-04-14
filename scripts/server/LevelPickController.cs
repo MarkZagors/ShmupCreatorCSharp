@@ -8,6 +8,7 @@ namespace Editor
     {
         [Export] public PackedScene LevelNodeObj { get; private set; }
         [Export] public PackedScene EditorScene { get; private set; }
+        [Export] public PackedScene PlayScene { get; private set; }
         [Export] public VBoxContainer LevelsVbox { get; private set; }
         [Export] public VBoxContainer DescriptionVbox { get; private set; }
         [Export] public SavingManager SavingManager { get; private set; }
@@ -37,6 +38,13 @@ namespace Editor
             DescriptionVbox.GetNode<Label>("LevelAuthorLabel").Text = levelAuthor;
             DescriptionVbox.GetNode<Label>("SongNameLabel").Text = songName;
             DescriptionVbox.GetNode<Label>("SongAuthorLabel").Text = songAuthor;
+        }
+
+        public void OnPlayButtonClick()
+        {
+            if (_selectedLevelID == null) return;
+            TransferLayer.LevelID = _selectedLevelID;
+            GetTree().ChangeSceneToPacked(PlayScene);
         }
 
         public void OnEditButtonClick()
