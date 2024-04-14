@@ -6,6 +6,8 @@ namespace Editor
     public partial class PlayStateController : Node
     {
         [Signal] public delegate void UpdateEventHandler();
+        [Signal] public delegate void UpdateTimelineEventHandler();
+        [Signal] public delegate void PhaseChangeEventHandler();
         [Export] public SavingManager SavingManager { get; private set; }
         public List<Phase> PhasesList { get; private set; } = new();
         public double Time { get; private set; } = 0.0;
@@ -27,6 +29,8 @@ namespace Editor
             List<Phase> loadedPhases = SavingManager.LoadLevelPhases(TransferLayer.LevelID);
             PhasesList = loadedPhases;
             UpdateSelectedPhase(0);
+            EmitSignal(SignalName.PhaseChange);
+            EmitSignal(SignalName.UpdateTimeline);
         }
 
         public List<Sequence> GetSequenceList()

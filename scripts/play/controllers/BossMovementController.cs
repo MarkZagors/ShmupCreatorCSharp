@@ -8,8 +8,10 @@ namespace Editor
 {
     public partial class BossMovementController : Node
     {
+        [Export] public PageType PageType { get; private set; } = PageType.EDITOR;
         [Export] public ComponentsController ComponentsController { get; private set; }
         [Export] public PlayController PlayController { get; private set; }
+        [Export] public PlayStateController PlayStateController { get; private set; }
         private Range _xRange = null;
         private Range _yRange = null;
         private readonly Vector2 VIEWPORT_SIZE = new Vector2(768, 1024); //CHANGE THIS WHEN CHANGING VIEWPORT SIZE
@@ -39,19 +41,30 @@ namespace Editor
                 }
             };
 
-            PlayController.UpdateTimeline += UpdateTimeline;
+            if (PageType == PageType.EDITOR)
+            {
+                PlayController.UpdateTimeline += UpdateTimeline;
+            }
+            else if (PageType == PageType.PLAY)
+            {
+                PlayStateController.UpdateTimeline += UpdateTimeline;
+            }
         }
 
         public override void _Ready()
         {
-            ComponentsController.MoveTimelineUpdate += UpdateTimeline;
+            if (PageType == PageType.EDITOR)
+            {
+                ComponentsController.MoveTimelineUpdate += UpdateTimeline;
+            }
         }
 
         public void UpdateTimeline()
         {
             GD.Print("Update timeline");
             List<(double, ComponentMovement)> movementComponenetsStartList = new();
-            foreach (Sequence sequence in PlayController.GetSequenceList())
+            List<Sequence> sequenceList = PageType == PageType.EDITOR ? PlayController.GetSequenceList() : PlayStateController.GetSequenceList();
+            foreach (Sequence sequence in sequenceList)
             {
                 foreach (IComponent component in sequence.Components)
                 {

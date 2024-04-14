@@ -13,6 +13,7 @@ namespace Editor
         [Export] public ComponentsController ComponentsController { get; private set; }
         [Export] public SequenceController SequenceController { get; private set; }
         [Export] public BossMovementController BossMovementController { get; private set; }
+        [Export] public PlayStateController PlayStateController { get; private set; }
         [Export] public Node2D BulletPoolNode { get; private set; }
         [Export] public PackedScene BulletNodeObj { get; private set; }
         [Export] public Sprite2D BossSprite { get; private set; }
@@ -35,6 +36,11 @@ namespace Editor
             if (PageType == PageType.EDITOR)
             {
                 PlayController.PhaseChange += RestructureBulletList;
+            }
+            else if (PageType == PageType.PLAY)
+            {
+                PlayStateController.Update += Update;
+                PlayStateController.PhaseChange += RestructureBulletList;
             }
         }
 
@@ -63,7 +69,8 @@ namespace Editor
         {
             BulletPool.ClearSpawner(spawner);
 
-            double sequenceSpawnTime = PlayController.Time - spawner.Component.Sequence.Time;
+            double controllerTime = PageType == PageType.EDITOR ? PlayController.Time : PlayStateController.Time;
+            double sequenceSpawnTime = controllerTime - spawner.Component.Sequence.Time;
             if (sequenceSpawnTime < 0.0)
             {
                 return;
@@ -178,7 +185,8 @@ namespace Editor
 
         private void UpdateBossPosition()
         {
-            Vector2 position = BossMovementController.GetPosition((float)PlayController.Time);
+            double controllerTime = PageType == PageType.EDITOR ? PlayController.Time : PlayStateController.Time;
+            Vector2 position = BossMovementController.GetPosition((float)controllerTime);
             _bossPosition = position;
             BossSprite.Position = _bossPosition;
         }
@@ -188,7 +196,8 @@ namespace Editor
             GD.Print("restructure");
             _spawnerList.Clear();
 
-            foreach (Sequence sequence in PlayController.GetSequenceList())
+            List<Sequence> sequenceList = PageType == PageType.EDITOR ? PlayController.GetSequenceList() : PlayStateController.GetSequenceList();
+            foreach (Sequence sequence in sequenceList)
             {
                 foreach (IComponent component in sequence.Components)
                 {

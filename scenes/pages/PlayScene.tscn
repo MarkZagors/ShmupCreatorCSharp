@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bup0fks5pbixl"]
+[gd_scene load_steps=7 format=3 uid="uid://bup0fks5pbixl"]
 
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayStateController.cs" id="1_4jq8j"]
 [ext_resource type="Script" path="res://scripts/play/controllers/BulletController.cs" id="1_5c7e6"]
 [ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://sprites/icon.svg" id="1_j7khg"]
 [ext_resource type="Script" path="res://scripts/server/SavingManager.cs" id="1_kg8ya"]
 [ext_resource type="PackedScene" uid="uid://07bui71vctke" path="res://scenes/play/Bullet.tscn" id="2_mglq2"]
+[ext_resource type="Script" path="res://scripts/play/controllers/BossMovementController.cs" id="3_th36n"]
 
 [node name="PlayScene" type="Control"]
 layout_mode = 3
@@ -23,12 +24,19 @@ script = ExtResource("1_kg8ya")
 script = ExtResource("1_4jq8j")
 SavingManager = NodePath("../SavingManager")
 
-[node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("BulletPoolNode", "BossSprite")]
+[node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("BossMovementController", "PlayStateController", "BulletPoolNode", "BossSprite")]
 script = ExtResource("1_5c7e6")
 PageType = 1
+BossMovementController = NodePath("../BossMovementController")
+PlayStateController = NodePath("../PlayStateController")
 BulletPoolNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/BulletPool")
 BulletNodeObj = ExtResource("2_mglq2")
 BossSprite = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/BossSprite")
+
+[node name="BossMovementController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayStateController")]
+script = ExtResource("3_th36n")
+PageType = 1
+PlayStateController = NodePath("../PlayStateController")
 
 [node name="Play" type="Control" parent="."]
 layout_mode = 1
