@@ -10,6 +10,7 @@ namespace Editor
         [Signal] public delegate void PhaseChangeEventHandler();
         [Export] public SavingManager SavingManager { get; private set; }
         [Export] public Sprite2D BossSprite { get; private set; }
+        [Export] public Node2D BulletPoolNode { get; private set; }
         public List<Phase> PhasesList { get; private set; } = new();
         public double Time { get; private set; } = 0.0;
         public PlayState PlayState { get; private set; } = PlayState.ENTERING;
@@ -17,6 +18,9 @@ namespace Editor
         private Vector2 _transitionStartingPos;
         private Vector2 _transitionEndPos;
         private double _transitionSpeed = 1.5;
+        private List<BulletPlay> _protectedBulletList = new(); //used for continuin movements after transitions
+        private List<BulletPlay> _protectedRemoveList = new(); //used for continuin movements after transitions
+        private Rect _windowRect = new(-100, -100, 968, 1224);
 
         public override void _Ready()
         {
@@ -28,6 +32,9 @@ namespace Editor
 
         public override void _Process(double delta)
         {
+            //Used for continuing bullet movements after transitions
+            ContinueProtectedBulletListMovement(delta);
+
             if (PlayState == PlayState.ENTERING)
             {
                 LerpPosition();
@@ -45,6 +52,7 @@ namespace Editor
                 if (Time > _selectedPhase.LoopTime)
                 {
                     Time = 0.0;
+                    CreateProtectedBulletsList();
                     _transitionStartingPos = BossSprite.Position;
                     PlayState = PlayState.LOOP_TRANSITION;
                 }
@@ -59,6 +67,49 @@ namespace Editor
                     PlayState = PlayState.MAIN;
                 }
             }
+        }
+
+        private void CreateProtectedBulletsList()
+        {
+            foreach (BulletPlay node in BulletPoolNode.GetChildren())
+            {
+                if (node.Visible)
+                {
+                    _protectedBulletList.Add(node);
+                    node.IsClearProtected = true;
+                    if (node.BulletData != null)
+                    {
+                        node.BulletData.Node = null;
+                        node.BulletData = null;
+                    }
+                }
+            }
+        }
+
+        private void ContinueProtectedBulletListMovement(double delta)
+        {
+            foreach (BulletPlay node in _protectedBulletList)
+            {
+                bool isBulletInBorder = BulletPool.BorderCheckPosition(node.Position, _windowRect);
+                if (!isBulletInBorder)
+                {
+                    _protectedRemoveList.Add(node);
+                }
+                // GD.Print(node.Velocity);
+                node.Position += node.Velocity * (float)delta;
+            }
+            RemoveOutOfBorderBulletsFromProtectedList();
+        }
+
+        private void RemoveOutOfBorderBulletsFromProtectedList()
+        {
+            foreach (BulletPlay node in _protectedRemoveList)
+            {
+                node.Visible = false;
+                _protectedBulletList.Remove(node);
+                // GD.Print("removed");
+            }
+            _protectedRemoveList.Clear();
         }
 
         private void LerpPosition()

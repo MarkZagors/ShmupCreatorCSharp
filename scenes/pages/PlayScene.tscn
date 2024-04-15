@@ -20,10 +20,11 @@ grow_vertical = 2
 [node name="SavingManager" type="Node" parent="Controllers"]
 script = ExtResource("1_kg8ya")
 
-[node name="PlayStateController" type="Node" parent="Controllers" node_paths=PackedStringArray("SavingManager", "BossSprite")]
+[node name="PlayStateController" type="Node" parent="Controllers" node_paths=PackedStringArray("SavingManager", "BossSprite", "BulletPoolNode")]
 script = ExtResource("1_4jq8j")
 SavingManager = NodePath("../SavingManager")
 BossSprite = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/BossSprite")
+BulletPoolNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/BulletPool")
 
 [node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("BossMovementController", "PlayStateController", "BulletPoolNode", "BossSprite")]
 script = ExtResource("1_5c7e6")

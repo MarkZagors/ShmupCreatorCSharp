@@ -68,12 +68,12 @@ namespace Editor
         private void UpdateSpawner(Spawner spawner)
         {
             // BulletPool.ClearSpawner(spawner);
-            if (PlayController.Time < spawner.Component.Sequence.Time)
+            double controllerTime = PageType == PageType.EDITOR ? PlayController.Time : PlayStateController.Time;
+            if (controllerTime < spawner.Component.Sequence.Time)
             {
                 BulletPool.ClearSpawner(spawner);
             }
 
-            double controllerTime = PageType == PageType.EDITOR ? PlayController.Time : PlayStateController.Time;
             double sequenceSpawnTime = controllerTime - spawner.Component.Sequence.Time;
             if (sequenceSpawnTime < 0.0)
             {
@@ -179,20 +179,28 @@ namespace Editor
                 bool isBulletInBorder = BulletPool.BorderCheck(bulletData, _windowRect);
                 if (isBulletInBorder)
                 {
+                    // if (bulletData.Node != null && bulletData.Node.Visible == false)
+                    // {
+                    //     // reset bullet data if made invisible by PlayStateController
+                    //     bulletData.Node = null;
+                    // }
+
                     if (bulletData.Node == null)
                     {
                         bulletData.Node = _bulletPool.GetBullet();
-                        GD.Print("Just entered");
+                        if (bulletData.Node is BulletPlay bulletPlayNode)
+                        {
+                            bulletPlayNode.Velocity = new Vector2(
+                                bulletData.Speed * MathF.Cos(bulletData.Angle * Calc.Deg2Rad),
+                                bulletData.Speed * MathF.Sin(bulletData.Angle * Calc.Deg2Rad)
+                            );
+                            bulletPlayNode.BulletData = bulletData;
+                        }
                     }
 
                     bulletData.Node.Position = bulletData.Position;
                     bulletData.Node.RotationDegrees = bulletData.Angle;
                     bulletData.Node.Scale = new Vector2(bulletData.Size, bulletData.Size);
-
-                    if (bulletData.Node is BulletPlay bulletPlayNode)
-                    {
-                        bulletPlayNode.Speed = bulletData.Speed;
-                    }
                 }
             }
         }

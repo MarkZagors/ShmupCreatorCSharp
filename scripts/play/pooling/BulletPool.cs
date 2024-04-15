@@ -110,9 +110,17 @@ namespace Editor
         {
             for (int j = 0; j < spawner.Bullets.GetLength(1); j++)
             {
-                if (spawner.Bullets[waveIndex, j].Node != null)
+                Node2D node = spawner.Bullets[waveIndex, j].Node;
+                if (node != null)
                 {
-                    spawner.Bullets[waveIndex, j].Node.Visible = false;
+                    if (node is BulletPlay bulletPlayNode)
+                    {
+                        if (bulletPlayNode.IsClearProtected)
+                        {
+                            continue;
+                        }
+                    }
+                    node.Visible = false;
                     spawner.Bullets[waveIndex, j].Node = null;
                 }
             }
@@ -132,6 +140,20 @@ namespace Editor
                     bulletData.Node.Visible = false;
                     bulletData.Node = null;
                 }
+                return false;
+            }
+            return true;
+        }
+
+        public static bool BorderCheckPosition(Vector2 position, Rect borderRect)
+        {
+            if (
+                position.X > borderRect.X + borderRect.Width ||
+                position.X < borderRect.X ||
+                position.Y > borderRect.Y + borderRect.Height ||
+                position.X < borderRect.Y
+            )
+            {
                 return false;
             }
             return true;
