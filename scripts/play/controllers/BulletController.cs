@@ -67,7 +67,11 @@ namespace Editor
 
         private void UpdateSpawner(Spawner spawner)
         {
-            BulletPool.ClearSpawner(spawner);
+            // BulletPool.ClearSpawner(spawner);
+            if (PlayController.Time < spawner.Component.Sequence.Time)
+            {
+                BulletPool.ClearSpawner(spawner);
+            }
 
             double controllerTime = PageType == PageType.EDITOR ? PlayController.Time : PlayStateController.Time;
             double sequenceSpawnTime = controllerTime - spawner.Component.Sequence.Time;
@@ -113,7 +117,7 @@ namespace Editor
             for (int i = 0; i < spawner.Timer.LoopCount; i++)
             {
                 UpdateBullet(
-                    bulletIndex: i,
+                    waveIndex: i,
                     sequenceSpawnTime: sequenceSpawnTime,
                     spawner: spawner,
                     pointArray: pointArray,
@@ -126,7 +130,7 @@ namespace Editor
         }
 
         private void UpdateBullet(
-            int bulletIndex,
+            int waveIndex,
             double sequenceSpawnTime,
             Spawner spawner,
             double[] pointArray,
@@ -136,10 +140,11 @@ namespace Editor
             Range sizeRange
         )
         {
-            var bulletSpawnTimeOffset = sequenceSpawnTime - spawner.Timer.TiggerOffsets[bulletIndex];
-            var absoluteBulletSpawnTime = spawner.Component.Sequence.Time + spawner.Timer.TiggerOffsets[bulletIndex];
+            var bulletSpawnTimeOffset = sequenceSpawnTime - spawner.Timer.TiggerOffsets[waveIndex];
+            var absoluteBulletSpawnTime = spawner.Component.Sequence.Time + spawner.Timer.TiggerOffsets[waveIndex];
             if (bulletSpawnTimeOffset < 0.0)
             {
+                BulletPool.ClearSpawnerWave(spawner, waveIndex);
                 return;
             }
 
@@ -161,7 +166,7 @@ namespace Editor
 
                 Vector2 bossPositionAtFireTime = BossMovementController.GetPosition((float)absoluteBulletSpawnTime);
 
-                BulletData bulletData = spawner.Bullets[bulletIndex, j];
+                BulletData bulletData = spawner.Bullets[waveIndex, j];
                 bulletData.Angle = (float)angleRange.GetValueAt(pointX);
                 bulletData.Speed = (float)speedRange.GetValueAt(pointX);
                 bulletData.Size = (float)sizeRange.GetValueAt(pointX);
@@ -174,11 +179,20 @@ namespace Editor
                 bool isBulletInBorder = BulletPool.BorderCheck(bulletData, _windowRect);
                 if (isBulletInBorder)
                 {
-                    bulletData.Node ??= _bulletPool.GetBullet();
+                    if (bulletData.Node == null)
+                    {
+                        bulletData.Node = _bulletPool.GetBullet();
+                        GD.Print("Just entered");
+                    }
 
                     bulletData.Node.Position = bulletData.Position;
                     bulletData.Node.RotationDegrees = bulletData.Angle;
                     bulletData.Node.Scale = new Vector2(bulletData.Size, bulletData.Size);
+
+                    if (bulletData.Node is BulletPlay bulletPlayNode)
+                    {
+                        bulletPlayNode.Speed = bulletData.Speed;
+                    }
                 }
             }
         }

@@ -1,9 +1,9 @@
 [gd_scene load_steps=2 format=3 uid="uid://07bui71vctke"]
 
-[ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://sprites/icon.svg" id="1_ho1yo"]
+[ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://sprites/icon.svg" id="1_1p0y7"]
 
 [node name="Bullet" type="Node2D"]
 
 [node name="Sprite" type="Sprite2D" parent="."]
 scale = Vector2(0.421875, 0.421875)
-texture = ExtResource("1_ho1yo")
+texture = ExtResource("1_1p0y7")

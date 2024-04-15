@@ -7,7 +7,6 @@
 [ext_resource type="PackedScene" uid="uid://f1o6rqauvyg1" path="res://scenes/editor/SequenceIcon.tscn" id="4_t8vuy"]
 [ext_resource type="Texture2D" uid="uid://bospwk7xkxfko" path="res://sprites/editor/icon-bullet.png" id="5_opp2g"]
 [ext_resource type="Texture2D" uid="uid://cs0x77tftvyhj" path="res://sprites/editor/icon-bundle.png" id="6_aifs7"]
-[ext_resource type="PackedScene" uid="uid://07bui71vctke" path="res://scenes/play/Bullet.tscn" id="6_wfl5l"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/ComponentsController.cs" id="7_78ycr"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/SequenceController.cs" id="7_ofb54"]
 [ext_resource type="Texture2D" uid="uid://bbotcfeambjrq" path="res://sprites/editor/icon-spawner.png" id="7_utqfi"]
@@ -24,6 +23,7 @@
 [ext_resource type="PackedScene" uid="uid://vjqmawifbe18" path="res://scenes/editor/fields/OptionsField.tscn" id="12_lgdx1"]
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayerController.cs" id="16_l3vls"]
 [ext_resource type="PackedScene" uid="uid://dt7s6tshy5mib" path="res://scenes/editor/fields/PositionField.tscn" id="18_lgw2h"]
+[ext_resource type="PackedScene" uid="uid://07bui71vctke" path="res://scenes/play/BulletEditor.tscn" id="21_jgiw5"]
 [ext_resource type="Script" path="res://scripts/play/controllers/BossMovementController.cs" id="24_dicxy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/SettingsController.cs" id="26_s511t"]
 [ext_resource type="PackedScene" uid="uid://dt1chil803ujs" path="res://scenes/editor/PhaseButton.tscn" id="26_t5jxv"]
@@ -120,7 +120,7 @@ ComponentsController = NodePath("../ComponentsController")
 SequenceController = NodePath("../SequenceController")
 BossMovementController = NodePath("../BossMovementController")
 BulletPoolNode = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport/BulletPool")
-BulletNodeObj = ExtResource("6_wfl5l")
+BulletNodeObj = ExtResource("21_jgiw5")
 BossSprite = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport/BossSprite")
 
 [node name="CreateBoxController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "CreationContainer", "CreationContainerVBox")]
