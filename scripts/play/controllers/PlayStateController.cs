@@ -73,7 +73,7 @@ namespace Editor
         {
             foreach (BulletPlay node in BulletPoolNode.GetChildren())
             {
-                if (node.Visible)
+                if (node.Visible && !_protectedBulletList.Contains(node))
                 {
                     _protectedBulletList.Add(node);
                     node.IsClearProtected = true;
@@ -95,7 +95,7 @@ namespace Editor
                 {
                     _protectedRemoveList.Add(node);
                 }
-                // GD.Print(node.Velocity);
+                // GD.Print(node.Velocity.Length());
                 node.Position += node.Velocity * (float)delta;
             }
             RemoveOutOfBorderBulletsFromProtectedList();
