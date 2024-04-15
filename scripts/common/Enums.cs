@@ -11,4 +11,12 @@ namespace Editor
         EDITOR,
         PLAY
     }
+
+    public enum PlayState
+    {
+        ENTERING,
+        MAIN,
+        LOOP_TRANSITION,
+        PHASE_TRANSITION
+    }
 }
