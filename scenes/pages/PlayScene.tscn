@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://bup0fks5pbixl"]
+[gd_scene load_steps=11 format=3 uid="uid://bup0fks5pbixl"]
 
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayStateController.cs" id="1_4jq8j"]
 [ext_resource type="Script" path="res://scripts/play/controllers/BulletController.cs" id="1_5c7e6"]
@@ -6,7 +6,8 @@
 [ext_resource type="Script" path="res://scripts/server/SavingManager.cs" id="1_kg8ya"]
 [ext_resource type="Script" path="res://scripts/play/controllers/BossMovementController.cs" id="3_th36n"]
 [ext_resource type="PackedScene" uid="uid://difj2ioeu1a8q" path="res://scenes/play/BulletPlay.tscn" id="4_8rsbl"]
-[ext_resource type="Texture2D" uid="uid://bs8xn5x8w1r7f" path="res://sprites/play/Space Background.png" id="6_dpeji"]
+[ext_resource type="Script" path="res://scripts/play/controllers/PlayerController.cs" id="6_qkv3w"]
+[ext_resource type="Texture2D" uid="uid://7elybjnwy8t6" path="res://sprites/play/Space Background(1).png" id="7_l8ulq"]
 [ext_resource type="Texture2D" uid="uid://c3msc1fva6pen" path="res://sprites/play/enemy_ship.png" id="7_nog2h"]
 [ext_resource type="Texture2D" uid="uid://bxasrv50iwj1q" path="res://sprites/play/player_ship.png" id="8_kdb7t"]
 
@@ -42,6 +43,11 @@ BossSprite = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/Play
 script = ExtResource("3_th36n")
 PageType = 1
 PlayStateController = NodePath("../PlayStateController")
+
+[node name="PlayerController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayerNode")]
+script = ExtResource("6_qkv3w")
+PlayerNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite")
+Speed = 400.0
 
 [node name="Play" type="Control" parent="."]
 layout_mode = 1
@@ -88,15 +94,14 @@ size_2d_override_stretch = true
 render_target_update_mode = 4
 
 [node name="BG" type="Sprite2D" parent="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport"]
-visible = false
+self_modulate = Color(0.427451, 0.427451, 0.427451, 1)
 texture_filter = 1
 scale = Vector2(4, 4)
-texture = ExtResource("6_dpeji")
+texture = ExtResource("7_l8ulq")
 
 [node name="BulletPool" type="Node2D" parent="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport"]
 
 [node name="BossSprite" type="Sprite2D" parent="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport"]
-self_modulate = Color(1, 0.419608, 0.407843, 1)
 texture_filter = 1
 position = Vector2(400, 200)
 rotation = 3.14159
@@ -104,7 +109,6 @@ scale = Vector2(5, 5)
 texture = ExtResource("7_nog2h")
 
 [node name="PlayerSprite" type="Sprite2D" parent="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport"]
-modulate = Color(0.301961, 0.537255, 1, 1)
 texture_filter = 1
 position = Vector2(400, 700)
 scale = Vector2(3, 3)
