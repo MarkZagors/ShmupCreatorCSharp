@@ -6,9 +6,11 @@ namespace Editor
     public partial class PlayerController : Node
     {
         [Signal] public delegate void OnPlayerHitEventHandler();
+        [Export] public HealthController HealthController { get; private set; }
         [Export] public Node2D PlayerNode { get; private set; }
         [Export] public float Speed { get; private set; } = 150;
         [Export] public float FocusSpeedAmmount { get; private set; } = 0.4f;
+        public bool Active { get; set; } = true;
         private Vector2 _velocity;
         private bool _focused = false;
         private Rect _windowRect = new Rect(0, 0, 768, 1024);
@@ -17,9 +19,15 @@ namespace Editor
         private AnimationPlayer _playerNodeAnimationPlayer;
         private const float INVINCIBLE_TIMER_THRESHOLD = 2.0f;
 
-        public override void _Process(double delta)
+        public override void _Ready()
         {
             _playerNodeAnimationPlayer = PlayerNode.GetNode<AnimationPlayer>("AnimationPlayer");
+            HealthController.OnPlayerDeath += OnPlayerDeath;
+        }
+
+        public override void _Process(double delta)
+        {
+            if (!Active) return;
             ProcessMovement();
             ProcessPosition((float)delta);
             ProcessInvincible();
@@ -105,6 +113,11 @@ namespace Editor
                 EmitSignal(SignalName.OnPlayerHit);
                 _invincibleTimer = 0.0f;
             }
+        }
+
+        private void OnPlayerDeath()
+        {
+            Active = false;
         }
     }
 }

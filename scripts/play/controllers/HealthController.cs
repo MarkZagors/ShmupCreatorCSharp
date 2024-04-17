@@ -6,6 +6,7 @@ using System.Runtime;
 public partial class HealthController : Node
 {
     [Signal] public delegate void OnEnemyDeathEventHandler();
+    [Signal] public delegate void OnPlayerDeathEventHandler();
     [Export] public PlayerController PlayerController { get; private set; }
     [Export] public VBoxContainer PlayerHealthVBox { get; private set; }
     [Export] public PlayStateController PlayStateController { get; private set; }
@@ -34,6 +35,11 @@ public partial class HealthController : Node
     {
         PlayerCurrentHealth -= 1;
         UpdatePlayerUI();
+
+        if (PlayerCurrentHealth <= 0)
+        {
+            OnLose();
+        }
     }
 
     public void OnEnemyHitboxEnter(Area2D area)
@@ -67,7 +73,14 @@ public partial class HealthController : Node
 
     private void OnWin()
     {
-        PlayerNode.GetNode<Area2D>("PlayerHitbox").Monitoring = false;
+        PlayerNode.GetNode<Area2D>("PlayerHitbox").SetDeferred("monitoring", false);
+    }
+
+    private void OnLose()
+    {
+        EmitSignal(SignalName.OnPlayerDeath);
+        PlayerNode.GetNode<Area2D>("PlayerHitbox").SetDeferred("monitoring", false);
+        PlayerNode.Visible = false;
     }
 
     private void UpdateEnemyUI()

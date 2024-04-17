@@ -93,8 +93,9 @@ script = ExtResource("3_th36n")
 PageType = 1
 PlayStateController = NodePath("../PlayStateController")
 
-[node name="PlayerController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayerNode")]
+[node name="PlayerController" type="Node" parent="Controllers" node_paths=PackedStringArray("HealthController", "PlayerNode")]
 script = ExtResource("6_qkv3w")
+HealthController = NodePath("../HealthController")
 PlayerNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite")
 Speed = 400.0
 
@@ -106,8 +107,9 @@ PlayStateController = NodePath("../PlayStateController")
 EnemyHealthBarNode = NodePath("../../Play/UIAspectContainer/MainBox/BossHealthBar")
 PlayerNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite")
 
-[node name="PlayerAttackController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayerBulletGroupNode", "PlayerNode")]
+[node name="PlayerAttackController" type="Node" parent="Controllers" node_paths=PackedStringArray("HealthController", "PlayerBulletGroupNode", "PlayerNode")]
 script = ExtResource("8_6oeut")
+HealthController = NodePath("../HealthController")
 PlayerAttackBulletObj = ExtResource("9_7f4o6")
 PlayerBulletGroupNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerBulletGroup")
 PlayerNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite")

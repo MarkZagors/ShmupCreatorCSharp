@@ -35,6 +35,7 @@ namespace Editor
             _transitionEndPos = new Vector2(400, 200);
 
             HealthController.OnEnemyDeath += OnEnemyDeath;
+            HealthController.OnPlayerDeath += OnPlayerDeath;
         }
 
         public override void _Process(double delta)
@@ -140,7 +141,6 @@ namespace Editor
             {
                 if (_selectedPhaseId + 1 >= PhasesList.Count)
                 {
-                    GD.Print("win");
                     PlayState = PlayState.END_WIN;
                     WinScreen.Visible = true;
                     BossSprite.Visible = false;
@@ -152,6 +152,11 @@ namespace Editor
                 ChangePhase();
                 PlayState = PlayState.PHASE_TRANSITION;
             }
+        }
+
+        private void OnPlayerDeath()
+        {
+            LoseScreen.Visible = true;
         }
 
         private void ChangePhase()

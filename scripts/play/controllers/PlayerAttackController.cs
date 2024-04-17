@@ -2,33 +2,43 @@ using Godot;
 
 public partial class PlayerAttackController : Node
 {
+    [Export] public HealthController HealthController { get; private set; }
     [Export] public PackedScene PlayerAttackBulletObj { get; private set; }
     [Export] public Node2D PlayerBulletGroupNode { get; private set; }
     [Export] public Node2D PlayerNode { get; private set; }
+    public bool Active { get; set; } = true;
     private float _attackTimerThreshold = 0.1f;
     private float _bulletSpeed = 1500f;
     private float _attackTimerCurrent = 0.0f;
     private bool _focused = false;
 
+    public override void _Ready()
+    {
+        HealthController.OnPlayerDeath += OnPlayerDeath;
+    }
+
     public override void _Process(double delta)
     {
-        _attackTimerCurrent += (float)delta;
-
-        if (Input.IsActionPressed("player_focus"))
-        {
-            _focused = true;
-        }
-        else
-        {
-            _focused = false;
-        }
-
-        if (_attackTimerCurrent > _attackTimerThreshold)
-        {
-            DoAttack();
-        }
-
         MoveBullets((float)delta);
+
+        if (Active)
+        {
+            _attackTimerCurrent += (float)delta;
+
+            if (Input.IsActionPressed("player_focus"))
+            {
+                _focused = true;
+            }
+            else
+            {
+                _focused = false;
+            }
+
+            if (_attackTimerCurrent > _attackTimerThreshold)
+            {
+                DoAttack();
+            }
+        }
     }
 
     public void DoAttack()
@@ -61,5 +71,10 @@ public partial class PlayerAttackController : Node
                 bullet.QueueFree();
             }
         }
+    }
+
+    private void OnPlayerDeath()
+    {
+        Active = false;
     }
 }
