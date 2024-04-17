@@ -199,5 +199,10 @@ namespace Editor
         {
             GetTree().ChangeSceneToFile("res://scenes/pages/LevelPicker.tscn");
         }
+
+        private void RestartScene()
+        {
+            GetTree().ReloadCurrentScene();
+        }
     }
 }

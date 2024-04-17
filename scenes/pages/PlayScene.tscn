@@ -443,3 +443,4 @@ text = "Restart"
 [connection signal="area_entered" from="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite/PlayerHitbox" to="Controllers/PlayerController" method="OnHitboxEnter"]
 [connection signal="pressed" from="Play/UIOverlays/WinScreen/WinMainMenuButton" to="Controllers/PlayStateController" method="GotoMainMenu"]
 [connection signal="pressed" from="Play/UIOverlays/LoseScreen/LoseMainMenuButton" to="Controllers/PlayStateController" method="GotoMainMenu"]
+[connection signal="pressed" from="Play/UIOverlays/LoseScreen/LoseRestartButton" to="Controllers/PlayStateController" method="RestartScene"]
