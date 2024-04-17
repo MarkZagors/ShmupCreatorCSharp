@@ -194,5 +194,10 @@ namespace Editor
         {
             _selectedPhase = PhasesList[index];
         }
+
+        private void GotoMainMenu()
+        {
+            GetTree().ChangeSceneToFile("res://scenes/pages/LevelPicker.tscn");
+        }
     }
 }
