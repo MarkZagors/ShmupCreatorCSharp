@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=35 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
@@ -13,7 +13,6 @@
 [ext_resource type="Texture2D" uid="uid://6qoml11gm2y3" path="res://sprites/editor/icon-timer.png" id="8_4nsb4"]
 [ext_resource type="PackedScene" uid="uid://dp8iasxokwhsu" path="res://scenes/editor/CreateModifierButton.tscn" id="8_colxt"]
 [ext_resource type="PackedScene" uid="uid://cajgj2ywqkpxx" path="res://scenes/editor/CreationBoxButton.tscn" id="8_ekt68"]
-[ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://sprites/icon.svg" id="8_hqx5x"]
 [ext_resource type="Texture2D" uid="uid://ektc0ner21wt" path="res://sprites/editor/warning.png" id="9_31nku"]
 [ext_resource type="PackedScene" uid="uid://chvjbvhm3exrb" path="res://scenes/editor/fields/RangeField.tscn" id="9_bmuti"]
 [ext_resource type="PackedScene" uid="uid://23l8mdbbtext" path="res://scenes/editor/fields/ReferenceField.tscn" id="9_m4j1e"]
@@ -26,7 +25,10 @@
 [ext_resource type="Script" path="res://scripts/play/controllers/BossMovementController.cs" id="24_dicxy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/SettingsController.cs" id="26_s511t"]
 [ext_resource type="PackedScene" uid="uid://dt1chil803ujs" path="res://scenes/editor/PhaseButton.tscn" id="26_t5jxv"]
+[ext_resource type="Texture2D" uid="uid://7elybjnwy8t6" path="res://sprites/play/Space Background(1).png" id="27_r2dx0"]
 [ext_resource type="Script" path="res://scripts/server/SavingManager.cs" id="27_vlr0c"]
+[ext_resource type="Texture2D" uid="uid://c3msc1fva6pen" path="res://sprites/play/enemy_ship.png" id="28_ur8l3"]
+[ext_resource type="Texture2D" uid="uid://bxasrv50iwj1q" path="res://sprites/play/player_ship.png" id="29_fk00o"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p7kd5"]
 bg_color = Color(0.152344, 0.152344, 0.183594, 1)
@@ -551,15 +553,25 @@ size_2d_override = Vector2i(768, 1024)
 size_2d_override_stretch = true
 render_target_update_mode = 4
 
+[node name="BG" type="Sprite2D" parent="TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport"]
+modulate = Color(0.427451, 0.427451, 0.427451, 1)
+scale = Vector2(4, 4)
+texture = ExtResource("27_r2dx0")
+
 [node name="BulletPool" type="Node2D" parent="TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport"]
 
 [node name="BossSprite" type="Sprite2D" parent="TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport"]
+texture_filter = 1
 position = Vector2(400, 200)
-texture = ExtResource("8_hqx5x")
+rotation = 3.14159
+scale = Vector2(5, 5)
+texture = ExtResource("28_ur8l3")
 
 [node name="PlayerSprite" type="Sprite2D" parent="TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport"]
+texture_filter = 1
 position = Vector2(400, 700)
-texture = ExtResource("8_hqx5x")
+scale = Vector2(3, 3)
+texture = ExtResource("29_fk00o")
 
 [node name="CreationContainer" type="Control" parent="TopContainer/MidContainer"]
 visible = false
