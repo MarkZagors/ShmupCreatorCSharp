@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://bup0fks5pbixl"]
+[gd_scene load_steps=12 format=3 uid="uid://bup0fks5pbixl"]
 
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayStateController.cs" id="1_4jq8j"]
 [ext_resource type="Script" path="res://scripts/play/controllers/BulletController.cs" id="1_5c7e6"]
@@ -10,6 +10,9 @@
 [ext_resource type="Texture2D" uid="uid://7elybjnwy8t6" path="res://sprites/play/Space Background(1).png" id="7_l8ulq"]
 [ext_resource type="Texture2D" uid="uid://c3msc1fva6pen" path="res://sprites/play/enemy_ship.png" id="7_nog2h"]
 [ext_resource type="Texture2D" uid="uid://bxasrv50iwj1q" path="res://sprites/play/player_ship.png" id="8_kdb7t"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3khwl"]
+radius = 5.0
 
 [node name="PlayScene" type="Control"]
 layout_mode = 3
@@ -113,6 +116,11 @@ texture_filter = 1
 position = Vector2(400, 700)
 scale = Vector2(3, 3)
 texture = ExtResource("8_kdb7t")
+
+[node name="PlayerHitbox" type="Area2D" parent="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite"]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite/PlayerHitbox"]
+shape = SubResource("CircleShape2D_3khwl")
 
 [node name="UIAspectContainer" type="AspectRatioContainer" parent="Play"]
 layout_mode = 1
@@ -226,3 +234,5 @@ offset_top = 12.0
 offset_right = -11.75
 offset_bottom = 39.0
 grow_horizontal = 2
+
+[connection signal="area_entered" from="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite/PlayerHitbox" to="Controllers/PlayerController" method="OnHitboxEnter"]

@@ -195,6 +195,15 @@ namespace Editor
                                 bulletData.Speed * MathF.Sin(bulletData.Angle * Calc.Deg2Rad)
                             );
                             bulletPlayNode.BulletData = bulletData;
+
+                            Area2D bulletHitboxArea = new Area2D();
+                            CollisionShape2D bulletCollisionShape = new CollisionShape2D();
+                            CircleShape2D circleShape2D = new CircleShape2D();
+                            circleShape2D.Radius = 10;
+                            bulletHitboxArea.Name = "Hitbox";
+                            bulletCollisionShape.Shape = circleShape2D;
+                            bulletHitboxArea.AddChild(bulletCollisionShape);
+                            bulletPlayNode.AddChild(bulletHitboxArea);
                         }
                     }
 

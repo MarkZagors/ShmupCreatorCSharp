@@ -106,6 +106,8 @@ namespace Editor
             foreach (BulletPlay node in _protectedRemoveList)
             {
                 node.Visible = false;
+                Area2D hitboxArea = node.GetNode<Area2D>("Hitbox");
+                hitboxArea.QueueFree();
                 _protectedBulletList.Remove(node);
                 // GD.Print("removed");
             }

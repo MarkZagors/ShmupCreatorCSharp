@@ -75,5 +75,10 @@ namespace Editor
                 _focused = false;
             }
         }
+
+        public void OnHitboxEnter(Area2D area)
+        {
+            GD.Print("enter");
+        }
     }
 }
