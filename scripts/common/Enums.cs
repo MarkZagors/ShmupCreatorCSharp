@@ -17,6 +17,8 @@ namespace Editor
         ENTERING,
         MAIN,
         LOOP_TRANSITION,
-        PHASE_TRANSITION
+        PHASE_TRANSITION,
+        END_WIN,
+        END_LOSE,
     }
 }

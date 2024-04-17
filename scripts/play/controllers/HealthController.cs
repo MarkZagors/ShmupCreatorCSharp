@@ -10,6 +10,7 @@ public partial class HealthController : Node
     [Export] public VBoxContainer PlayerHealthVBox { get; private set; }
     [Export] public PlayStateController PlayStateController { get; private set; }
     [Export] public ProgressBar EnemyHealthBarNode { get; private set; }
+    [Export] public Node2D PlayerNode { get; private set; }
     public int PlayerCurrentHealth { get; set; }
     public int PlayerMaxHealth { get; set; }
     public int EnemyCurrentHealth { get; set; }
@@ -24,6 +25,7 @@ public partial class HealthController : Node
 
         PlayerController.OnPlayerHit += OnPlayerHit;
         PlayStateController.PhaseChange += OnPhaseChange;
+        PlayStateController.OnWin += OnWin;
         UpdatePlayerUI();
         UpdateEnemyUI();
     }
@@ -61,6 +63,11 @@ public partial class HealthController : Node
         EnemyCurrentHealth = 200;
         EnemyMaxHealth = 200;
         UpdateEnemyUI();
+    }
+
+    private void OnWin()
+    {
+        PlayerNode.GetNode<Area2D>("PlayerHitbox").Monitoring = false;
     }
 
     private void UpdateEnemyUI()

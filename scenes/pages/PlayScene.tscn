@@ -70,12 +70,14 @@ grow_vertical = 2
 [node name="SavingManager" type="Node" parent="Controllers"]
 script = ExtResource("1_kg8ya")
 
-[node name="PlayStateController" type="Node" parent="Controllers" node_paths=PackedStringArray("SavingManager", "BossSprite", "BulletPoolNode", "HealthController")]
+[node name="PlayStateController" type="Node" parent="Controllers" node_paths=PackedStringArray("SavingManager", "BossSprite", "BulletPoolNode", "HealthController", "WinScreen", "LoseScreen")]
 script = ExtResource("1_4jq8j")
 SavingManager = NodePath("../SavingManager")
 BossSprite = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/BossSprite")
 BulletPoolNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/BulletPool")
 HealthController = NodePath("../HealthController")
+WinScreen = NodePath("../../Play/UIOverlays/WinScreen")
+LoseScreen = NodePath("../../Play/UIOverlays/LoseScreen")
 
 [node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("BossMovementController", "PlayStateController", "BulletPoolNode", "BossSprite")]
 script = ExtResource("1_5c7e6")
@@ -96,12 +98,13 @@ script = ExtResource("6_qkv3w")
 PlayerNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite")
 Speed = 400.0
 
-[node name="HealthController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayerController", "PlayerHealthVBox", "PlayStateController", "EnemyHealthBarNode")]
+[node name="HealthController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayerController", "PlayerHealthVBox", "PlayStateController", "EnemyHealthBarNode", "PlayerNode")]
 script = ExtResource("7_1isb2")
 PlayerController = NodePath("../PlayerController")
 PlayerHealthVBox = NodePath("../../Play/UIAspectContainer/MainBox/PlayerHealthContainer/VBoxContainer")
 PlayStateController = NodePath("../PlayStateController")
 EnemyHealthBarNode = NodePath("../../Play/UIAspectContainer/MainBox/BossHealthBar")
+PlayerNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite")
 
 [node name="PlayerAttackController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayerBulletGroupNode", "PlayerNode")]
 script = ExtResource("8_6oeut")
@@ -314,6 +317,125 @@ offset_top = 12.0
 offset_right = -11.75
 offset_bottom = 39.0
 grow_horizontal = 2
+
+[node name="UIOverlays" type="Control" parent="Play"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WinScreen" type="Control" parent="Play/UIOverlays"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BG" type="ColorRect" parent="Play/UIOverlays/WinScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.101961, 0.101961, 0.101961, 0.717647)
+
+[node name="Label" type="Label" parent="Play/UIOverlays/WinScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -137.0
+offset_right = 32.0
+offset_bottom = -111.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Winned!"
+
+[node name="WinMainMenuButton" type="Button" parent="Play/UIOverlays/WinScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -113.5
+offset_top = -25.5
+offset_right = 113.5
+offset_bottom = 25.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Main menu"
+
+[node name="LoseScreen" type="Control" parent="Play/UIOverlays"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BG" type="ColorRect" parent="Play/UIOverlays/LoseScreen"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.101961, 0.101961, 0.101961, 0.717647)
+
+[node name="Label" type="Label" parent="Play/UIOverlays/LoseScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -148.0
+offset_right = 32.0
+offset_bottom = -122.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Lose :("
+
+[node name="LoseMainMenuButton" type="Button" parent="Play/UIOverlays/LoseScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -113.0
+offset_top = 38.0
+offset_right = 114.0
+offset_bottom = 89.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Main menu"
+
+[node name="LoseRestartButton" type="Button" parent="Play/UIOverlays/LoseScreen"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -113.5
+offset_top = -25.5
+offset_right = 113.5
+offset_bottom = 25.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Restart"
 
 [connection signal="area_entered" from="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/BossSprite/Area2D" to="Controllers/HealthController" method="OnEnemyHitboxEnter"]
 [connection signal="area_entered" from="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite/PlayerHitbox" to="Controllers/PlayerController" method="OnHitboxEnter"]

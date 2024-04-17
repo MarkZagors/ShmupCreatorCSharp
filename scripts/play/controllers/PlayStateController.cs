@@ -8,10 +8,13 @@ namespace Editor
         [Signal] public delegate void UpdateEventHandler();
         [Signal] public delegate void UpdateTimelineEventHandler();
         [Signal] public delegate void PhaseChangeEventHandler();
+        [Signal] public delegate void OnWinEventHandler();
         [Export] public SavingManager SavingManager { get; private set; }
         [Export] public Sprite2D BossSprite { get; private set; }
         [Export] public Node2D BulletPoolNode { get; private set; }
         [Export] public HealthController HealthController { get; private set; }
+        [Export] public Control WinScreen { get; private set; }
+        [Export] public Control LoseScreen { get; private set; }
         public List<Phase> PhasesList { get; private set; } = new();
         public double Time { get; private set; } = 0.0;
         public PlayState PlayState { get; private set; } = PlayState.ENTERING;
@@ -81,6 +84,9 @@ namespace Editor
                     PlayState = PlayState.MAIN;
                 }
             }
+            else if (PlayState == PlayState.END_WIN)
+            {
+            }
         }
 
         private void CreateProtectedBulletsList()
@@ -132,6 +138,15 @@ namespace Editor
         {
             if (PlayState == PlayState.MAIN)
             {
+                if (_selectedPhaseId + 1 >= PhasesList.Count)
+                {
+                    GD.Print("win");
+                    PlayState = PlayState.END_WIN;
+                    WinScreen.Visible = true;
+                    BossSprite.Visible = false;
+                    EmitSignal(SignalName.OnWin);
+                    return;
+                }
                 _transitionStartingPos = BossSprite.Position;
 
                 ChangePhase();
