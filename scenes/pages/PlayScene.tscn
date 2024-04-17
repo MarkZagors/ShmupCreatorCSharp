@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bup0fks5pbixl"]
+[gd_scene load_steps=16 format=3 uid="uid://bup0fks5pbixl"]
 
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayStateController.cs" id="1_4jq8j"]
 [ext_resource type="Script" path="res://scripts/play/controllers/BulletController.cs" id="1_5c7e6"]
@@ -7,12 +7,50 @@
 [ext_resource type="Script" path="res://scripts/play/controllers/BossMovementController.cs" id="3_th36n"]
 [ext_resource type="PackedScene" uid="uid://difj2ioeu1a8q" path="res://scenes/play/BulletPlay.tscn" id="4_8rsbl"]
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayerController.cs" id="6_qkv3w"]
+[ext_resource type="Script" path="res://scripts/play/controllers/HealthController.cs" id="7_1isb2"]
 [ext_resource type="Texture2D" uid="uid://7elybjnwy8t6" path="res://sprites/play/Space Background(1).png" id="7_l8ulq"]
 [ext_resource type="Texture2D" uid="uid://c3msc1fva6pen" path="res://sprites/play/enemy_ship.png" id="7_nog2h"]
 [ext_resource type="Texture2D" uid="uid://bxasrv50iwj1q" path="res://sprites/play/player_ship.png" id="8_kdb7t"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3khwl"]
 radius = 5.0
+
+[sub_resource type="Animation" id="Animation_kmg5f"]
+resource_name = "blinking"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, false, true]
+}
+
+[sub_resource type="Animation" id="Animation_abpae"]
+resource_name = "idle"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_esn46"]
+_data = {
+"blinking": SubResource("Animation_kmg5f"),
+"idle": SubResource("Animation_abpae")
+}
 
 [node name="PlayScene" type="Control"]
 layout_mode = 3
@@ -51,6 +89,11 @@ PlayStateController = NodePath("../PlayStateController")
 script = ExtResource("6_qkv3w")
 PlayerNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite")
 Speed = 400.0
+
+[node name="HealthController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayerController", "PlayerHealthVBox")]
+script = ExtResource("7_1isb2")
+PlayerController = NodePath("../PlayerController")
+PlayerHealthVBox = NodePath("../../Play/UIAspectContainer/MainBox/PlayerHealthContainer/VBoxContainer")
 
 [node name="Play" type="Control" parent="."]
 layout_mode = 1
@@ -121,6 +164,13 @@ texture = ExtResource("8_kdb7t")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite/PlayerHitbox"]
 shape = SubResource("CircleShape2D_3khwl")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite"]
+autoplay = "idle"
+speed_scale = 5.0
+libraries = {
+"": SubResource("AnimationLibrary_esn46")
+}
 
 [node name="UIAspectContainer" type="AspectRatioContainer" parent="Play"]
 layout_mode = 1

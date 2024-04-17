@@ -5,17 +5,24 @@ namespace Editor
 {
     public partial class PlayerController : Node
     {
+        [Signal] public delegate void OnPlayerHitEventHandler();
         [Export] public Node2D PlayerNode { get; private set; }
         [Export] public float Speed { get; private set; } = 150;
         [Export] public float FocusSpeedAmmount { get; private set; } = 0.4f;
         private Vector2 _velocity;
         private bool _focused = false;
         private Rect _windowRect = new Rect(0, 0, 768, 1024);
+        private bool _isInvincible = false;
+        private float _invincibleTimer = 1.0f;
+        private AnimationPlayer _playerNodeAnimationPlayer;
+        private const float INVINCIBLE_TIMER_THRESHOLD = 2.0f;
 
         public override void _Process(double delta)
         {
+            _playerNodeAnimationPlayer = PlayerNode.GetNode<AnimationPlayer>("AnimationPlayer");
             ProcessMovement();
             ProcessPosition((float)delta);
+            ProcessInvincible();
         }
 
         private void ProcessPosition(float delta)
@@ -41,6 +48,7 @@ namespace Editor
             newPos.Y = Math.Clamp(newPos.Y, _windowRect.Y, _windowRect.Height);
 
             PlayerNode.Position = newPos;
+            _invincibleTimer += (float)delta;
         }
 
         private void ProcessMovement()
@@ -76,9 +84,27 @@ namespace Editor
             }
         }
 
+        private void ProcessInvincible()
+        {
+            if (_invincibleTimer < INVINCIBLE_TIMER_THRESHOLD)
+            {
+                _isInvincible = true;
+                _playerNodeAnimationPlayer.Play("blinking");
+            }
+            else
+            {
+                _isInvincible = false;
+                _playerNodeAnimationPlayer.Play("idle");
+            }
+        }
+
         public void OnHitboxEnter(Area2D area)
         {
-            GD.Print("enter");
+            if (!_isInvincible)
+            {
+                EmitSignal(SignalName.OnPlayerHit);
+                _invincibleTimer = 0.0f;
+            }
         }
     }
 }
