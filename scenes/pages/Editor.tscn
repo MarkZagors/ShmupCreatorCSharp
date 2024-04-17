@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=33 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
@@ -21,7 +21,6 @@
 [ext_resource type="PackedScene" uid="uid://cpus4vl8tcta2" path="res://scenes/editor/fields/DoubleField.tscn" id="11_sil1u"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/CreateBoxController.cs" id="12_kakms"]
 [ext_resource type="PackedScene" uid="uid://vjqmawifbe18" path="res://scenes/editor/fields/OptionsField.tscn" id="12_lgdx1"]
-[ext_resource type="Script" path="res://scripts/play/controllers/PlayerController.cs" id="16_l3vls"]
 [ext_resource type="PackedScene" uid="uid://dt7s6tshy5mib" path="res://scenes/editor/fields/PositionField.tscn" id="18_lgw2h"]
 [ext_resource type="PackedScene" uid="uid://07bui71vctke" path="res://scenes/play/BulletEditor.tscn" id="21_jgiw5"]
 [ext_resource type="Script" path="res://scripts/play/controllers/BossMovementController.cs" id="24_dicxy"]
@@ -129,11 +128,6 @@ SequenceController = NodePath("../SequenceController")
 CreationContainer = NodePath("../../TopContainer/MidContainer/CreationContainer")
 CreationContainerVBox = NodePath("../../TopContainer/MidContainer/CreationContainer/CreateComponentTab/ScrollContainer/CreationVBox")
 CreationButtonObj = ExtResource("8_ekt68")
-
-[node name="PlayerController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayerNode")]
-script = ExtResource("16_l3vls")
-PlayerNode = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite")
-Speed = 500.0
 
 [node name="BossMovementController" type="Node" parent="Controllers" node_paths=PackedStringArray("ComponentsController", "PlayController")]
 script = ExtResource("24_dicxy")

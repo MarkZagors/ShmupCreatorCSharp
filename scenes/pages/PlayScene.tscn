@@ -1,8 +1,7 @@
-[gd_scene load_steps=18 format=3 uid="uid://bup0fks5pbixl"]
+[gd_scene load_steps=19 format=3 uid="uid://bup0fks5pbixl"]
 
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayStateController.cs" id="1_4jq8j"]
 [ext_resource type="Script" path="res://scripts/play/controllers/BulletController.cs" id="1_5c7e6"]
-[ext_resource type="Texture2D" uid="uid://cobj0uqfs0e2e" path="res://sprites/icon.svg" id="1_j7khg"]
 [ext_resource type="Script" path="res://scripts/server/SavingManager.cs" id="1_kg8ya"]
 [ext_resource type="Script" path="res://scripts/play/controllers/BossMovementController.cs" id="3_th36n"]
 [ext_resource type="PackedScene" uid="uid://difj2ioeu1a8q" path="res://scenes/play/BulletPlay.tscn" id="4_8rsbl"]
@@ -13,9 +12,13 @@
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayerAttackController.cs" id="8_6oeut"]
 [ext_resource type="Texture2D" uid="uid://bxasrv50iwj1q" path="res://sprites/play/player_ship.png" id="8_kdb7t"]
 [ext_resource type="PackedScene" uid="uid://b7a4uti74lmsq" path="res://scenes/play/BulletAttackPlayer.tscn" id="9_7f4o6"]
+[ext_resource type="Texture2D" uid="uid://c8jceqgs4kv7a" path="res://sprites/play/heart.png" id="13_tbkjf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_x476t"]
+size = Vector2(30, 20)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3khwl"]
-radius = 5.0
+radius = 3.0
 
 [sub_resource type="Animation" id="Animation_kmg5f"]
 resource_name = "blinking"
@@ -67,11 +70,12 @@ grow_vertical = 2
 [node name="SavingManager" type="Node" parent="Controllers"]
 script = ExtResource("1_kg8ya")
 
-[node name="PlayStateController" type="Node" parent="Controllers" node_paths=PackedStringArray("SavingManager", "BossSprite", "BulletPoolNode")]
+[node name="PlayStateController" type="Node" parent="Controllers" node_paths=PackedStringArray("SavingManager", "BossSprite", "BulletPoolNode", "HealthController")]
 script = ExtResource("1_4jq8j")
 SavingManager = NodePath("../SavingManager")
 BossSprite = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/BossSprite")
 BulletPoolNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/BulletPool")
+HealthController = NodePath("../HealthController")
 
 [node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("BossMovementController", "PlayStateController", "BulletPoolNode", "BossSprite")]
 script = ExtResource("1_5c7e6")
@@ -92,10 +96,12 @@ script = ExtResource("6_qkv3w")
 PlayerNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite")
 Speed = 400.0
 
-[node name="HealthController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayerController", "PlayerHealthVBox")]
+[node name="HealthController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayerController", "PlayerHealthVBox", "PlayStateController", "EnemyHealthBarNode")]
 script = ExtResource("7_1isb2")
 PlayerController = NodePath("../PlayerController")
 PlayerHealthVBox = NodePath("../../Play/UIAspectContainer/MainBox/PlayerHealthContainer/VBoxContainer")
+PlayStateController = NodePath("../PlayStateController")
+EnemyHealthBarNode = NodePath("../../Play/UIAspectContainer/MainBox/BossHealthBar")
 
 [node name="PlayerAttackController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayerBulletGroupNode", "PlayerNode")]
 script = ExtResource("8_6oeut")
@@ -164,6 +170,15 @@ position = Vector2(400, 200)
 rotation = 3.14159
 scale = Vector2(5, 5)
 texture = ExtResource("7_nog2h")
+
+[node name="Area2D" type="Area2D" parent="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/BossSprite"]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/BossSprite/Area2D"]
+light_mask = 0
+visibility_layer = 2
+shape = SubResource("RectangleShape2D_x476t")
 
 [node name="PlayerSprite" type="Sprite2D" parent="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport"]
 texture_filter = 1
@@ -235,13 +250,14 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
 [node name="Texture" type="TextureRect" parent="Play/UIAspectContainer/MainBox/PlayerHealthContainer/VBoxContainer/LifePoint1"]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_j7khg")
+texture = ExtResource("13_tbkjf")
 expand_mode = 2
 
 [node name="LifePoint2" type="Control" parent="Play/UIAspectContainer/MainBox/PlayerHealthContainer/VBoxContainer"]
@@ -249,13 +265,14 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
 [node name="Texture" type="TextureRect" parent="Play/UIAspectContainer/MainBox/PlayerHealthContainer/VBoxContainer/LifePoint2"]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_j7khg")
+texture = ExtResource("13_tbkjf")
 expand_mode = 2
 
 [node name="LifePoint3" type="Control" parent="Play/UIAspectContainer/MainBox/PlayerHealthContainer/VBoxContainer"]
@@ -263,13 +280,14 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
 [node name="Texture" type="TextureRect" parent="Play/UIAspectContainer/MainBox/PlayerHealthContainer/VBoxContainer/LifePoint3"]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_j7khg")
+texture = ExtResource("13_tbkjf")
 expand_mode = 2
 
 [node name="LifePoint4" type="Control" parent="Play/UIAspectContainer/MainBox/PlayerHealthContainer/VBoxContainer"]
@@ -277,13 +295,14 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
 [node name="Texture" type="TextureRect" parent="Play/UIAspectContainer/MainBox/PlayerHealthContainer/VBoxContainer/LifePoint4"]
+texture_filter = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-texture = ExtResource("1_j7khg")
+texture = ExtResource("13_tbkjf")
 expand_mode = 2
 
 [node name="BossHealthBar" type="ProgressBar" parent="Play/UIAspectContainer/MainBox"]
@@ -296,4 +315,5 @@ offset_right = -11.75
 offset_bottom = 39.0
 grow_horizontal = 2
 
+[connection signal="area_entered" from="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/BossSprite/Area2D" to="Controllers/HealthController" method="OnEnemyHitboxEnter"]
 [connection signal="area_entered" from="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite/PlayerHitbox" to="Controllers/PlayerController" method="OnHitboxEnter"]

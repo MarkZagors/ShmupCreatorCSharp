@@ -11,10 +11,12 @@ namespace Editor
         [Export] public SavingManager SavingManager { get; private set; }
         [Export] public Sprite2D BossSprite { get; private set; }
         [Export] public Node2D BulletPoolNode { get; private set; }
+        [Export] public HealthController HealthController { get; private set; }
         public List<Phase> PhasesList { get; private set; } = new();
         public double Time { get; private set; } = 0.0;
         public PlayState PlayState { get; private set; } = PlayState.ENTERING;
         private Phase _selectedPhase = null;
+        private int _selectedPhaseId = 0;
         private Vector2 _transitionStartingPos;
         private Vector2 _transitionEndPos;
         private double _transitionSpeed = 1.5;
@@ -28,6 +30,8 @@ namespace Editor
 
             _transitionStartingPos = new Vector2(400, -200);
             _transitionEndPos = new Vector2(400, 200);
+
+            HealthController.OnEnemyDeath += OnEnemyDeath;
         }
 
         public override void _Process(double delta)
@@ -58,6 +62,16 @@ namespace Editor
                 }
             }
             else if (PlayState == PlayState.LOOP_TRANSITION)
+            {
+                LerpPosition();
+                Time += delta;
+                if (Time > _transitionSpeed)
+                {
+                    Time = 0.0;
+                    PlayState = PlayState.MAIN;
+                }
+            }
+            else if (PlayState == PlayState.PHASE_TRANSITION)
             {
                 LerpPosition();
                 Time += delta;
@@ -112,6 +126,28 @@ namespace Editor
                 // GD.Print("removed");
             }
             _protectedRemoveList.Clear();
+        }
+
+        private void OnEnemyDeath()
+        {
+            if (PlayState == PlayState.MAIN)
+            {
+                _transitionStartingPos = BossSprite.Position;
+
+                ChangePhase();
+                PlayState = PlayState.PHASE_TRANSITION;
+            }
+        }
+
+        private void ChangePhase()
+        {
+            _selectedPhaseId += 1;
+            UpdateSelectedPhase(_selectedPhaseId);
+
+            Time = 0.0;
+
+            EmitSignal(SignalName.PhaseChange); //RESTRUCTURE BULLET LIST
+            EmitSignal(SignalName.UpdateTimeline);
         }
 
         private void LerpPosition()
