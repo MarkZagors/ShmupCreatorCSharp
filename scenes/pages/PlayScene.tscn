@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bup0fks5pbixl"]
+[gd_scene load_steps=18 format=3 uid="uid://bup0fks5pbixl"]
 
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayStateController.cs" id="1_4jq8j"]
 [ext_resource type="Script" path="res://scripts/play/controllers/BulletController.cs" id="1_5c7e6"]
@@ -10,7 +10,9 @@
 [ext_resource type="Script" path="res://scripts/play/controllers/HealthController.cs" id="7_1isb2"]
 [ext_resource type="Texture2D" uid="uid://7elybjnwy8t6" path="res://sprites/play/Space Background(1).png" id="7_l8ulq"]
 [ext_resource type="Texture2D" uid="uid://c3msc1fva6pen" path="res://sprites/play/enemy_ship.png" id="7_nog2h"]
+[ext_resource type="Script" path="res://scripts/play/controllers/PlayerAttackController.cs" id="8_6oeut"]
 [ext_resource type="Texture2D" uid="uid://bxasrv50iwj1q" path="res://sprites/play/player_ship.png" id="8_kdb7t"]
+[ext_resource type="PackedScene" uid="uid://b7a4uti74lmsq" path="res://scenes/play/BulletAttackPlayer.tscn" id="9_7f4o6"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_3khwl"]
 radius = 5.0
@@ -95,6 +97,12 @@ script = ExtResource("7_1isb2")
 PlayerController = NodePath("../PlayerController")
 PlayerHealthVBox = NodePath("../../Play/UIAspectContainer/MainBox/PlayerHealthContainer/VBoxContainer")
 
+[node name="PlayerAttackController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayerBulletGroupNode", "PlayerNode")]
+script = ExtResource("8_6oeut")
+PlayerAttackBulletObj = ExtResource("9_7f4o6")
+PlayerBulletGroupNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerBulletGroup")
+PlayerNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite")
+
 [node name="Play" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 15
@@ -146,6 +154,9 @@ scale = Vector2(4, 4)
 texture = ExtResource("7_l8ulq")
 
 [node name="BulletPool" type="Node2D" parent="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport"]
+z_index = 100
+
+[node name="PlayerBulletGroup" type="Node2D" parent="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport"]
 
 [node name="BossSprite" type="Sprite2D" parent="Play/PlayAspectContainer/PlayViewportContainer/PlayViewport"]
 texture_filter = 1
