@@ -12,7 +12,7 @@ namespace Editor
         [Export] public VBoxContainer LevelsVbox { get; private set; }
         [Export] public VBoxContainer DescriptionVbox { get; private set; }
         [Export] public SavingManager SavingManager { get; private set; }
-        private string _selectedLevelID = null;
+        public string SelectedLevelID { get; private set; } = null;
 
         public override void _Ready()
         {
@@ -33,7 +33,7 @@ namespace Editor
 
         public void OnLevelButtonSelected(string levelID, string levelName, string levelAuthor, string songName, string songAuthor)
         {
-            _selectedLevelID = levelID;
+            SelectedLevelID = levelID;
             DescriptionVbox.GetNode<Label>("LevelNameLabel").Text = levelName;
             DescriptionVbox.GetNode<Label>("LevelAuthorLabel").Text = levelAuthor;
             DescriptionVbox.GetNode<Label>("SongNameLabel").Text = songName;
@@ -42,15 +42,15 @@ namespace Editor
 
         public void OnPlayButtonClick()
         {
-            if (_selectedLevelID == null) return;
-            TransferLayer.LevelID = _selectedLevelID;
+            if (SelectedLevelID == null) return;
+            TransferLayer.LevelID = SelectedLevelID;
             GetTree().ChangeSceneToPacked(PlayScene);
         }
 
         public void OnEditButtonClick()
         {
-            if (_selectedLevelID == null) return;
-            TransferLayer.LevelID = _selectedLevelID;
+            if (SelectedLevelID == null) return;
+            TransferLayer.LevelID = SelectedLevelID;
             GetTree().ChangeSceneToPacked(EditorScene);
         }
 

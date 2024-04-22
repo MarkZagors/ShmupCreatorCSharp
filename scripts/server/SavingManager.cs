@@ -34,7 +34,7 @@ $@"{{
     ""levelAuthor"": ""Unknown"",
     ""songName"": ""Unknown song"",
     ""songAuthor"": ""Unknown Artist"",
-    ""isMusicAdded"": ""False"",
+    ""isMusicAdded"": ""False""
 }}"
             );
             indexFile.Close();
@@ -58,7 +58,7 @@ $@"{{
     ""levelAuthor"": ""{levelAuthor}"",
     ""songName"": ""{songName}"",
     ""songAuthor"": ""{songAuthor}"",
-    ""isMusicAdded"": ""{isMusicAdded}"",
+    ""isMusicAdded"": ""{isMusicAdded}""
 }}"
             );
             indexFile.Close();
@@ -328,6 +328,7 @@ $@"{{
             AudioStreamMP3 audioStream = new AudioStreamMP3();
             audioStream.Data = musicFile.GetBuffer((long)musicFile.GetLength());
             audioStream.Loop = true;
+            musicFile.Close();
             return audioStream;
         }
     }

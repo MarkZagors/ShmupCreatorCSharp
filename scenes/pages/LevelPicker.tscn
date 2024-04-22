@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://d18em0ev18xks"]
+[gd_scene load_steps=7 format=3 uid="uid://d18em0ev18xks"]
 
 [ext_resource type="PackedScene" uid="uid://dtphm1c660eg0" path="res://scenes/levelPicker/LevelNode.tscn" id="1_bd8ix"]
 [ext_resource type="Script" path="res://scripts/server/LevelPickController.cs" id="1_vfawr"]
 [ext_resource type="Script" path="res://scripts/server/SavingManager.cs" id="1_vqxmc"]
 [ext_resource type="PackedScene" uid="uid://bvgorsw0k7n0h" path="res://scenes/pages/Editor.tscn" id="3_wl6po"]
 [ext_resource type="PackedScene" uid="uid://bup0fks5pbixl" path="res://scenes/pages/PlayScene.tscn" id="4_r7ara"]
+[ext_resource type="Script" path="res://scripts/server/ServerConnector.cs" id="6_gwafp"]
 
 [node name="LevelPicker" type="Control"]
 layout_mode = 3
@@ -28,9 +29,12 @@ SavingManager = NodePath("../SavingManger")
 [node name="SavingManger" type="Node" parent="Controllers"]
 script = ExtResource("1_vqxmc")
 
-[node name="ServerConnector" type="Node" parent="Controllers"]
+[node name="ServerConnector" type="Node" parent="Controllers" node_paths=PackedStringArray("LevelPickController")]
+script = ExtResource("6_gwafp")
+LevelPickController = NodePath("../LevelPickController")
 
 [node name="HTTPRequest" type="HTTPRequest" parent="Controllers/ServerConnector"]
+use_threads = true
 
 [node name="RightContainer" type="Control" parent="."]
 layout_mode = 1
@@ -125,6 +129,12 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Edit"
 
+[node name="PublishButton" type="Button" parent="LeftContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Publish
+"
+
 [node name="CreateNewButton" type="Button" parent="LeftContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
@@ -132,4 +142,5 @@ text = "Create new"
 
 [connection signal="pressed" from="LeftContainer/HBoxContainer/PlayButton" to="Controllers/LevelPickController" method="OnPlayButtonClick"]
 [connection signal="pressed" from="LeftContainer/HBoxContainer/EditButton" to="Controllers/LevelPickController" method="OnEditButtonClick"]
+[connection signal="pressed" from="LeftContainer/HBoxContainer/PublishButton" to="Controllers/ServerConnector" method="OnPublishButtonClick"]
 [connection signal="pressed" from="LeftContainer/HBoxContainer/CreateNewButton" to="Controllers/LevelPickController" method="OnCreateNewButtonClick"]
