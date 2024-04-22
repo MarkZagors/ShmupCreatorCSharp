@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Godot;
+using Godot.Collections;
 
 namespace Editor
 {
@@ -15,6 +16,7 @@ namespace Editor
         [Export] public HealthController HealthController { get; private set; }
         [Export] public Control WinScreen { get; private set; }
         [Export] public Control LoseScreen { get; private set; }
+        [Export] public AudioStreamPlayer MusicPlayer { get; private set; }
         public List<Phase> PhasesList { get; private set; } = new();
         public double Time { get; private set; } = 0.0;
         public PlayState PlayState { get; private set; } = PlayState.ENTERING;
@@ -179,10 +181,20 @@ namespace Editor
         private void LoadLevel()
         {
             List<Phase> loadedPhases = SavingManager.LoadLevelPhases(TransferLayer.LevelID);
+
             PhasesList = loadedPhases;
             UpdateSelectedPhase(0);
             EmitSignal(SignalName.PhaseChange);
             EmitSignal(SignalName.UpdateTimeline);
+
+            Dictionary loadedIndex = SavingManager.LoadLevelIndex(TransferLayer.LevelID);
+            bool isMusicAdded = (string)loadedIndex["isMusicAdded"] == "True";
+            if (isMusicAdded)
+            {
+                GD.Print("playMusic");
+                MusicPlayer.Stream = SavingManager.LoadMusic(TransferLayer.LevelID);
+                MusicPlayer.Play();
+            }
         }
 
         public List<Sequence> GetSequenceList()

@@ -2,7 +2,6 @@ using Godot;
 using Godot.Collections;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 
 namespace Editor
 {
@@ -319,6 +318,17 @@ $@"{{
             }
             GD.PrintErr("Component Not found in Saving Manger Loading GetComponentByName");
             return null;
+        }
+
+        public AudioStream LoadMusic(string levelID)
+        {
+            string absoluteMusicPath = OS.GetUserDataDir();
+            absoluteMusicPath += $"/levels/{levelID}/music.mp3";
+            FileAccess musicFile = FileAccess.Open(absoluteMusicPath, FileAccess.ModeFlags.Read);
+            AudioStreamMP3 audioStream = new AudioStreamMP3();
+            audioStream.Data = musicFile.GetBuffer((long)musicFile.GetLength());
+            audioStream.Loop = true;
+            return audioStream;
         }
     }
 }

@@ -66,10 +66,9 @@ public partial class SettingsController : Node
         if (files.Length == 1 && files[0][^4..] == ".mp3")
         {
             string musicFilePath = files[0];
-            string absoluteLevelPath = OS.GetUserDataDir();
-            absoluteLevelPath += $"/levels/{TransferLayer.LevelID}/music.mp3";
-            GD.Print(absoluteLevelPath);
-            System.IO.File.Copy(musicFilePath, absoluteLevelPath, overwrite: true);
+            string absoluteMusicPath = OS.GetUserDataDir();
+            absoluteMusicPath += $"/levels/{TransferLayer.LevelID}/music.mp3";
+            System.IO.File.Copy(musicFilePath, absoluteMusicPath, overwrite: true);
 
             _isMusicAdded = true;
             SaveLevel();

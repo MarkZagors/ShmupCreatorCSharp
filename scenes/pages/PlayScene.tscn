@@ -70,7 +70,7 @@ grow_vertical = 2
 [node name="SavingManager" type="Node" parent="Controllers"]
 script = ExtResource("1_kg8ya")
 
-[node name="PlayStateController" type="Node" parent="Controllers" node_paths=PackedStringArray("SavingManager", "BossSprite", "BulletPoolNode", "HealthController", "WinScreen", "LoseScreen")]
+[node name="PlayStateController" type="Node" parent="Controllers" node_paths=PackedStringArray("SavingManager", "BossSprite", "BulletPoolNode", "HealthController", "WinScreen", "LoseScreen", "MusicPlayer")]
 script = ExtResource("1_4jq8j")
 SavingManager = NodePath("../SavingManager")
 BossSprite = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/BossSprite")
@@ -78,6 +78,7 @@ BulletPoolNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/
 HealthController = NodePath("../HealthController")
 WinScreen = NodePath("../../Play/UIOverlays/WinScreen")
 LoseScreen = NodePath("../../Play/UIOverlays/LoseScreen")
+MusicPlayer = NodePath("../../Sounds/MusicPlayer")
 
 [node name="BulletController" type="Node" parent="Controllers" node_paths=PackedStringArray("BossMovementController", "PlayStateController", "BulletPoolNode", "BossSprite")]
 script = ExtResource("1_5c7e6")
@@ -113,6 +114,10 @@ HealthController = NodePath("../HealthController")
 PlayerAttackBulletObj = ExtResource("9_7f4o6")
 PlayerBulletGroupNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerBulletGroup")
 PlayerNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/PlayerSprite")
+
+[node name="Sounds" type="Node" parent="."]
+
+[node name="MusicPlayer" type="AudioStreamPlayer" parent="Sounds"]
 
 [node name="Play" type="Control" parent="."]
 layout_mode = 1
@@ -153,7 +158,7 @@ stretch = true
 [node name="PlayViewport" type="SubViewport" parent="Play/PlayAspectContainer/PlayViewportContainer"]
 disable_3d = true
 handle_input_locally = false
-size = Vector2i(2, 2)
+size = Vector2i(459, 613)
 size_2d_override = Vector2i(768, 1024)
 size_2d_override_stretch = true
 render_target_update_mode = 4
