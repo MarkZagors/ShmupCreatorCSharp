@@ -2,6 +2,8 @@ using Editor;
 using Godot;
 using Godot.Collections;
 using System;
+using System.IO;
+using System.Linq;
 
 public partial class SettingsController : Node
 {
@@ -12,6 +14,8 @@ public partial class SettingsController : Node
     {
         SavingManager.OnSave += SaveLevel;
         LoadLevel();
+
+        GetTree().Root.FilesDropped += OnFileDropped;
     }
 
     private void LoadLevel()
@@ -50,6 +54,18 @@ public partial class SettingsController : Node
         else
         {
             SettingsContainerNode.Visible = false;
+        }
+    }
+
+    public void OnFileDropped(String[] files)
+    {
+        if (files.Length == 1 && files[0][^4..] == ".mp3")
+        {
+            string musicFilePath = files[0];
+            string absoluteLevelPath = OS.GetUserDataDir();
+            absoluteLevelPath += $"/levels/{TransferLayer.LevelID}/music.mp3";
+            GD.Print(absoluteLevelPath);
+            System.IO.File.Copy(musicFilePath, absoluteLevelPath, overwrite: true);
         }
     }
 }

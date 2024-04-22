@@ -799,6 +799,30 @@ anchor_bottom = 1.0
 grow_horizontal = 0
 grow_vertical = 2
 
+[node name="MusicField" type="Control" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+
+[node name="BG" type="ColorRect" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox/MusicField"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.113281, 0.109375, 0.132813, 1)
+
+[node name="Label" type="Label" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox/MusicField"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "[Drag in mp3 file to add music]"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="SaveAndExitButton" type="Button" parent="TopContainer/MidContainer/SettingsContainer"]
 layout_mode = 1
 anchors_preset = 12
