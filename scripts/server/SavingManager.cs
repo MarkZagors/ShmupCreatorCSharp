@@ -35,6 +35,7 @@ $@"{{
     ""levelAuthor"": ""Unknown"",
     ""songName"": ""Unknown song"",
     ""songAuthor"": ""Unknown Artist"",
+    ""isMusicAdded"": ""False"",
 }}"
             );
             indexFile.Close();
@@ -48,7 +49,7 @@ $@"{{
             phasesFile.Close();
         }
 
-        public void SaveLevelIndex(string levelID, string levelName, string levelAuthor, string songName, string songAuthor)
+        public void SaveLevelIndex(string levelID, string levelName, string levelAuthor, string songName, string songAuthor, bool isMusicAdded)
         {
             FileAccess indexFile = FileAccess.Open($"user://levels/{levelID}/index.json", FileAccess.ModeFlags.Write);
             indexFile.StoreString(
@@ -58,6 +59,7 @@ $@"{{
     ""levelAuthor"": ""{levelAuthor}"",
     ""songName"": ""{songName}"",
     ""songAuthor"": ""{songAuthor}"",
+    ""isMusicAdded"": ""{isMusicAdded}"",
 }}"
             );
             indexFile.Close();

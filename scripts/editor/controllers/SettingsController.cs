@@ -9,6 +9,7 @@ public partial class SettingsController : Node
 {
     [Export] public Control SettingsContainerNode { get; private set; }
     [Export] public SavingManager SavingManager { get; private set; }
+    private bool _isMusicAdded = false;
 
     public override void _Ready()
     {
@@ -26,12 +27,14 @@ public partial class SettingsController : Node
         string levelAuthor = (string)data["levelAuthor"];
         string songName = (string)data["songName"];
         string songAuthor = (string)data["songAuthor"];
+        bool isMusicAdded = (string)data["isMusicAdded"] == "True";
 
         SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/LevelNameField/TextEdit").Text = levelName;
         SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/LevelAuthorField/TextEdit").Text = levelAuthor;
         SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/SongNameField/TextEdit").Text = songName;
         SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/SongAuthorField/TextEdit").Text = songAuthor;
         SettingsContainerNode.GetNode<Label>("LevelIDLabel").Text = $"Level ID: {TransferLayer.LevelID}";
+        _isMusicAdded = isMusicAdded;
     }
 
     private void SaveLevel()
@@ -41,7 +44,8 @@ public partial class SettingsController : Node
             levelName: SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/LevelNameField/TextEdit").Text,
             levelAuthor: SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/LevelAuthorField/TextEdit").Text,
             songName: SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/SongNameField/TextEdit").Text,
-            songAuthor: SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/SongAuthorField/TextEdit").Text
+            songAuthor: SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/SongAuthorField/TextEdit").Text,
+            isMusicAdded: _isMusicAdded
         );
     }
 
@@ -66,6 +70,9 @@ public partial class SettingsController : Node
             absoluteLevelPath += $"/levels/{TransferLayer.LevelID}/music.mp3";
             GD.Print(absoluteLevelPath);
             System.IO.File.Copy(musicFilePath, absoluteLevelPath, overwrite: true);
+
+            _isMusicAdded = true;
+            SaveLevel();
         }
     }
 }
