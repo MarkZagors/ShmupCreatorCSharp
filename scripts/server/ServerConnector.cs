@@ -46,7 +46,10 @@ $@"{{
 
         indexFile.Close();
 
-        string[] headers = new string[] { "Content-Type: application/json" };
+        string[] headers = new string[] {
+            "Content-Type: application/json",
+            $"Level-ID: {levelID}"
+        };
         _httpRequestNode.Request("http://localhost:3000/pub_index", customHeaders: headers, method: Godot.HttpClient.Method.Post, requestData: req);
         GD.Print("sent index");
     }
@@ -59,7 +62,10 @@ $@"{{
 
         phasesFile.Close();
 
-        string[] headers = new string[] { "Content-Type: text/plain" };
+        string[] headers = new string[] {
+            "Content-Type: text/plain",
+            $"Level-ID: {levelID}"
+        };
         _httpRequestNode.Request("http://localhost:3000/pub_phases", customHeaders: headers, method: Godot.HttpClient.Method.Post, requestData: req);
         GD.Print("sent phases");
     }
