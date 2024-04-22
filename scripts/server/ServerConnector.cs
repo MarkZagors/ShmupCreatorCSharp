@@ -21,6 +21,7 @@ public partial class ServerConnector : Node
     public void OnPublishButtonClick()
     {
         if (LevelPickController.SelectedLevelID == null) return;
+        if (_requestChainIndex != 0) return;
         _requestLevelID = LevelPickController.SelectedLevelID;
         PublishStep();
     }
@@ -83,6 +84,7 @@ $@"{{
         if (_requestChainIndex == 2)
         {
             GD.Print("end");
+            _requestChainIndex = 0;
             return;
         }
         PublishStep();
