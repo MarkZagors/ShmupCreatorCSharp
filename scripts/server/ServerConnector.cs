@@ -31,6 +31,8 @@ public partial class ServerConnector : Node
             SendIndexJson(_requestLevelID);
         else if (_requestChainIndex == 1)
             SendPhasesJson(_requestLevelID);
+        // else if (_requestChainIndex == 2)
+        //     SendMusicJson(_requestLevelID);
     }
 
     private void SendIndexJson(string levelID)
@@ -61,41 +63,19 @@ $@"{{
         GD.Print("sent phases");
     }
 
-    private void PublishNew(string levelID)
-    {
-        FileAccess indexFile = FileAccess.Open($"user://levels/{levelID}/index.json", FileAccess.ModeFlags.Read);
-        FileAccess phasesFile = FileAccess.Open($"user://levels/{levelID}/phases.json", FileAccess.ModeFlags.Read);
-        FileAccess musicFile = FileAccess.Open($"user://levels/{levelID}/music.mp3", FileAccess.ModeFlags.Read);
+    // private void SendMusicJson(string levelID)
+    // {
+    //     FileAccess musicFile = FileAccess.Open($"user://levels/{levelID}/music.mp3", FileAccess.ModeFlags.Read);
 
-        string musicBuffer = "";
-        if (musicFile != null)
-        {
-            // var buffer = musicFile.GetBuffer((long)musicFile.GetLength());
-            // char[] chars = new char[(buffer.Length / sizeof(char) + 60)];
-            // System.Buffer.BlockCopy(buffer, 0, chars, 0, buffer.Length);
-            // musicBuffer = new string(chars);
-            // // musicBuffer = System.Text.Encoding.UTF8.GetString(buffer, 0, buffer.Length);
-            // GD.Print("written");
-            // musicFile.Close();
-        }
+    //     var buffer = musicFile.GetBuffer((long)musicFile.GetLength());
+    //     string req = Marshalls.RawToBase64(buffer);
 
-        //         string req =
-        // $@"{{
-        //     ""index"": {indexFile.GetAsText()},
-        //     ""phases"": ""{phasesFile.GetAsText()}"",
-        // }}";
-        string req =
-$@"{{
-    ""index"": {indexFile.GetAsText()}
-}}";
+    //     musicFile.Close();
 
-        indexFile.Close();
-        phasesFile.Close();
-
-        string[] headers = new string[] { "Content-Type: application/json" };
-        _httpRequestNode.Request("http://localhost:3000", customHeaders: headers, method: Godot.HttpClient.Method.Post, requestData: req);
-        GD.Print("sent");
-    }
+    //     string[] headers = new string[] { "Content-Type: audio/mpeg" };
+    //     _httpRequestNode.Request("http://localhost:3000/pub_music", customHeaders: headers, method: Godot.HttpClient.Method.Post, requestData: req);
+    //     GD.Print("sent music");
+    // }
 
     private void OnResponse(long result, long responseCode, string[] headers, byte[] body)
     {
