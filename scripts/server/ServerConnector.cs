@@ -79,10 +79,12 @@ $@"{{
 
     private void OnResponse(long result, long responseCode, string[] headers, byte[] body)
     {
-        string str = System.Text.Encoding.UTF8.GetString(body);
-        GD.Print(str);
-
         _requestChainIndex += 1;
+        if (_requestChainIndex == 2)
+        {
+            GD.Print("end");
+            return;
+        }
         PublishStep();
     }
 }
