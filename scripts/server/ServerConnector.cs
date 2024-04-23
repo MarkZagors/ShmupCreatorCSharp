@@ -10,7 +10,16 @@ public partial class ServerConnector : Node
     [Export] public LevelPickController LevelPickController { get; private set; }
     private HttpRequest _httpRequestNode;
     private string _requestLevelID = null;
-    private int _requestChainIndex = 0;
+    private HTTPChain _requestChainIndex = 0;
+    private string _connectionIP = "234.0.0.1";
+
+    private enum HTTPChain
+    {
+        IDLE,
+        INDEX,
+        PHASES,
+        ERROR,
+    }
 
     public override void _Ready()
     {
@@ -21,17 +30,29 @@ public partial class ServerConnector : Node
     public void OnPublishButtonClick()
     {
         if (LevelPickController.SelectedLevelID == null) return;
-        if (_requestChainIndex != 0) return;
+        if (_requestChainIndex != HTTPChain.IDLE)
+        {
+            GD.Print("http processing");
+            return;
+        }
+        _requestChainIndex = HTTPChain.INDEX;
         _requestLevelID = LevelPickController.SelectedLevelID;
         PublishStep();
     }
 
     private void PublishStep()
     {
-        if (_requestChainIndex == 0)
+        if (_requestChainIndex == HTTPChain.INDEX)
             SendIndexJson(_requestLevelID);
-        else if (_requestChainIndex == 1)
+        else if (_requestChainIndex == HTTPChain.PHASES)
             SendPhasesJson(_requestLevelID);
+        else if (_requestChainIndex == HTTPChain.IDLE)
+            GD.Print("Request ended");
+        else if (_requestChainIndex == HTTPChain.ERROR)
+        {
+            _requestChainIndex = HTTPChain.IDLE;
+            GD.Print("ERROR: Request ended early");
+        }
         // else if (_requestChainIndex == 2)
         //     SendMusicJson(_requestLevelID);
     }
@@ -50,7 +71,7 @@ $@"{{
             "Content-Type: application/json",
             $"Level-ID: {levelID}"
         };
-        _httpRequestNode.Request("http://localhost:3000/pub_index", customHeaders: headers, method: Godot.HttpClient.Method.Post, requestData: req);
+        _httpRequestNode.Request($"http://{_connectionIP}:3000/pub_index", customHeaders: headers, method: Godot.HttpClient.Method.Post, requestData: req);
         GD.Print("sent index");
     }
 
@@ -66,7 +87,7 @@ $@"{{
             "Content-Type: text/plain",
             $"Level-ID: {levelID}"
         };
-        _httpRequestNode.Request("http://localhost:3000/pub_phases", customHeaders: headers, method: Godot.HttpClient.Method.Post, requestData: req);
+        _httpRequestNode.Request($"http://{_connectionIP}:3000/pub_phases", customHeaders: headers, method: Godot.HttpClient.Method.Post, requestData: req);
         GD.Print("sent phases");
     }
 
@@ -86,12 +107,36 @@ $@"{{
 
     private void OnResponse(long result, long responseCode, string[] headers, byte[] body)
     {
-        _requestChainIndex += 1;
-        if (_requestChainIndex == 2)
+        string message = System.Text.Encoding.UTF8.GetString(body);
+        switch (_requestChainIndex)
         {
-            GD.Print("end");
-            _requestChainIndex = 0;
-            return;
+            case HTTPChain.INDEX:
+                if (responseCode == 200)
+                {
+                    _requestChainIndex = HTTPChain.PHASES;
+                }
+                else
+                {
+                    // GD.Print(responseCode);
+                    GD.Print(message);
+                    _requestChainIndex = HTTPChain.ERROR;
+                }
+                break;
+            case HTTPChain.PHASES:
+                //END
+                if (responseCode == 200)
+                {
+                    _requestChainIndex = HTTPChain.IDLE;
+                }
+                if (responseCode == 500)
+                {
+                    GD.PrintErr(message);
+                    _requestChainIndex = HTTPChain.ERROR;
+                }
+                break;
+            default:
+                GD.PrintErr("No request chain supported");
+                return;
         }
         PublishStep();
     }
