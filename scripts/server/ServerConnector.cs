@@ -20,6 +20,7 @@ public partial class ServerConnector : Node
     private string _requestLevelID = null;
     private HttpStatus _requestChainIndex = 0;
     private string _connectionIP = "127.0.0.1";
+    private Godot.Collections.Array _cachedListArray = new();
 
     private enum HttpStatus
     {
@@ -28,6 +29,9 @@ public partial class ServerConnector : Node
         POST_PHASES,
         POST_ERROR,
         GET_LEVELS,
+        GET_INDEX,
+        GET_PHASES,
+        GET_ERROR,
     }
 
     public override void _Ready()
@@ -49,6 +53,13 @@ public partial class ServerConnector : Node
         PublishStep();
     }
 
+    public void OnDownloadButtonClick(string levelID)
+    {
+        _requestChainIndex = HttpStatus.GET_INDEX;
+        _requestLevelID = levelID;
+        DownloadStep();
+    }
+
     private void PublishStep()
     {
         if (_requestChainIndex == HttpStatus.POST_INDEX)
@@ -60,10 +71,28 @@ public partial class ServerConnector : Node
         else if (_requestChainIndex == HttpStatus.POST_ERROR)
         {
             _requestChainIndex = HttpStatus.IDLE;
-            GD.Print("ERROR: Request ended early");
+            GD.Print("ERROR: POST Request ended early");
         }
         // else if (_requestChainIndex == 2)
         //     SendMusicJson(_requestLevelID);
+    }
+
+    private void DownloadStep()
+    {
+        if (_requestChainIndex == HttpStatus.GET_INDEX)
+            GetLevelIndex(_requestLevelID);
+        else if (_requestChainIndex == HttpStatus.GET_PHASES)
+            GetLevelPhases(_requestLevelID);
+        else if (_requestChainIndex == HttpStatus.IDLE)
+        {
+            GD.Print("Download ended");
+            UpdateDownloadList();
+        }
+        else if (_requestChainIndex == HttpStatus.POST_ERROR)
+        {
+            _requestChainIndex = HttpStatus.IDLE;
+            GD.Print("ERROR: GET Request ended early");
+        }
     }
 
     private void SendIndexJson(string levelID)
@@ -106,6 +135,22 @@ $@"{{
         _httpRequestNode.Request($"http://{_connectionIP}:3000/get_levels", method: Godot.HttpClient.Method.Get);
     }
 
+    private void GetLevelIndex(string levelID)
+    {
+        string[] headers = new string[] {
+            $"Level-ID: {levelID}"
+        };
+        _httpRequestNode.Request($"http://{_connectionIP}:3000/get_level_index", customHeaders: headers, method: Godot.HttpClient.Method.Get);
+    }
+
+    private void GetLevelPhases(string levelID)
+    {
+        string[] headers = new string[] {
+            $"Level-ID: {levelID}"
+        };
+        _httpRequestNode.Request($"http://{_connectionIP}:3000/get_level_phases", customHeaders: headers, method: Godot.HttpClient.Method.Get);
+    }
+
     // private void SendMusicJson(string levelID)
     // {
     //     FileAccess musicFile = FileAccess.Open($"user://levels/{levelID}/music.mp3", FileAccess.ModeFlags.Read);
@@ -128,6 +173,7 @@ $@"{{
 
     public void OnDonwloadCloseButtonCLick()
     {
+        LevelPickController.UpdateLocalLevelsList();
         DownloadsContainer.Visible = false;
     }
 
@@ -135,26 +181,50 @@ $@"{{
     {
         string message = System.Text.Encoding.UTF8.GetString(body);
 
-        if (_requestChainIndex == HttpStatus.GET_LEVELS)
-        {
-            UpdateLevelList(message);
-            _requestChainIndex = HttpStatus.IDLE;
-            return;
-        }
-
         switch (_requestChainIndex)
         {
+            case HttpStatus.GET_LEVELS:
+                OnLevelListReceived(message);
+                _requestChainIndex = HttpStatus.IDLE;
+                break;
+            case HttpStatus.GET_INDEX:
+                if (responseCode == 200)
+                {
+                    DownloadIndex(_requestLevelID, message);
+                    _requestChainIndex = HttpStatus.GET_PHASES;
+                }
+                else
+                {
+                    GD.Print(message);
+                    _requestChainIndex = HttpStatus.GET_ERROR;
+                }
+                DownloadStep();
+                break;
+            case HttpStatus.GET_PHASES:
+                if (responseCode == 200)
+                {
+                    DownloadPhases(_requestLevelID, message);
+                    _requestChainIndex = HttpStatus.IDLE;
+                }
+                else
+                {
+                    GD.Print(message);
+                    _requestChainIndex = HttpStatus.GET_ERROR;
+                }
+                DownloadStep();
+                break;
             case HttpStatus.POST_INDEX:
+                //END
                 if (responseCode == 200)
                 {
                     _requestChainIndex = HttpStatus.POST_PHASES;
                 }
                 else
                 {
-                    // GD.Print(responseCode);
                     GD.Print(message);
                     _requestChainIndex = HttpStatus.POST_ERROR;
                 }
+                PublishStep();
                 break;
             case HttpStatus.POST_PHASES:
                 //END
@@ -167,21 +237,45 @@ $@"{{
                     GD.PrintErr(message);
                     _requestChainIndex = HttpStatus.POST_ERROR;
                 }
+                PublishStep();
                 break;
             default:
                 GD.PrintErr("No request chain supported");
                 return;
         }
-        PublishStep();
     }
 
-    private void UpdateLevelList(string message)
+    private void DownloadIndex(string levelID, string message)
     {
-        foreach (var child in DownloadsVboxContainer.GetChildren()) child.QueueFree();
-        List<string> idList = SavingManager.GetLevelIDList();
+        DirAccess levelsDirectory = DirAccess.Open("user://levels");
+        levelsDirectory.MakeDir(levelID);
 
+        string cleanedIndex = message.Substr(1, message.Length - 2);
+
+        FileAccess indexFile = FileAccess.Open($"user://levels/{levelID}/index.json", FileAccess.ModeFlags.Write);
+        indexFile.StoreString(cleanedIndex);
+        indexFile.Close();
+    }
+
+    private void DownloadPhases(string levelID, string message)
+    {
+        FileAccess phasesFile = FileAccess.Open($"user://levels/{levelID}/phases.json", FileAccess.ModeFlags.Write);
+        phasesFile.StoreString(message);
+        phasesFile.Close();
+    }
+
+    private void OnLevelListReceived(string message)
+    {
         Godot.Collections.Array list = (Godot.Collections.Array)Json.ParseString(message);
-        foreach (var listItem in list)
+        _cachedListArray = list;
+        UpdateDownloadList();
+    }
+
+    private void UpdateDownloadList()
+    {
+        List<string> idList = SavingManager.GetLevelIDList();
+        foreach (var child in DownloadsVboxContainer.GetChildren()) child.QueueFree();
+        foreach (var listItem in _cachedListArray)
         {
             Godot.Collections.Dictionary<string, string> listItemDic = (Godot.Collections.Dictionary<string, string>)listItem;
             Control downloadLevelNode = DownloadLevelNodeObj.Instantiate<Control>();
@@ -205,6 +299,7 @@ $@"{{
             if (foundDuplicateLocally == false)
             {
                 downloadLevelNode.GetNode<Button>("DownloadButton").Visible = true;
+                downloadLevelNode.GetNode<Button>("DownloadButton").Pressed += () => OnDownloadButtonClick(levelServerID);
             }
         }
     }

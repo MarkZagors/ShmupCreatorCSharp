@@ -52,7 +52,7 @@ namespace Editor
             GetTree().ChangeSceneToPacked(EditorScene);
         }
 
-        private void UpdateLocalLevelsList()
+        public void UpdateLocalLevelsList()
         {
             DirAccess levelsDirectory = DirAccess.Open("user://levels");
 
