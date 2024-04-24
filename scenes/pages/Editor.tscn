@@ -548,7 +548,7 @@ stretch = true
 [node name="PlayViewport" type="SubViewport" parent="TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer"]
 disable_3d = true
 handle_input_locally = false
-size = Vector2i(2, 2)
+size = Vector2i(350, 467)
 size_2d_override = Vector2i(768, 1024)
 size_2d_override_stretch = true
 render_target_update_mode = 4
@@ -754,6 +754,7 @@ grow_horizontal = 0
 grow_vertical = 2
 
 [node name="SongNameField" type="Control" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox"]
+visible = false
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
@@ -777,6 +778,7 @@ grow_horizontal = 0
 grow_vertical = 2
 
 [node name="SongAuthorField" type="Control" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox"]
+visible = false
 custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 
@@ -800,6 +802,7 @@ grow_horizontal = 0
 grow_vertical = 2
 
 [node name="MusicField" type="Control" parent="TopContainer/MidContainer/SettingsContainer/FieldsVBox"]
+visible = false
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 
