@@ -325,5 +325,23 @@ $@"{{
             musicFile.Close();
             return audioStream;
         }
+
+        public List<string> GetLevelIDList()
+        {
+            DirAccess levelDir = DirAccess.Open($"user://levels");
+            List<string> idList = new();
+
+            levelDir.ListDirBegin();
+            string levelsFileName = levelDir.GetNext();
+            while (levelsFileName != "")
+            {
+                if (levelDir.CurrentIsDir())
+                {
+                    idList.Add(levelsFileName);
+                }
+                levelsFileName = levelDir.GetNext();
+            }
+            return idList;
+        }
     }
 }

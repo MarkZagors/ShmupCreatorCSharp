@@ -1,13 +1,21 @@
 using Editor;
 using Godot;
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Net;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
+using System.Xml;
 using FileAccess = Godot.FileAccess;
 
 public partial class ServerConnector : Node
 {
     [Export] public LevelPickController LevelPickController { get; private set; }
+    [Export] public SavingManager SavingManager { get; private set; }
+    [Export] public Control DownloadsContainer { get; private set; }
+    [Export] public VBoxContainer DownloadsVboxContainer { get; private set; }
+    [Export] public PackedScene DownloadLevelNodeObj { get; private set; }
     private HttpRequest _httpRequestNode;
     private string _requestLevelID = null;
     private HttpStatus _requestChainIndex = 0;
@@ -26,8 +34,6 @@ public partial class ServerConnector : Node
     {
         _httpRequestNode = GetNode<HttpRequest>("HTTPRequest");
         _httpRequestNode.RequestCompleted += OnResponse;
-
-        GetLevels();
     }
 
     public void OnPublishButtonClick()
@@ -114,14 +120,24 @@ $@"{{
     //     GD.Print("sent music");
     // }
 
+    public void OnDownloadsButtonClick()
+    {
+        DownloadsContainer.Visible = true;
+        GetLevels();
+    }
+
+    public void OnDonwloadCloseButtonCLick()
+    {
+        DownloadsContainer.Visible = false;
+    }
+
     private void OnResponse(long result, long responseCode, string[] headers, byte[] body)
     {
         string message = System.Text.Encoding.UTF8.GetString(body);
 
         if (_requestChainIndex == HttpStatus.GET_LEVELS)
         {
-            GD.Print("getting");
-            GD.Print(message);
+            UpdateLevelList(message);
             _requestChainIndex = HttpStatus.IDLE;
             return;
         }
@@ -157,5 +173,39 @@ $@"{{
                 return;
         }
         PublishStep();
+    }
+
+    private void UpdateLevelList(string message)
+    {
+        foreach (var child in DownloadsVboxContainer.GetChildren()) child.QueueFree();
+        List<string> idList = SavingManager.GetLevelIDList();
+
+        Godot.Collections.Array list = (Godot.Collections.Array)Json.ParseString(message);
+        foreach (var listItem in list)
+        {
+            Godot.Collections.Dictionary<string, string> listItemDic = (Godot.Collections.Dictionary<string, string>)listItem;
+            Control downloadLevelNode = DownloadLevelNodeObj.Instantiate<Control>();
+            string levelServerID = (string)listItemDic["id"];
+            string levelName = (string)listItemDic["levelName"];
+            string levelAuthor = (string)listItemDic["levelAuthor"];
+            downloadLevelNode.GetNode<Label>("LevelLabel").Text = $"{levelName} - By {levelAuthor}";
+            DownloadsVboxContainer.AddChild(downloadLevelNode);
+
+            bool foundDuplicateLocally = false;
+            foreach (string localLevelId in idList)
+            {
+                if (localLevelId.Equals(levelServerID))
+                {
+                    foundDuplicateLocally = true;
+                    downloadLevelNode.GetNode<Label>("AlreadyInstalledLabel").Visible = true;
+                    break;
+                }
+            }
+
+            if (foundDuplicateLocally == false)
+            {
+                downloadLevelNode.GetNode<Button>("DownloadButton").Visible = true;
+            }
+        }
     }
 }
