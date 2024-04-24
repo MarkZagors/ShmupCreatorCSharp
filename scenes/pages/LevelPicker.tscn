@@ -152,6 +152,7 @@ size_flags_horizontal = 3
 text = "Create new"
 
 [node name="DownloadContainer" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -186,7 +187,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0666667, 0.0666667, 0.0784314, 1)
 
-[node name="ScrollContainer" type="ScrollContainer" parent="DownloadContainer/MiddleContainer"]
+[node name="DownloadScrollContainer" type="ScrollContainer" parent="DownloadContainer/MiddleContainer"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -194,44 +195,24 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="DownloadContainer/MiddleContainer/ScrollContainer"]
+[node name="DownloadVBox" type="VBoxContainer" parent="DownloadContainer/MiddleContainer/DownloadScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="Control" type="Control" parent="DownloadContainer/MiddleContainer/ScrollContainer/VBoxContainer"]
-custom_minimum_size = Vector2(0, 60)
-layout_mode = 2
-
-[node name="BG" type="ColorRect" parent="DownloadContainer/MiddleContainer/ScrollContainer/VBoxContainer/Control"]
+[node name="Button" type="Button" parent="DownloadContainer"]
 layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0.113281, 0.109375, 0.132813, 1)
-
-[node name="LevelLabel" type="Label" parent="DownloadContainer/MiddleContainer/ScrollContainer/VBoxContainer/Control"]
-layout_mode = 1
-anchors_preset = 10
-anchor_right = 1.0
-offset_left = 14.0
-offset_bottom = 26.0
-grow_horizontal = 2
-text = "Level Name - By Author"
-
-[node name="SongLabel" type="Label" parent="DownloadContainer/MiddleContainer/ScrollContainer/VBoxContainer/Control"]
-layout_mode = 1
-anchors_preset = 12
+anchors_preset = 3
+anchor_left = 1.0
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 14.0
-offset_top = -26.0
-grow_horizontal = 2
+offset_left = -139.0
+offset_top = -85.0
+offset_right = -13.0
+offset_bottom = -14.0
+grow_horizontal = 0
 grow_vertical = 0
-theme_override_colors/font_color = Color(0.372549, 0.372549, 0.45098, 1)
-text = "By Author"
+text = "Back"
 
 [connection signal="pressed" from="LeftContainer/HBoxContainer/PlayButton" to="Controllers/LevelPickController" method="OnPlayButtonClick"]
 [connection signal="pressed" from="LeftContainer/HBoxContainer/EditButton" to="Controllers/LevelPickController" method="OnEditButtonClick"]

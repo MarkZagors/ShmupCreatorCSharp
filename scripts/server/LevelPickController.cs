@@ -31,13 +31,11 @@ namespace Editor
             UpdateLocalLevelsList();
         }
 
-        public void OnLevelButtonSelected(string levelID, string levelName, string levelAuthor, string songName, string songAuthor)
+        public void OnLevelButtonSelected(string levelID, string levelName, string levelAuthor)
         {
             SelectedLevelID = levelID;
             DescriptionVbox.GetNode<Label>("LevelNameLabel").Text = levelName;
             DescriptionVbox.GetNode<Label>("LevelAuthorLabel").Text = levelAuthor;
-            DescriptionVbox.GetNode<Label>("SongNameLabel").Text = songName;
-            DescriptionVbox.GetNode<Label>("SongAuthorLabel").Text = songAuthor;
         }
 
         public void OnPlayButtonClick()
@@ -67,18 +65,13 @@ namespace Editor
                 Dictionary data = SavingManager.LoadLevelIndex(levelID);
                 string levelName = (string)data["levelName"];
                 string levelAuthor = (string)data["levelAuthor"];
-                string songName = (string)data["songName"];
-                string songAuthor = (string)data["songAuthor"];
 
                 levelNode.GetNode<Label>("LevelLabel").Text = $"{levelName} - {levelAuthor}";
-                levelNode.GetNode<Label>("SongLabel").Text = $"Song: {songName} - {songAuthor}";
 
                 levelNode.GetNode<Button>("Button").Pressed += () => OnLevelButtonSelected(
                     levelID,
                     levelName,
-                    levelAuthor,
-                    songName,
-                    songAuthor
+                    levelAuthor
                 );
 
                 LevelsVbox.AddChild(levelNode);

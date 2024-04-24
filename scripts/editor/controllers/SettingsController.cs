@@ -9,7 +9,6 @@ public partial class SettingsController : Node
 {
     [Export] public Control SettingsContainerNode { get; private set; }
     [Export] public SavingManager SavingManager { get; private set; }
-    private bool _isMusicAdded = false;
 
     public override void _Ready()
     {
@@ -25,16 +24,10 @@ public partial class SettingsController : Node
 
         string levelName = (string)data["levelName"];
         string levelAuthor = (string)data["levelAuthor"];
-        string songName = (string)data["songName"];
-        string songAuthor = (string)data["songAuthor"];
-        bool isMusicAdded = (string)data["isMusicAdded"] == "True";
 
         SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/LevelNameField/TextEdit").Text = levelName;
         SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/LevelAuthorField/TextEdit").Text = levelAuthor;
-        SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/SongNameField/TextEdit").Text = songName;
-        SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/SongAuthorField/TextEdit").Text = songAuthor;
         SettingsContainerNode.GetNode<Label>("LevelIDLabel").Text = $"Level ID: {TransferLayer.LevelID}";
-        _isMusicAdded = isMusicAdded;
     }
 
     private void SaveLevel()
@@ -42,10 +35,7 @@ public partial class SettingsController : Node
         SavingManager.SaveLevelIndex(
             levelID: TransferLayer.LevelID,
             levelName: SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/LevelNameField/TextEdit").Text,
-            levelAuthor: SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/LevelAuthorField/TextEdit").Text,
-            songName: SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/SongNameField/TextEdit").Text,
-            songAuthor: SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/SongAuthorField/TextEdit").Text,
-            isMusicAdded: _isMusicAdded
+            levelAuthor: SettingsContainerNode.GetNode<TextEdit>("FieldsVBox/LevelAuthorField/TextEdit").Text
         );
     }
 
@@ -70,7 +60,7 @@ public partial class SettingsController : Node
             absoluteMusicPath += $"/levels/{TransferLayer.LevelID}/music.mp3";
             System.IO.File.Copy(musicFilePath, absoluteMusicPath, overwrite: true);
 
-            _isMusicAdded = true;
+            // _isMusicAdded = true;
             SaveLevel();
         }
     }

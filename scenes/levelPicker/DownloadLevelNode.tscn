@@ -1,0 +1,51 @@
+[gd_scene format=3 uid="uid://bw84mc8atw8ya"]
+
+[node name="DownloadLevelNode" type="Control"]
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 3
+anchors_preset = 0
+
+[node name="BG" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.113281, 0.109375, 0.132813, 1)
+
+[node name="LevelLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_left = 14.0
+offset_bottom = 26.0
+grow_horizontal = 2
+text = "Level Name - By Author"
+
+[node name="DownloadButton" type="Button" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -8.0
+grow_horizontal = 0
+grow_vertical = 2
+text = "Download"
+
+[node name="AlreadyInstalledLabel" type="Label" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -1.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_colors/font_color = Color(0.447059, 0.835294, 0.376471, 1)
+text = "Already installed"
+horizontal_alignment = 1
+vertical_alignment = 1

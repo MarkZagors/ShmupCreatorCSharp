@@ -31,10 +31,7 @@ namespace Editor
 $@"{{
     ""id"": ""{newLevelID}"",
     ""levelName"": ""New Level"",
-    ""levelAuthor"": ""Unknown"",
-    ""songName"": ""Unknown song"",
-    ""songAuthor"": ""Unknown Artist"",
-    ""isMusicAdded"": ""False""
+    ""levelAuthor"": ""Unknown""
 }}"
             );
             indexFile.Close();
@@ -48,17 +45,14 @@ $@"{{
             phasesFile.Close();
         }
 
-        public void SaveLevelIndex(string levelID, string levelName, string levelAuthor, string songName, string songAuthor, bool isMusicAdded)
+        public void SaveLevelIndex(string levelID, string levelName, string levelAuthor)
         {
             FileAccess indexFile = FileAccess.Open($"user://levels/{levelID}/index.json", FileAccess.ModeFlags.Write);
             indexFile.StoreString(
 $@"{{
     ""id"": ""{levelID}"",
     ""levelName"": ""{levelName}"",
-    ""levelAuthor"": ""{levelAuthor}"",
-    ""songName"": ""{songName}"",
-    ""songAuthor"": ""{songAuthor}"",
-    ""isMusicAdded"": ""{isMusicAdded}""
+    ""levelAuthor"": ""{levelAuthor}""
 }}"
             );
             indexFile.Close();

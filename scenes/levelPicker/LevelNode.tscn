@@ -26,6 +26,7 @@ grow_horizontal = 2
 text = "Level Name - By Author"
 
 [node name="SongLabel" type="Label" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0

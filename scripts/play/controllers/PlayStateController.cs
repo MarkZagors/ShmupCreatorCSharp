@@ -187,14 +187,14 @@ namespace Editor
             EmitSignal(SignalName.PhaseChange);
             EmitSignal(SignalName.UpdateTimeline);
 
-            Dictionary loadedIndex = SavingManager.LoadLevelIndex(TransferLayer.LevelID);
-            bool isMusicAdded = (string)loadedIndex["isMusicAdded"] == "True";
-            if (isMusicAdded)
-            {
-                GD.Print("playMusic");
-                MusicPlayer.Stream = SavingManager.LoadMusic(TransferLayer.LevelID);
-                MusicPlayer.Play();
-            }
+            // Dictionary loadedIndex = SavingManager.LoadLevelIndex(TransferLayer.LevelID);
+            // bool isMusicAdded = (string)loadedIndex["isMusicAdded"] == "True";
+            // if (isMusicAdded)
+            // {
+            //     GD.Print("playMusic");
+            //     MusicPlayer.Stream = SavingManager.LoadMusic(TransferLayer.LevelID);
+            //     MusicPlayer.Play();
+            // }
         }
 
         public List<Sequence> GetSequenceList()
