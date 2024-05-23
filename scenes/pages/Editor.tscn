@@ -1,4 +1,4 @@
-[gd_scene load_steps=35 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=36 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
@@ -25,6 +25,7 @@
 [ext_resource type="Script" path="res://scripts/play/controllers/BossMovementController.cs" id="24_dicxy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/SettingsController.cs" id="26_s511t"]
 [ext_resource type="PackedScene" uid="uid://dt1chil803ujs" path="res://scenes/editor/PhaseButton.tscn" id="26_t5jxv"]
+[ext_resource type="Script" path="res://scripts/editor/controllers/DeletionController.cs" id="27_0q7aw"]
 [ext_resource type="Texture2D" uid="uid://7elybjnwy8t6" path="res://sprites/play/Space Background(1).png" id="27_r2dx0"]
 [ext_resource type="Script" path="res://scripts/server/SavingManager.cs" id="27_vlr0c"]
 [ext_resource type="Texture2D" uid="uid://c3msc1fva6pen" path="res://sprites/play/enemy_ship.png" id="28_ur8l3"]
@@ -143,6 +144,12 @@ SavingManager = NodePath("../SavingManger")
 
 [node name="SavingManger" type="Node" parent="Controllers"]
 script = ExtResource("27_vlr0c")
+
+[node name="DeletionController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "ComponentsController", "PlayController")]
+script = ExtResource("27_0q7aw")
+SequenceController = NodePath("../SequenceController")
+ComponentsController = NodePath("../ComponentsController")
+PlayController = NodePath("../PlayController")
 
 [node name="BotContainer" type="Control" parent="."]
 layout_mode = 1

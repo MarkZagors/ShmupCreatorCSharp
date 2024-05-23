@@ -7,6 +7,7 @@ namespace Editor
     public partial class SequenceController : Node
     {
         [Signal] public delegate void UpdateEventHandler();
+        [Signal] public delegate void SelectSequenceEventHandler();
 
         [ExportGroup("Controllers")]
         [Export] public ComponentsController ComponentsController { get; private set; }
@@ -70,6 +71,7 @@ namespace Editor
                 ComponentsController.ClearComponent();
             }
 
+            EmitSignal(SignalName.SelectSequence);
             OpenSequenceTab();
         }
 
@@ -236,6 +238,11 @@ namespace Editor
             {
                 return null;
             }
+        }
+
+        public Sequence GetOpenedSequence()
+        {
+            return _openedSequence;
         }
 
         private void OnComponentUpdate()

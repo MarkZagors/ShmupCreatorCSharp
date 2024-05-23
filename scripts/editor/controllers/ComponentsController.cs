@@ -10,6 +10,7 @@ namespace Editor
         [Signal] public delegate void UpdateEventHandler();
         [Signal] public delegate void OnValidRestructureEventHandler();
         [Signal] public delegate void MoveTimelineUpdateEventHandler();
+        [Signal] public delegate void ComponentSelectEventHandler();
         [Export] public CreateBoxController CreateBoxController { get; private set; }
         [Export] public Label ComponentNameLabel { get; private set; }
         [Export] public VBoxContainer ComponentsVBox { get; private set; }
@@ -45,6 +46,8 @@ namespace Editor
             _newModifierPlusButton = NewModifierButtonObj.Instantiate<Button>();
             _newModifierPlusButton.Pressed += () => CreateBoxController.OnClickNewModifier(OpenedComponent, this);
             ComponentsVBox.AddChild(_newModifierPlusButton);
+
+            EmitSignal(SignalName.ComponentSelect);
         }
 
         public void ClearComponent()

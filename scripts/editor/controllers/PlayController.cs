@@ -385,6 +385,16 @@ namespace Editor
             LoopSeparatorNode.AnchorLeft = (float)loopSeparatorAnchor;
         }
 
+        public void DeleteSequence(Sequence sequence)
+        {
+            sequence.Node.QueueFree();
+            _selectedPhase.SequenceList.Remove(sequence);
+            UpdateUI();
+            EmitSignal(SignalName.PhaseChange);
+            EmitSignal(SignalName.UpdateTimeline);
+            EmitSignal(SignalName.Update);
+        }
+
         //=================
         //LOADING SAVING
         //=================
