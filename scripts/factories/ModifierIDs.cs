@@ -7,6 +7,8 @@ namespace Editor
 {
     public enum ModifierID
     {
+        BULLET_SPRITE,
+
         BUNDLE_REF_BULLET,
         BUNDLE_COUNT,
         BUNDLE_ANGLE,
@@ -31,6 +33,8 @@ namespace Editor
     {
         private static readonly Dictionary<ModifierID, string> _nameList = new()
         {
+            {ModifierID.BULLET_SPRITE, "Bullet Sprite"},
+
             {ModifierID.BUNDLE_REF_BULLET, "Bullet Data"},
             {ModifierID.BUNDLE_COUNT, "Count"},
             {ModifierID.BUNDLE_ANGLE, "Angle"},

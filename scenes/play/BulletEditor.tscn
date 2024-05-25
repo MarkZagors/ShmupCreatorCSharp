@@ -5,5 +5,6 @@
 [node name="Bullet" type="Node2D"]
 
 [node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
 scale = Vector2(2, 2)
 texture = ExtResource("1_mtf3b")

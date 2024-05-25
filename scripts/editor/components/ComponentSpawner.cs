@@ -45,5 +45,11 @@ namespace Editor
         {
             return _lookupHelper.GetRefComponent<ComponentTimer>(ModifierID.SPAWNER_REF_SPAWN_TIMER);
         }
+
+        public ComponentBullet GetBulletComponent()
+        {
+            ComponentBundle componentBundle = GetBundleComponent();
+            return componentBundle.GetRefBullletComponent();
+        }
     }
 }

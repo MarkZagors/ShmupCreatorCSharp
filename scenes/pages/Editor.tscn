@@ -1,4 +1,4 @@
-[gd_scene load_steps=36 format=3 uid="uid://bvgorsw0k7n0h"]
+[gd_scene load_steps=39 format=3 uid="uid://bvgorsw0k7n0h"]
 
 [ext_resource type="Script" path="res://scripts/editor/controllers/ResizeController.cs" id="1_d3aoy"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/PlayController.cs" id="2_hudip"]
@@ -22,7 +22,10 @@
 [ext_resource type="PackedScene" uid="uid://vjqmawifbe18" path="res://scenes/editor/fields/OptionsField.tscn" id="12_lgdx1"]
 [ext_resource type="PackedScene" uid="uid://dt7s6tshy5mib" path="res://scenes/editor/fields/PositionField.tscn" id="18_lgw2h"]
 [ext_resource type="PackedScene" uid="uid://07bui71vctke" path="res://scenes/play/BulletEditor.tscn" id="21_jgiw5"]
+[ext_resource type="Texture2D" uid="uid://bhiww52t7ueuc" path="res://sprites/play/enemy_bullet.png" id="22_uodk8"]
+[ext_resource type="Texture2D" uid="uid://k0tm1tbf5egt" path="res://sprites/play/enemy_bullet_green.png" id="23_1y4ur"]
 [ext_resource type="Script" path="res://scripts/play/controllers/BossMovementController.cs" id="24_dicxy"]
+[ext_resource type="Texture2D" uid="uid://sh5kirdy3h0n" path="res://sprites/play/enemy_bullet_blue.png" id="24_irq1x"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/SettingsController.cs" id="26_s511t"]
 [ext_resource type="PackedScene" uid="uid://dt1chil803ujs" path="res://scenes/editor/PhaseButton.tscn" id="26_t5jxv"]
 [ext_resource type="Script" path="res://scripts/editor/controllers/DeletionController.cs" id="27_0q7aw"]
@@ -124,6 +127,9 @@ BossMovementController = NodePath("../BossMovementController")
 BulletPoolNode = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport/BulletPool")
 BulletNodeObj = ExtResource("21_jgiw5")
 BossSprite = NodePath("../../TopContainer/MidContainer/PlayAspectContainer/PlayViewportContainer/PlayViewport/BossSprite")
+BulletSpriteRed = ExtResource("22_uodk8")
+BulletSpriteGreen = ExtResource("23_1y4ur")
+BulletSpriteBlue = ExtResource("24_irq1x")
 
 [node name="CreateBoxController" type="Node" parent="Controllers" node_paths=PackedStringArray("SequenceController", "CreationContainer", "CreationContainerVBox")]
 script = ExtResource("12_kakms")

@@ -1,12 +1,15 @@
-[gd_scene load_steps=19 format=3 uid="uid://bup0fks5pbixl"]
+[gd_scene load_steps=22 format=3 uid="uid://bup0fks5pbixl"]
 
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayStateController.cs" id="1_4jq8j"]
 [ext_resource type="Script" path="res://scripts/play/controllers/BulletController.cs" id="1_5c7e6"]
 [ext_resource type="Script" path="res://scripts/server/SavingManager.cs" id="1_kg8ya"]
 [ext_resource type="Script" path="res://scripts/play/controllers/BossMovementController.cs" id="3_th36n"]
 [ext_resource type="PackedScene" uid="uid://difj2ioeu1a8q" path="res://scenes/play/BulletPlay.tscn" id="4_8rsbl"]
+[ext_resource type="Texture2D" uid="uid://bhiww52t7ueuc" path="res://sprites/play/enemy_bullet.png" id="5_vd1qx"]
+[ext_resource type="Texture2D" uid="uid://k0tm1tbf5egt" path="res://sprites/play/enemy_bullet_green.png" id="6_gll8j"]
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayerController.cs" id="6_qkv3w"]
 [ext_resource type="Script" path="res://scripts/play/controllers/HealthController.cs" id="7_1isb2"]
+[ext_resource type="Texture2D" uid="uid://sh5kirdy3h0n" path="res://sprites/play/enemy_bullet_blue.png" id="7_dc1na"]
 [ext_resource type="Texture2D" uid="uid://7elybjnwy8t6" path="res://sprites/play/Space Background(1).png" id="7_l8ulq"]
 [ext_resource type="Texture2D" uid="uid://c3msc1fva6pen" path="res://sprites/play/enemy_ship.png" id="7_nog2h"]
 [ext_resource type="Script" path="res://scripts/play/controllers/PlayerAttackController.cs" id="8_6oeut"]
@@ -88,6 +91,9 @@ PlayStateController = NodePath("../PlayStateController")
 BulletPoolNode = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/BulletPool")
 BulletNodeObj = ExtResource("4_8rsbl")
 BossSprite = NodePath("../../Play/PlayAspectContainer/PlayViewportContainer/PlayViewport/BossSprite")
+BulletSpriteRed = ExtResource("5_vd1qx")
+BulletSpriteGreen = ExtResource("6_gll8j")
+BulletSpriteBlue = ExtResource("7_dc1na")
 
 [node name="BossMovementController" type="Node" parent="Controllers" node_paths=PackedStringArray("PlayStateController")]
 script = ExtResource("3_th36n")

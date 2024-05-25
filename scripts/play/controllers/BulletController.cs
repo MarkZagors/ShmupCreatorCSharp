@@ -18,6 +18,9 @@ namespace Editor
         [Export] public PackedScene BulletNodeObj { get; private set; }
         [Export] public Sprite2D BossSprite { get; private set; }
         [Export] public int BulletPoolSize { get; private set; } = 100;
+        [Export] public Texture2D BulletSpriteRed;
+        [Export] public Texture2D BulletSpriteGreen;
+        [Export] public Texture2D BulletSpriteBlue;
         private readonly List<Spawner> _spawnerList = new();
         private Vector2 _bossPosition = new(400, 200);
         private BulletPool _bulletPool;
@@ -81,6 +84,7 @@ namespace Editor
             }
 
             ComponentBundle bundle = spawner.Component.GetBundleComponent();
+            ComponentBullet bullet = spawner.Component.GetBulletComponent();
             ComponentTimer spawnTimerComponent = spawner.Component.GetSpawnTimerComponent();
 
             Range angleRange =
@@ -94,6 +98,10 @@ namespace Editor
             Range sizeRange =
                 (bundle.GetModifier(ModifierID.BUNDLE_SIZE) as ModifierRange)
                 .Range;
+
+            Option bulletSpriteOption =
+                (bullet.GetModifier(ModifierID.BULLET_SPRITE) as ModifierOptions)
+                .SelectedOption;
 
             Range timerProcessCurve = null;
             if (spawnTimerComponent != null)
@@ -124,7 +132,8 @@ namespace Editor
                     timerProcessCurve: timerProcessCurve,
                     angleRange: angleRange,
                     speedRange: speedRange,
-                    sizeRange: sizeRange
+                    sizeRange: sizeRange,
+                    bulletSpriteOption: bulletSpriteOption
                 );
             }
         }
@@ -137,7 +146,8 @@ namespace Editor
             Range timerProcessCurve,
             Range angleRange,
             Range speedRange,
-            Range sizeRange
+            Range sizeRange,
+            Option bulletSpriteOption
         )
         {
             var bulletSpawnTimeOffset = sequenceSpawnTime - spawner.Timer.TiggerOffsets[waveIndex];
@@ -188,6 +198,20 @@ namespace Editor
                     if (bulletData.Node == null)
                     {
                         bulletData.Node = _bulletPool.GetBullet();
+
+                        switch (bulletSpriteOption)
+                        {
+                            case Option.SPRITE_RED:
+                                bulletData.Node.GetNode<Sprite2D>("Sprite").Texture = BulletSpriteRed;
+                                break;
+                            case Option.SPRITE_BLUE:
+                                bulletData.Node.GetNode<Sprite2D>("Sprite").Texture = BulletSpriteBlue;
+                                break;
+                            case Option.SPRITE_GREEN:
+                                bulletData.Node.GetNode<Sprite2D>("Sprite").Texture = BulletSpriteGreen;
+                                break;
+                        }
+
                         if (bulletData.Node is BulletPlay bulletPlayNode)
                         {
                             bulletPlayNode.Velocity = new Vector2(

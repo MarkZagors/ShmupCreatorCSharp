@@ -8,7 +8,10 @@ namespace Editor
     {
         NULL,
         TARGET_NO_TARGET,
-        TARGET_PLAYER
+        TARGET_PLAYER,
+        SPRITE_RED,
+        SPRITE_GREEN,
+        SPRITE_BLUE,
     }
 
     public static class OptionsNamer
@@ -18,6 +21,10 @@ namespace Editor
             {Option.NULL, "NULL"},
             {Option.TARGET_NO_TARGET, "No Target"},
             {Option.TARGET_PLAYER, "Player"},
+
+            {Option.SPRITE_RED, "Red"},
+            {Option.SPRITE_GREEN, "Green"},
+            {Option.SPRITE_BLUE, "Blue"},
         };
 
         public static string GetName(Option option)

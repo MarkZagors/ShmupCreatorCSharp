@@ -122,6 +122,8 @@ namespace Editor
                     fieldOptions.Update += () =>
                     {
                         EmitSignal(SignalName.Update);
+                        if (modifierOptions.IsStructureChanging)
+                            CheckValidSpawnerConnection();
                     };
                     ComponentsVBox.AddChild(fieldOptions);
                     break;

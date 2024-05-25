@@ -9,5 +9,6 @@ namespace Editor
         required public List<Option> Options { get; set; }
         required public Option SelectedOption { get; set; }
         public bool Active { get; set; } = false;
+        public bool IsStructureChanging { get; set; } = false;
     }
 }

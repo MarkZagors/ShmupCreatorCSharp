@@ -32,6 +32,10 @@ public partial class DeletionController : Node
             {
                 PlayController.DeleteSequence(openedSequence);
             }
+            if (selectType == SelectType.COMPONENT)
+            {
+
+            }
         }
     }
 
