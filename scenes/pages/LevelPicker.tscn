@@ -124,6 +124,10 @@ layout_mode = 2
 [node name="SongAuthorLabel" type="Label" parent="LeftContainer/VBoxContainer"]
 layout_mode = 2
 
+[node name="DeleteButton" type="Button" parent="LeftContainer/VBoxContainer"]
+layout_mode = 2
+text = "Delete"
+
 [node name="HBoxContainer" type="HBoxContainer" parent="LeftContainer"]
 layout_mode = 1
 anchors_preset = 12
